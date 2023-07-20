@@ -1,7 +1,7 @@
 package com.cg.model.enums;
 
 public enum ERole {
-    ROLE_ADMIN("ADMIN"), ROLE_USER("USER");
+    ROLE_ADMIN("ADMIN"), ROLE_USER("USER"), ROLE_DOCTOR("DOCTOR");
 
     private String value;
 

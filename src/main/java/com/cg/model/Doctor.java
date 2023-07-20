@@ -39,6 +39,4 @@ public class Doctor extends BasePerson{
     @Enumerated(EnumType.STRING)
     private ELevel level;
 
-//    @OneToMany
-//    private List<Appointment> appointments;
 }
