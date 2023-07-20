@@ -1,10 +1,14 @@
 package com.cg.service.room;
 
 import com.cg.model.Room;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@Transactional
 public class RoomService implements IRoomService{
     @Override
     public List<Room> findAll() {
