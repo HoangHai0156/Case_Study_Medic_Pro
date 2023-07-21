@@ -13,5 +13,29 @@ public class DashBoardController {
         return "dashboard/blank-dashboard-page";
     }
 
+    @GetMapping("/appointments")
+    public String appointmentPage(){
+        return null;
+    }
 
+    @GetMapping("/customers")
+    public String customersPage(){
+        return null;
+    }
+    @GetMapping("/doctors")
+    public String doctorsPage(){
+        return null;
+    }
+    @GetMapping("/rooms")
+    public String roomsPage(){
+        return null;
+    }
+    @GetMapping("/specialities")
+    public String specialitiesPage(){
+        return null;
+    }
+    @GetMapping("/users")
+    public String usersPage(){
+        return null;
+    }
 }
