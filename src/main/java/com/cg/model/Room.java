@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dtos.room.RoomResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,12 @@ public class Room extends BaseEntity{
     @Column(nullable = false, name = "is_available")
     private Boolean isAvailable;
 
-//    @OneToMany
-//    private List<Appointment> appointments;
+    public RoomResDTO toRoomResDTO(){
+
+        return new RoomResDTO()
+                .setId(id)
+                .setSpecialityName(speciality.getName())
+                .setName(name)
+                .setIsAvailable(isAvailable);
+    }
 }

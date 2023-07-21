@@ -28,9 +28,9 @@ public class LocationRegionCreReqDTO {
 
     private String address;
 
-    public LocationRegion toLocationRegion(Long id){
+    public LocationRegion toLocationRegion(){
         return new LocationRegion()
-                .setId(id)
+                .setId(null)
                 .setProvinceId(provinceId)
                 .setProvinceName(provinceName)
                 .setDistrictId(districtId)

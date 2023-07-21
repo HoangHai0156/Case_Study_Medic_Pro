@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.enums.ETime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class Appointment extends BaseEntity{
     private Doctor doctor;
 
     @ManyToOne
+    @JoinColumn(name = "speciality_id", referencedColumnName = "id", nullable = false, updatable = false)
+    private Speciality speciality;
+
+    @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false)
     private Room room;
 
@@ -39,9 +44,22 @@ public class Appointment extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private ETime time;
 
-    @Column(precision = 10, scale = 0, nullable = false)
+    @Column(precision = 10, scale = 0, nullable = false, updatable = false)
     private BigDecimal price;
 
     @Column(nullable = false, name = "is_available")
     private boolean isAvailable;
+
+    public AppointmentResDTO toAppointmentResDTO(){
+        return new AppointmentResDTO()
+                .setId(id)
+                .setDoctor(doctor.toDoctorResDTO())
+                .setSpecialityName(speciality.getName())
+                .setRoom(room.toRoomResDTO())
+                .setDay(day)
+                .setTimeName(getTime().name())
+                .setPrice(price)
+                .setAvailable(isAvailable);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dtos.speciality.SpecialityResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,10 @@ public class Speciality extends BaseEntity{
     @Column(unique = true, nullable = false)
     private String name;
 
-//    @OneToMany
-//    private List<Doctor> doctors;
-//
-//    @OneToMany
-//    private List<Room> rooms;
+     public SpecialityResDTO toSpecialityResDTO(){
+         return new SpecialityResDTO()
+                 .setId(id)
+                 .setCodeName(codeName)
+                 .setName(name);
+     }
 }

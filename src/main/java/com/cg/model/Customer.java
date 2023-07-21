@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dtos.customer.CustomerResDTO;
 import com.cg.model.enums.EGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,14 +26,25 @@ public class Customer extends BasePerson{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @OneToOne
     @JoinColumn(name = "location_region_id", referencedColumnName = "id", nullable = false)
     private LocationRegion locationRegion;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     private User user;
 
-//    @OneToMany(targetEntity = MedicalBill.class, fetch = FetchType.EAGER)
-//    private List<MedicalBill> medicalBills;
+    public Customer(String fullName, String email, EGender gender, String phone, Date DOB, String job, String identityNumber, String ethnic, Long id, LocationRegion locationRegion, User user) {
+        super(fullName, email, gender, phone, DOB, job, identityNumber, ethnic);
+        this.id = id;
+        this.locationRegion = locationRegion;
+        this.user = user;
+    }
+
+    public CustomerResDTO toCustomerResDTO(){
+
+        return new CustomerResDTO(id, getFullName(), getEmail(), getGender(), getPhone(), getDOB(), getJob(), getIdentityNumber(),
+                getEthnic(), locationRegion.toLocationRegionResDTO(), user.toUserResDTO());
+    }
 }

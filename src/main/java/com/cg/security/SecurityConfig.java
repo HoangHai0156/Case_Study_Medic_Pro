@@ -70,11 +70,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login",
                         "/register",
                         "/logout",
-                        "/api/test"
+                        "/api/test",
+                        // TODO: 21/7/2023 nhớ xóa nhé
+                        "/api/**",
+                        "/admin"
                 ).permitAll()
                 .antMatchers("/transfers").hasAnyAuthority("ADMIN")
                 .antMatchers("/shop").hasAnyAuthority("CUSTOMER")
                 .antMatchers("/resources/**", "/assets/**").permitAll()
+                .antMatchers("/resources/dashboard/**", "/dashboard/assets/**").permitAll()
+                .antMatchers("/resources/homePage/**", "/homePage/assets/**").permitAll()
 //                .antMatchers(
 //                        "/v3/api-docs",
 //                        "/swagger-resources/configuration/ui",
