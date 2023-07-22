@@ -24,7 +24,7 @@ public class DashBoardController {
     }
     @GetMapping("/doctors")
     public String doctorsPage(){
-        return null;
+        return "dashboard/doctor/list";
     }
     @GetMapping("/rooms")
     public String roomsPage(){
