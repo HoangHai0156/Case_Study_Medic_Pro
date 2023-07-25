@@ -106,4 +106,11 @@ public class AppointmentAPI {
 
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
+
+    @PatchMapping
+    public ResponseEntity<?> update(){
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
