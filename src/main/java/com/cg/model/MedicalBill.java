@@ -1,5 +1,7 @@
 package com.cg.model;
 
+import com.cg.model.dtos.appointment.AppointmentResDTO;
+import com.cg.model.dtos.medicalBill.MedicalBillResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +24,7 @@ public class MedicalBill extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String code;
 
     @ManyToOne
@@ -39,4 +41,13 @@ public class MedicalBill extends BaseEntity{
     @Column(name = "paid_date")
     private Date paidDate;
 
+    public MedicalBillResDTO toMedicalBillResDTO(){
+        return new MedicalBillResDTO()
+                .setId(id)
+                .setCode(code)
+                .setAppointment(appointment.toAppointmentResDTO())
+                .setCustomer(customer.toCustomerResDTO())
+                .setPaid(isPaid)
+                .setPaidDate(paidDate);
+    }
 }

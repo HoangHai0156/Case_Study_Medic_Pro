@@ -31,4 +31,8 @@ public class ValidateUtil {
         REGEX = "\\d+";
         return Pattern.compile(REGEX).matcher(number).matches();
     }
+    public static boolean isDateValid(String date) {
+        REGEX = "^(0?[1-9]|[12][0-9]|3[01])\\/(0?[1-9]|1[0-2])\\/\\d{4}$";
+        return Pattern.compile(REGEX).matcher(date).matches();
+    }
 }

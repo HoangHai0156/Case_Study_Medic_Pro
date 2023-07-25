@@ -1,5 +1,6 @@
 package com.cg.model;
 
+import com.cg.model.dtos.user.UserResDTO;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -19,7 +20,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, updatable = false)
     private String username;
 
     @Column(nullable = false)
@@ -37,6 +38,13 @@ public class User extends BaseEntity {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    public UserResDTO toUserResDTO(){
+        return new UserResDTO()
+                .setId(id)
+                .setUsername(username)
+                .setRoleName(role.getName().name());
     }
 
 }

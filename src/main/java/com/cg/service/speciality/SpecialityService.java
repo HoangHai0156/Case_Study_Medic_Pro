@@ -1,6 +1,8 @@
 package com.cg.service.speciality;
 
 import com.cg.model.Speciality;
+import com.cg.repository.SpecialityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,19 +12,23 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SpecialityService implements ISpecialityService{
+
+    @Autowired
+    private SpecialityRepository specialityRepository;
+
     @Override
     public List<Speciality> findAll() {
-        return null;
+        return specialityRepository.findAll();
     }
 
     @Override
     public Optional<Speciality> findById(Long id) {
-        return Optional.empty();
+        return specialityRepository.findById(id);
     }
 
     @Override
     public Speciality save(Speciality speciality) {
-        return null;
+        return specialityRepository.save(speciality);
     }
 
     @Override
