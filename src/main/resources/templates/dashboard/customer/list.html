@@ -53,13 +53,9 @@
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <p class="card-text">Use <code class="highlighter-rouge">.table-striped</code>
-                                            to add
-                                            zebra-striping to any
-                                            table row within the <code class="highlighter-rouge">&lt;tbody&gt;</code>.
-                                            This styling
-                                            doesn't work in IE8
-                                            and below as <code>:nth-child</code> CSS selector isn't supported.</p>
+                                        <button class="btn btn-primary" id="btnCreateShowModal">
+                                            <i class="fas fa-user-plus"></i> Add new customer
+                                        </button>
                                     </div>
                                     <!-- table striped -->
                                     <div class="table-responsive">
@@ -146,16 +142,33 @@
     page.dialogs.elements.dobCre = $('#dobCre');
     page.dialogs.elements.jobCre = $('#jobCre');
     page.dialogs.elements.ethnicCre = $('#ethnicCre');
-
     page.dialogs.elements.provinceCre = $('#provinceCre');
     page.dialogs.elements.districtCre = $('#districtCre');
     page.dialogs.elements.wardCre = $('#wardCre');
     page.dialogs.elements.addressCre = $('#addressCre');
     page.dialogs.elements.specialityCre = $('#specialityCre');
     page.dialogs.elements.levelCre = $('#levelCre');
-
     page.dialogs.elements.btnCreate = $('#btnCreate');
 
+
+    page.dialogs.elements.modalEdit = $('#modalEdit');
+    page.dialogs.elements.errorAreaEdit = $('#modalEdit .error-area')
+    page.dialogs.elements.frmEdit = $('#frmEdit');
+    page.dialogs.elements.fullNameUp = $('#fullNameUp');
+    page.dialogs.elements.emailUp = $('#emailUp');
+    page.dialogs.elements.genderUp = $('#genderUp');
+    page.dialogs.elements.phoneUp = $('#phoneUp');
+    page.dialogs.elements.identityUp = $('#identityUp');
+    page.dialogs.elements.dobUp = $('#dobUp');
+    page.dialogs.elements.jobUp = $('#jobUp');
+    page.dialogs.elements.ethnicUp = $('#ethnicUp');
+    page.dialogs.elements.provinceUp = $('#provinceUp');
+    page.dialogs.elements.districtUp = $('#districtUp');
+    page.dialogs.elements.wardUp = $('#wardUp');
+    page.dialogs.elements.addressUp = $('#addressUp');
+    page.dialogs.elements.specialityUp = $('#specialityUp');
+    page.dialogs.elements.levelUp = $('#levelUp');
+    page.dialogs.elements.btnEdit = $('#btnEdit');
 
     page.elements.footer = $('#footer-control');
 
@@ -187,15 +200,6 @@
                 <div class="container">
                     <button class="btn btn-secondary edit" data-id="${customerId}">
                         <i class="fas fa-pencil-alt"></i> Update
-                    </button>
-                    <button class="btn btn-success deposit" data-id="${customerId}">
-                        <i class="fas fa-plus"></i> Deposit
-                    </button>
-                    <button class="btn btn-warning withdraw" data-id="${customerId}">
-                        <i class="fas fa-minus"></i> Withdraw
-                    </button>
-                    <button class="btn btn-primary transfer" data-id="${customerId}">
-                        <i class="fas fa-exchange-alt"></i> Transfer
                     </button>
                     <button class="btn btn-danger delete" data-id="${customerId}">
                         <i class="fas fa-trash"></i> Delete
