@@ -27,7 +27,7 @@ public class DoctorService implements IDoctorService{
 
     @Override
     public List<Doctor> findAll() {
-        return null;
+        return doctorRepository.findAll();
     }
 
     @Override

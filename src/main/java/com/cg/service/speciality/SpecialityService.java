@@ -18,7 +18,7 @@ public class SpecialityService implements ISpecialityService{
 
     @Override
     public List<Speciality> findAll() {
-        return null;
+        return specialityRepository.findAll();
     }
 
     @Override

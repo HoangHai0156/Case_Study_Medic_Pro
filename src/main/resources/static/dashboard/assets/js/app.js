@@ -10,6 +10,8 @@ class App {
     static API_SPECIALITY = this.API_SERVER + '/specialities';
 
     static API_LOCATION_REGION = 'https://vapi.vnappmob.com/api/province'
+    static API_JOB = "https://api-119.medpro.com.vn:5000/profession-mongo/get-all-by-partner"
+    static API_ETHNIC = "https://api-119.medpro.com.vn:5000/nation-mongo/get-all-by-partner"
 
     static showDeleteConfirmDialog() {
         return Swal.fire({
@@ -55,20 +57,18 @@ class LocationRegion {
 }
 
 class Doctor {
-    constructor(id, fullName, email, gender, phone, DOB, job, identityNumber, ethnic, locationRegion, user, specName, levelName) {
+    constructor(id, fullName, email, nameGender, phone, birthDay, identityNumber, ethnic, locationRegion, userId, specialityId, levelName) {
         this.id = id;
 
         this.fullName = fullName;
 
         this.email = email;
 
-        this.gender = gender;
+        this.nameGender = nameGender;
 
         this.phone = phone;
 
-        this.DOB = DOB;
-
-        this.job = job;
+        this.birthDay = birthDay;
 
         this.identityNumber =  identityNumber;
 
@@ -76,9 +76,9 @@ class Doctor {
 
         this.locationRegion = locationRegion;
 
-        this.user = user;
+        this.userId = userId;
 
-        this.specName = specName;
+        this.specialityId = specialityId;
 
         this.levelName = levelName;
     }
