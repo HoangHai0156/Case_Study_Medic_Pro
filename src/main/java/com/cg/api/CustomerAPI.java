@@ -2,12 +2,14 @@ package com.cg.api;
 
 import com.cg.exception.DataInputException;
 import com.cg.model.Customer;
+import com.cg.model.Doctor;
 import com.cg.model.LocationRegion;
 import com.cg.model.User;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.dtos.customer.CustomerCreReqDTO;
 import com.cg.model.dtos.customer.CustomerResDTO;
 import com.cg.model.dtos.customer.CustomerUpReqDTO;
+import com.cg.model.dtos.doctor.DoctorResDTO;
 import com.cg.model.dtos.locationRegion.LocationRegionCreReqDTO;
 import com.cg.model.dtos.locationRegion.LocationRegionUpReqDTO;
 import com.cg.model.enums.EGender;
@@ -53,6 +55,15 @@ public class CustomerAPI {
         return new ResponseEntity<>(customerResDTOS,HttpStatus.OK);
     }
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<?> getCustomerById(@PathVariable Long customerId) {
+        Customer customer = customerService.findById(customerId).orElseThrow(() -> {
+            throw new DataInputException("Mã khách hàng không tồn tại");
+        });
+        CustomerResDTO customerResDTO = customer.toCustomerResDTO();
+        return new ResponseEntity<>(customerResDTO, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody CustomerCreReqDTO customerCreReqDTO,
                                     BindingResult bindingResult){
@@ -81,7 +92,7 @@ public class CustomerAPI {
         return new ResponseEntity<>(customerResDTO,HttpStatus.CREATED);
     }
 
-    @PostMapping("/{customerId}")
+    @PatchMapping("/{customerId}")
     public ResponseEntity<?> update(@PathVariable("customerId") String customerIdStr,
                                     @RequestBody CustomerUpReqDTO customerUpReqDTO,
                                     BindingResult bindingResult){
@@ -115,7 +126,7 @@ public class CustomerAPI {
         LocationRegion locationRegion = locationRegionUpReqDTO.toLocationRegion(locationRegionId);
 
         Customer updatedCustomer = customerUpReqDTO.toCustomer(eGender,user,customerId,locationRegionId);
-        Customer newCustomer = customerService.create(locationRegion, customer);
+        Customer newCustomer = customerService.create(locationRegion, updatedCustomer);
         CustomerResDTO customerResDTO = newCustomer.toCustomerResDTO();
 
         return new ResponseEntity<>(customerResDTO, HttpStatus.OK);

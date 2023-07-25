@@ -45,95 +45,50 @@
                     </div>
                 </div>
                 <section class="section">
-                    <div class="card">
-                        <div class="card-header">
-                            Customer Datatable
-                        </div>
-                        <div class="card-body">
-                            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-                                <div class="dataTable-top">
-                                    <div class="dataTable-dropdown">
-                                        <select class="dataTable-selector form-select">
-                                            <option value="5">5</option>
-                                            <option value="10" selected="">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                            <option value="25">25</option>
-                                        </select>
-                                        <label>entries per page</label>
+                    <div class="row" id="table-striped">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Striped rows</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <p class="card-text">Use <code class="highlighter-rouge">.table-striped</code>
+                                            to add
+                                            zebra-striping to any
+                                            table row within the <code class="highlighter-rouge">&lt;tbody&gt;</code>.
+                                            This styling
+                                            doesn't work in IE8
+                                            and below as <code>:nth-child</code> CSS selector isn't supported.</p>
                                     </div>
-                                    <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..."
-                                                                         type="text"></div>
-                                </div>
-                                <div class="dataTable-container">
-                                    <button class="btn btn-primary" id="btnCreateShowModal">
-                                        <i class="fas fa-user-plus"></i> Add new Customer
-                                    </button>
-                                    <table class="table table-striped dataTable-table" id="tbCustomer">
-                                        <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th data-sortable="" style="width: 11.8316%;"><a href="#"
-                                                                                             class="dataTable-sorter">#</a>
-                                            <th data-sortable="" style="width: 35.4948%;"><a href="#"
-                                                                                             class="dataTable-sorter">Name</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 35.4948%;"><a href="#"
-                                                                                             class="dataTable-sorter">Email</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 18.8764%;"><a href="#"
-                                                                                             class="dataTable-sorter">Phone</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 18.8764%;"><a href="#"
-                                                                                             class="dataTable-sorter">Gender</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 16.3475%;"><a href="#"
-                                                                                             class="dataTable-sorter">Ethnic</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 11.1091%;"><a href="#"
-                                                                                             class="dataTable-sorter">Identity Number</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 11.1091%;"><a href="#"
-                                                                                             class="dataTable-sorter">Province</a>
-                                            </th>
-                                            <th data-sortable="" style="width: 11.1091%;"><a href="#"
-                                                                                             class="dataTable-sorter">Job</a>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Graiden</td>
-                                            <td>vehicula.aliquet@semconsequat.co.uk</td>
-                                            <td>076 4820 8838</td>
-                                            <td>Tỉnh Thừa Thiên Huế</td>
-                                            <td>Offenburg</td>
-                                            <td>
-                                                <span class="badge bg-success">Active</span>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="dataTable-bottom">
-                                    <div class="dataTable-info">Showing 1 to 10 of 26 entries</div>
-                                    <ul class="pagination pagination-primary float-end dataTable-pagination">
-                                        <li class="page-item pager"><a href="#" class="page-link" data-page="1">‹</a>
-                                        </li>
-                                        <li class="page-item active"><a href="#" class="page-link" data-page="1">1</a>
-                                        </li>
-                                        <li class="page-item"><a href="#" class="page-link" data-page="2">2</a></li>
-                                        <li class="page-item"><a href="#" class="page-link" data-page="3">3</a></li>
-                                        <li class="page-item pager"><a href="#" class="page-link" data-page="2">›</a>
-                                        </li>
-                                    </ul>
+                                    <!-- table striped -->
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" id="table1">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Gender</th>
+                                                <th>Ethnic</th>
+                                                <th>Identity Number</th>
+                                                <th>Province</th>
+                                                <th>Job</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </section>
+
             </div>
         </div>
 
@@ -147,6 +102,11 @@
     </div>
 </div>
 <!--footer JS-->
+<script>
+    // Simple Datatable
+    let table1 = document.querySelector('#table1');
+    let dataTable = new simpleDatatables.DataTable(table1);
+</script>
 <th:block th:replace="/dashboard/fragment/footer-js"/>
 
 <script>
@@ -161,12 +121,8 @@
             getAllEthnic: App.API_ETHNIC,
             createCustomer: App.API_CUSTOMER
         },
-        elements: {
-
-        },
-        loadData: {
-
-        },
+        elements: {},
+        loadData: {},
         commands: {},
         dialogs: {
             elements: {},
@@ -176,7 +132,7 @@
     }
 
     page.elements.btnShowCreateModal = $('#btnCreateShowModal');
-    page.elements.tbCustomerBody = $('#tbCustomer tbody');
+    page.elements.tbCustomerBody = $('#table1 tbody');
 
 
     page.dialogs.elements.modalCreate = $('#modalCreate');
@@ -271,7 +227,7 @@
     page.commands.getAllJob = () => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllJob
+            url: page.url.getAllJob
         })
             .done((data) => {
                 const jobs = data;
@@ -286,7 +242,7 @@
     page.commands.getAllEthnic = () => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllEthnic
+            url: page.url.getAllEthnic
         })
             .done((data) => {
                 const ethnics = data;
@@ -301,7 +257,7 @@
     page.commands.getAllSpeciality = () => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllSpeciality
+            url: page.url.getAllSpeciality
         })
             .done((data) => {
                 const specialities = data;
@@ -316,7 +272,7 @@
     page.commands.getAllProvince = () => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllProvince
+            url: page.url.getAllProvince
         })
             .done((data) => {
                 const provinces = data.results;
@@ -332,7 +288,7 @@
     page.commands.getAllDistricts = (provinceId, elem) => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllDistricts + '/' + provinceId
+            url: page.url.getAllDistricts + '/' + provinceId
         })
             .done((data) => {
                 const districts = data.results;
@@ -349,7 +305,7 @@
     page.commands.getAllWards = (districtId, elem) => {
         $.ajax({
             type: 'GET',
-            url:page.url.getAllWard + '/' + districtId
+            url: page.url.getAllWard + '/' + districtId
         })
             .done((data) => {
                 const wards = data.results;
@@ -362,7 +318,7 @@
     }
 
     page.commands.getCustomerById = (id) => {
-        return $.ajax ({
+        return $.ajax({
             type: 'GET',
             url: page.url.getCustomerById + '/' + id,
         });
@@ -497,7 +453,6 @@
             page.dialogs.elements.frmCreate.trigger("submit");
         })
     }
-
 
 
     page.loadData = () => {

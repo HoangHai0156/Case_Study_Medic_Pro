@@ -55,6 +55,15 @@ public class DoctorAPI {
         return new ResponseEntity<>(doctorResDTOS,HttpStatus.OK);
     }
 
+    @GetMapping("/{doctorId}")
+    public ResponseEntity<?> getById(@PathVariable Long doctorId) {
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(() -> {
+            throw new DataInputException("Mã bác sĩ không tồn tại");
+        });
+        DoctorResDTO doctorResDTO = doctor.toDoctorResDTO();
+        return new ResponseEntity<>(doctorResDTO, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody DoctorCreReqDTO doctorCreReqDTO,
                                     BindingResult bindingResult){
@@ -96,7 +105,7 @@ public class DoctorAPI {
         return new ResponseEntity<>(doctorResDTO,HttpStatus.CREATED);
     }
 
-    @PostMapping("/{doctorId}")
+    @PatchMapping("/{doctorId}")
     public ResponseEntity<?> update(@PathVariable("doctorId") String doctorIdStr,
                                     @RequestBody DoctorUpReqDTO doctorUpReqDTO,
                                     BindingResult bindingResult) {
