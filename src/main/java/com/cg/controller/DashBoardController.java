@@ -20,11 +20,11 @@ public class DashBoardController {
 
     @GetMapping("/customers")
     public String customersPage(){
-        return null;
+        return "dashboard/customer/list";
     }
     @GetMapping("/doctors")
     public String doctorsPage(){
-        return null;
+        return "dashboard/doctor/list";
     }
     @GetMapping("/rooms")
     public String roomsPage(){

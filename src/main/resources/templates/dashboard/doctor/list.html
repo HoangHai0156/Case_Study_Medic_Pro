@@ -1,10 +1,642 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Med Pro Admin Dashboard</title>
 
+    <th:block th:replace="/dashboard/fragment/head-css"/>
+</head>
+
+<body>
+<div id="app">
+    <!--    sidebar -->
+    <th:block th:replace="/dashboard/fragment/sidebar"/>
+    <div id="main">
+        <!--    heading-->
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <h3>Profile Statistics</h3>
+        </div>
+
+        <!--    content-->
+        <div class="page-content">
+            <div class="page-heading">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <h3>DataTable</h3>
+                            <p class="text-subtitle text-muted">For user to check they list</p>
+                        </div>
+                        <div class="col-12 col-md-6 order-md-2 order-first">
+                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Doctors DataTable</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <section class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            Doctors Datatable
+                        </div>
+                        <div class="card-body">
+                            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                <div class="dataTable-top">
+                                    <div class="dataTable-dropdown">
+                                        <select class="dataTable-selector form-select">
+                                            <option value="5">5</option>
+                                            <option value="10" selected="">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                        </select>
+                                        <label>entries per page</label>
+                                    </div>
+                                    <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..."
+                                                                         type="text"></div>
+                                </div>
+                                <div class="dataTable-container">
+                                    <button class="btn btn-primary" id="btnCreateShowModal">
+                                        <i class="fas fa-user-plus"></i> Add new Doctor
+                                    </button>
+                                    <table class="table table-striped dataTable-table" id="tbDoctor">
+                                        <thead>
+                                        <tr>
+                                            <th data-sortable=""></th>
+                                            <th data-sortable="" style="width: 11.8316%;"><a href="#"
+                                                                                             class="dataTable-sorter">#</a>
+                                            <th data-sortable="" style="width: 11.8316%;"><a href="#"
+                                                                                             class="dataTable-sorter">Name</a>
+                                            </th>
+                                            <th data-sortable="" style="width: 41.8172%;"><a href="#"
+                                                                                             class="dataTable-sorter">Email</a>
+                                            </th>
+                                            <th data-sortable="" style="width: 18.8764%;"><a href="#"
+                                                                                             class="dataTable-sorter">Phone</a>
+                                            </th>
+                                            <th data-sortable="" style="width: 18.8764%;"><a href="#"
+                                                                                             class="dataTable-sorter">Province</a>
+                                            </th>
+                                            <th data-sortable="" style="width: 16.3475%;"><a href="#"
+                                                                                             class="dataTable-sorter">Speciality</a>
+                                            </th>
+                                            <th data-sortable="" style="width: 11.1091%;"><a href="#"
+                                                                                             class="dataTable-sorter">Level</a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Graiden</td>
+                                                <td>vehicula.aliquet@semconsequat.co.uk</td>
+                                                <td>076 4820 8838</td>
+                                                <td>Tỉnh Thừa Thiên Huế</td>
+                                                <td>Offenburg</td>
+                                                <td>
+                                                    <span class="badge bg-success">Active</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="dataTable-bottom">
+                                    <div class="dataTable-info">Showing 1 to 10 of 26 entries</div>
+                                    <ul class="pagination pagination-primary float-end dataTable-pagination">
+                                        <li class="page-item pager"><a href="#" class="page-link" data-page="1">‹</a>
+                                        </li>
+                                        <li class="page-item active"><a href="#" class="page-link" data-page="1">1</a>
+                                        </li>
+                                        <li class="page-item"><a href="#" class="page-link" data-page="2">2</a></li>
+                                        <li class="page-item"><a href="#" class="page-link" data-page="3">3</a></li>
+                                        <li class="page-item pager"><a href="#" class="page-link" data-page="2">›</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <!--        footer-->
+        <footer class="container-fluid" id="footer-control">
+
+        </footer>
+
+        <th:block th:replace="/dashboard/doctor/modalCreate"/>
+        <th:block th:replace="/dashboard/fragment/footer"/>
+    </div>
+</div>
+<!--footer JS-->
+<th:block th:replace="/dashboard/fragment/footer-js"/>
+
+    <script>
+        const page = {
+            url: {
+                getAllDoctors: App.API_DOCTOR,
+                getDoctorById: App.API_DOCTOR,
+                getAllProvince: App.API_LOCATION_REGION + '/',
+                getAllDistricts: App.API_LOCATION_REGION + '/district',
+                getAllWard: App.API_LOCATION_REGION + '/ward',
+                getAllJob: App.API_JOB,
+                getAllEthnic: App.API_ETHNIC,
+                getAllSpeciality: App.API_SPECIALITY,
+                createDoctor: App.API_DOCTOR,
+                updateDoctor: App.API_DOCTOR
+            },
+            elements: {
+
+            },
+            loadData: {
+
+            },
+            commands: {},
+            dialogs: {
+                elements: {},
+                command: {}
+            },
+            initializeControlEvent: {}
+        }
+
+        page.elements.btnShowCreateModal = $('#btnCreateShowModal');
+        page.elements.tbDocdorBody = $('#tbDoctor tbody');
+
+        page.dialogs.elements.modalCreate = $('#modalCreate');
+        page.dialogs.elements.errorAreaCreate = $('#modalCreate .error-area')
+        page.dialogs.elements.frmCreate = $('#frmCreate');
+        page.dialogs.elements.fullNameCre = $('#fullNameCre');
+        page.dialogs.elements.emailCre = $('#emailCre');
+        page.dialogs.elements.genderCre = $('#genderCre');
+        page.dialogs.elements.phoneCre = $('#phoneCre');
+        page.dialogs.elements.identityCre = $('#identityCre');
+        page.dialogs.elements.dobCre = $('#dobCre');
+        page.dialogs.elements.jobCre = $('#jobCre');
+        page.dialogs.elements.ethnicCre = $('#ethnicCre');
+
+        page.dialogs.elements.provinceCre = $('#provinceCre');
+        page.dialogs.elements.districtCre = $('#districtCre');
+        page.dialogs.elements.wardCre = $('#wardCre');
+        page.dialogs.elements.addressCre = $('#addressCre');
+        page.dialogs.elements.specialityCre = $('#specialityCre');
+        page.dialogs.elements.levelCre = $('#levelCre');
+
+        page.dialogs.elements.btnCreate = $('#btnCreate');
+
+        page.dialogs.elements.modalUpdate = $('#modalUpdate');
+        page.dialogs.elements.errorAreaUpdate = $('#modalUpdate .error-area')
+        page.dialogs.elements.frmUpdate = $('#frmUpdate');
+        page.dialogs.elements.fullNameUp = $('#fullNameUp');
+        page.dialogs.elements.emailUp = $('#emailUp');
+        page.dialogs.elements.genderUp = $('#genderUp');
+        page.dialogs.elements.phoneUp = $('#phoneUp');
+        page.dialogs.elements.identityUp = $('#identityUp');
+        page.dialogs.elements.dobUp = $('#dobUp');
+        page.dialogs.elements.jobUp = $('#jobUp');
+        page.dialogs.elements.ethnicUp = $('#ethnicUp');
+
+        page.dialogs.elements.provinceUp = $('#provinceUp');
+        page.dialogs.elements.districtUp = $('#districtUp');
+        page.dialogs.elements.wardUp = $('#wardUp');
+        page.dialogs.elements.addressUp = $('#addressUp');
+        page.dialogs.elements.specialityUp = $('#specialityUp');
+        page.dialogs.elements.levelUp = $('#levelUp');
+
+        page.dialogs.elements.btnUpdate = $('#btnUpdate');
+        page.elements.footer = $('#footer-control');
+
+        let doctorId = 0;
+        let doctor = new Doctor();
+        let locationRegion = new LocationRegion();
+
+        page.commands.renderDoctors = (doctor, locationRegion) => {
+            return `
+                    <tr id="tr_${doctor.id}">
+                        <td><span class="select-tab unselected"></span></td>
+                        <td >${doctor.id}</td>
+                        <td>${doctor.fullName}</td>
+                        <td>${doctor.email}</td>
+                        <td>${doctor.phone}</td>
+                        <td>${locationRegion.provinceName}</td>
+                        <td>${doctor.specName}</td>
+                        <td>
+                            <span class="badge bg-success">${doctor.levelName}</span>
+                        </td>
+                    </tr>
+            `
+        }
+
+        page.commands.renderFooter = (doctorId) => {
+            return `
+                <div class="container">
+                    <button class="btn btn-secondary edit" data-id="${doctorId}">
+                        <i class="fas fa-pencil-alt"></i> Update
+                    </button>
+
+                    <button class="btn btn-danger delete" data-id="${doctorId}">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            `;
+        }
+
+        page.commands.getAllDoctors = () => {
+            page.elements.tbDocdorBody.empty();
+
+            $.ajax({
+                type: 'GET',
+                url: page.url.getAllDoctors
+            })
+                .done((data) => {
+                    data.forEach(item => {
+                        doctor = item;
+                        locationRegion = doctor.locationRegion;
+                        const str = page.commands.renderDoctors(doctor, locationRegion);
+                        page.elements.tbDocdorBody.prepend(str);
+                    });
+                })
+                .fail((error) => {
+                    console.log(error);
+                })
+        }
+
+        page.commands.getAllJob = () => {
+            return $.ajax({
+                type: 'GET',
+                url:page.url.getAllJob
+            })
+                .done((data) => {
+                    const jobs = data;
+                    page.dialogs.elements.jobCre.empty();
+                    $.each(jobs, (index, item) => {
+                        const str = `<option value="${item.id}">${item.name}</option>`;
+                        page.dialogs.elements.jobCre.append(str);
+                    });
+                })
+        }
+
+        page.commands.getAllEthnic = () => {
+            return $.ajax({
+                type: 'GET',
+                url:page.url.getAllEthnic
+            })
+                .done((data) => {
+                    const ethnics = data;
+                    page.dialogs.elements.ethnicCre.empty();
+                    $.each(ethnics, (index, item) => {
+                        const str = `<option value="${item.id}">${item.name}</option>`;
+                        page.dialogs.elements.ethnicCre.append(str);
+                    });
+                })
+        }
+
+        page.commands.getAllSpeciality = () => {
+            return $.ajax({
+                type: 'GET',
+                url:page.url.getAllSpeciality
+            })
+                .done((data) => {
+                    const specialities = data;
+                    page.dialogs.elements.specialityCre.empty();
+                    $.each(specialities, (index, item) => {
+                        const str = `<option value="${item.id}">${item.name}</option>`;
+                        page.dialogs.elements.specialityCre.append(str);
+                    });
+                })
+        }
+
+        page.commands.getAllProvince = () => {
+            return $.ajax({
+                type: 'GET',
+                url:page.url.getAllProvince
+            })
+                .done((data) => {
+                    const provinces = data.results;
+                    page.dialogs.elements.provinceCre.empty();
+                    // page.dialogs.elements.provinceUp.empty();
+                    $.each(provinces, (index, item) => {
+                        const str = `<option value="${item.province_id}">${item.province_name}</option>`;
+                        page.dialogs.elements.provinceCre.append(str);
+                        // page.dialogs.elements.provinceUp.append(str);
+                    });
+                })
+        }
+        page.commands.getAllDistricts = (provinceId, elem) => {
+            return $.ajax({
+                type: 'GET',
+                url:page.url.getAllDistricts + '/' + provinceId
+            })
+                .done((data) => {
+                    const districts = data.results;
+
+                    elem.empty();
+                    $.each(districts, (index, item) => {
+                        const str = `<option value="${item.district_id}">${item.district_name}</option>`;
+
+                        elem.append(str);
+                    });
+                })
+        }
+
+        page.commands.getAllWards = (districtId, elem) => {
+            $.ajax({
+                type: 'GET',
+                url:page.url.getAllWard + '/' + districtId
+            })
+                .done((data) => {
+                    const wards = data.results;
+                    elem.empty();
+                    $.each(wards, (index, item) => {
+                        const str = `<option value="${item.ward_id}">${item.ward_name}</option>`;
+                        elem.append(str);
+                    });
+                })
+        }
+
+        page.commands.getDoctorById = (id) => {
+            return $.ajax ({
+                type: 'GET',
+                url: page.url.getDoctorById + '/' + id,
+            });
+
+        }
+
+        page.dialogs.command.create = () => {
+            const provinceId = page.dialogs.elements.provinceCre.val();
+            const provinceName = page.dialogs.elements.provinceCre.find('option:selected').text();
+            const districtId = page.dialogs.elements.districtCre.val();
+            const districtName = page.dialogs.elements.districtCre.find('option:selected').text();
+            const wardId = page.dialogs.elements.wardCre.val();
+            const wardName = page.dialogs.elements.wardCre.find('option:selected').text();
+            const address = page.dialogs.elements.addressCre.val();
+
+            let locationRegion = {
+                provinceId,
+                provinceName,
+                districtId,
+                districtName,
+                wardId,
+                wardName,
+                address
+            }
+
+            const fullName = page.dialogs.elements.fullNameCre.val();
+            const email = page.dialogs.elements.emailCre.val();
+            const phone = page.dialogs.elements.phoneCre.val();
+            const nameGender = page.dialogs.elements.genderCre.find('option:selected').val();
+            const birthDay = page.dialogs.elements.dobCre.val();
+            const identityNumber = page.dialogs.elements.identityCre.val();
+            const ethnic = page.dialogs.elements.ethnicCre.find('option:selected').text();
+            // const job = page.dialogs.elements.jobCre.find('option:selected').text();
+            const userId = "1";
+            const specialityId = page.dialogs.elements.specialityCre.find('option:selected').val();
+            const levelName = page.dialogs.elements.levelCre.find('option:selected').val();
+
+            let doctor = {
+                fullName,
+                email,
+                nameGender,
+                phone,
+                birthDay,
+                identityNumber,
+                ethnic,
+                locationRegion,
+                userId,
+                specialityId,
+                levelName
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'POST',
+                url: page.url.createDoctor,
+                data: JSON.stringify(doctor)
+            })
+                .done((data) => {
+                    doctor = data;
+                    locationRegion = doctor.locationRegion;
+                    const str = page.commands.renderDoctors(doctor, locationRegion);
+
+                    page.elements.tbDocdorBody.prepend(str);
+                    page.dialogs.elements.modalCreate.modal('hide');
+                    App.showSuccessAlert("Thêm mới doctor thành công!")
+                })
+                .fail((error) => {
+                    const responseJSON = error.responseJSON;
+
+                    page.dialogs.elements.errorAreaCreate.empty();
+                    let str = '';
+
+                    $.each(responseJSON, (k, v) => {
+                        str += `<label for="${k}Dep">${v}</label>`
+                    })
+
+                    page.dialogs.elements.errorAreaCreate.append(str).removeClass('hide').addClass('show');
+                })
+        }
+
+        page.dialogs.command.update = () => {
+            const provinceId = page.dialogs.elements.provinceCre.val();
+            const provinceName = page.dialogs.elements.provinceCre.find('option:selected').text();
+            const districtId = page.dialogs.elements.districtCre.val();
+            const districtName = page.dialogs.elements.districtCre.find('option:selected').text();
+            const wardId = page.dialogs.elements.wardCre.val();
+            const wardName = page.dialogs.elements.wardCre.find('option:selected').text();
+            const address = page.dialogs.elements.addressCre.val();
+
+            let locationRegion = {
+                provinceId,
+                provinceName,
+                districtId,
+                districtName,
+                wardId,
+                wardName,
+                address
+            }
+
+            const fullName = page.dialogs.elements.fullNameCre.val();
+            const email = page.dialogs.elements.emailCre.val();
+            const phone = page.dialogs.elements.phoneCre.val();
+            const nameGender = page.dialogs.elements.genderCre.find('option:selected').val();
+            const birthDay = page.dialogs.elements.dobCre.val();
+            const identityNumber = page.dialogs.elements.identityCre.val();
+            const ethnic = page.dialogs.elements.ethnicCre.find('option:selected').text();
+            // const job = page.dialogs.elements.jobCre.find('option:selected').text();
+            const userId = "1";
+            const specialityId = page.dialogs.elements.specialityCre.find('option:selected').val();
+            const levelName = page.dialogs.elements.levelCre.find('option:selected').val();
+
+            let doctor = {
+                fullName,
+                email,
+                nameGender,
+                phone,
+                birthDay,
+                identityNumber,
+                ethnic,
+                locationRegion,
+                userId,
+                specialityId,
+                levelName
+            }
+
+            $.ajax({
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json'
+                },
+                type: 'PATCH',
+                url: page.url.updateDoctor + "/" + doctorId,
+                data: JSON.stringify(doctor)
+            })
+                .done((data) => {
+                    doctor = data;
+                    locationRegion = doctor.locationRegion;
+                    const str = page.commands.renderDoctors(doctor, locationRegion);
+
+                    const currentRow = $('#tr_'+customerId);
+                    currentRow.replaceWith(str);
+                    page.dialogs.elements.modalUpdate.modal('hide');
+                    App.showSuccessAlert("Update doctor thành công!")
+                })
+                .fail((error) => {
+                    const responseJSON = error.responseJSON;
+
+                    page.dialogs.elements.errorAreaUpdate.empty();
+                    let str = '';
+
+                    $.each(responseJSON, (k, v) => {
+                        str += `<label for="${k}Dep">${v}</label>`
+                    })
+
+                    page.dialogs.elements.errorAreaUpdate.append(str).removeClass('hide').addClass('show');
+                })
+        }
+
+        page.commands.handleAddEventShowModalUpdate = (doctorId) =>{
+
+            page.commands.getDoctorById(doctorId).then((data) => {
+                page.dialogs.elements.fullNameUp.val(data.fullName);
+                page.dialogs.elements.emailUp.val(data.email);
+                page.dialogs.elements.genderUp.val(data.nameGender);
+                page.dialogs.elements.phoneUp.val(data.phone);
+                page.dialogs.elements.identityUp.val(data.identityNumber);
+                page.dialogs.elements.dobUp.val(data.birthDay);
+                page.dialogs.elements.jobUp.val(data.job);
+                page.dialogs.elements.ethnicUp.val(data.ethnic);
+                page.dialogs.elements.addressUp.val(data.locationRegion.address);
+                page.dialogs.elements.specialityUp.val(data.specialityId);
+                page.dialogs.elements.levelUp.val(data.levelName);
+
+                const provinceId = data.locationRegion.provinceId;
+                const districtId = data.locationRegion.districtId;
+
+                page.dialogs.elements.provinceUp.val(provinceId);
+
+                page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtUp).then(() => {
+                    page.dialogs.elements.districtUp.val(districtId);
+                    page.commands.getAllWards(districtId, page.dialogs.elements.wardUp).then(() => {
+                        page.dialogs.elements.wardUp.val(data.locationRegion.wardId);
+                    });
+                });
+                page.dialogs.elements.modalUpdate.modal('show');
+            })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+
+                page.initializeControlEvent = () => {
+                    page.elements.tbDocdorBody.on('click', 'tr', function () {
+                        page.elements.tbDocdorBody.find('span').removeClass('selected').addClass('unselected');
+                        $(this).find('span').removeClass('unselected').addClass('selected');
+
+                        const doctorId = $(this).attr('id').replace('tr_', '');
+
+                        const str = page.commands.renderFooter(doctorId);
+                        page.elements.footer.empty().append(str);
+                    })
+
+                    page.dialogs.elements.provinceCre.on('change', function () {
+                        const provinceId = $(this).val();
+                        page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtCre).then(() => {
+                            const districtId = page.dialogs.elements.districtCre.val();
+                            page.commands.getAllWards(districtId, page.dialogs.elements.wardCre);
+                        });
+                    })
+
+                    // page.dialogs.elements.provinceUp.on('change', function () {
+                    //     const provinceId = $(this).val();
+                    //     page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtUp).then(() => {
+                    //         const districtId = page.dialogs.elements.districtUp.val();
+                    //         page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
+                    //     });
+                    // })
+                    //
+                    page.dialogs.elements.districtCre.on('change', function () {
+                        const districtId = page.dialogs.elements.districtCre.val();
+                        page.commands.getAllWards(districtId, page.dialogs.elements.wardCre);
+                    })
+                    //
+                    // page.dialogs.elements.districtUp.on('change', function () {
+                    //     const districtId = page.dialogs.elements.districtUp.val();
+                    //     page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
+                    // })
+
+                    page.elements.btnShowCreateModal.on('click', () => {
+                        page.dialogs.elements.frmCreate[0].reset();
+                        page.dialogs.elements.frmCreate.validate().resetForm();
+                        page.dialogs.elements.frmCreate.find("input.error").removeClass("error");
+                        page.dialogs.elements.errorAreaCreate.removeClass("show").addClass("hide").empty();
+                        page.dialogs.elements.modalCreate.modal('show');
+                    })
+
+                    // bắt sự kiện nhấn vô nút save create
+
+                    page.dialogs.elements.btnCreate.on('click', () => {
+
+                        page.dialogs.elements.frmCreate.trigger("submit");
+                    })
+                }
+
+
+                page.loadData = () => {
+                    page.commands.getAllDoctors();
+                    page.commands.getAllJob();
+                    page.commands.getAllEthnic();
+                    page.commands.getAllSpeciality();
+                    page.commands.getAllProvince().then(() => {
+                        const provinceId = page.dialogs.elements.provinceCre.val();
+                        page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtCre).then(() => {
+                            const districtId = page.dialogs.elements.districtCre.val();
+                            page.commands.getAllWards(districtId, page.dialogs.elements.wardCre);
+                        });
+                    });
+                }
+
+                $(() => {
+                    page.loadData();
+                    page.initializeControlEvent();
+                })
+
+    </script>
+
+<script src="/dashboard/assets/js/doctor-validation.js"></script>
 </body>
+
 </html>

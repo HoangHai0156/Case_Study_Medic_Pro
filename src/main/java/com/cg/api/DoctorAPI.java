@@ -5,13 +5,16 @@ import com.cg.model.*;
 import com.cg.model.dtos.customer.CustomerResDTO;
 import com.cg.model.dtos.doctor.DoctorCreReqDTO;
 import com.cg.model.dtos.doctor.DoctorResDTO;
+import com.cg.model.dtos.doctor.DoctorUpReqDTO;
 import com.cg.model.dtos.locationRegion.LocationRegionCreReqDTO;
+import com.cg.model.dtos.locationRegion.LocationRegionUpReqDTO;
 import com.cg.model.enums.EGender;
 import com.cg.model.enums.ELevel;
 import com.cg.service.doctor.IDoctorService;
 import com.cg.service.speciality.ISpecialityService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
+import com.cg.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -91,5 +96,57 @@ public class DoctorAPI {
         return new ResponseEntity<>(doctorResDTO,HttpStatus.CREATED);
     }
 
+    @PostMapping("/{doctorId}")
+    public ResponseEntity<?> update(@PathVariable("doctorId") String doctorIdStr,
+                                    @RequestBody DoctorUpReqDTO doctorUpReqDTO,
+                                    BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()){
+            appUtils.mapErrorToResponse(bindingResult);
+        }
+        if (!ValidateUtil.isNumberValid(doctorIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Mã bác sĩ không đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long doctorId = Long.parseLong(doctorIdStr);
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(() -> {
+            throw  new DataInputException("Bác sĩ không tồn tại");
+        });
+
+        Long locationRegionId = doctor.getLocationRegion().getId();
+        User user = doctor.getUser();
+
+        String eGenderName = doctorUpReqDTO.getNameGender();
+        EGender eGender;
+        try {
+            eGender = EGender.valueOf(eGenderName);
+        }catch (IllegalArgumentException e){
+            throw new DataInputException("Giới tính không tồn tại");
+        }
+
+        String eLevelName = doctorUpReqDTO.getLevelName();
+        ELevel eLevel;
+        try {
+            eLevel = ELevel.valueOf(eLevelName);
+        }catch (IllegalArgumentException e){
+            throw new DataInputException("Level không tồn tại");
+        }
+        String specialityIdStr = doctorUpReqDTO.getSpecialityId();
+        Long specialityId = Long.parseLong(specialityIdStr);
+
+        Speciality speciality = specialityService.findById(specialityId).orElseThrow(() -> {
+            throw new DataInputException("Khoa không tồn tại");
+        });
+
+        LocationRegionUpReqDTO locationRegionUpReqDTO = doctorUpReqDTO.getLocationRegion();
+        LocationRegion locationRegion = locationRegionUpReqDTO.toLocationRegion(locationRegionId);
+        Doctor updateDoctor = doctorUpReqDTO.toDoctor(eGender, doctorId, locationRegionId, user, speciality,eLevel);
+        Doctor newDoctor = doctorService.create(locationRegion, updateDoctor);
+
+        DoctorResDTO doctorResDTO = newDoctor.toDoctorResDTO();
+
+        return new ResponseEntity<>(doctorResDTO, HttpStatus.OK);
+    }
 }

@@ -29,7 +29,7 @@ public class CustomerService implements ICustomerService{
 
     @Override
     public List<Customer> findAll() {
-        return null;
+        return customerRepository.findAll();
     }
 
     @Override
