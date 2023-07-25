@@ -36,6 +36,6 @@ public class DashBoardController {
     }
     @GetMapping("/users")
     public String usersPage(){
-        return null;
+        return "dashboard/user/register";
     }
 }
