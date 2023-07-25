@@ -10,8 +10,11 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login(){
-
-
-        return "login";
+        return "dashboard/user/login";
     }
+    @GetMapping("/register")
+    public String register(){
+        return "dashboard/user/register";
+    }
+
 }
