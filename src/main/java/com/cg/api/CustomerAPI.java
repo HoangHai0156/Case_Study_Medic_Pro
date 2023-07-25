@@ -115,7 +115,7 @@ public class CustomerAPI {
         LocationRegion locationRegion = locationRegionUpReqDTO.toLocationRegion(locationRegionId);
 
         Customer updatedCustomer = customerUpReqDTO.toCustomer(eGender,user,customerId,locationRegionId);
-        Customer newCustomer = customerService.create(locationRegion, customer);
+        Customer newCustomer = customerService.create(locationRegion, updatedCustomer);
         CustomerResDTO customerResDTO = newCustomer.toCustomerResDTO();
 
         return new ResponseEntity<>(customerResDTO, HttpStatus.OK);
