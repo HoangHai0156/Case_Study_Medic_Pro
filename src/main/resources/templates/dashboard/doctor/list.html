@@ -91,6 +91,7 @@
         </footer>
 
         <th:block th:replace="/dashboard/doctor/modalCreate"/>
+        <th:block th:replace="/dashboard/doctor/modalUpdate"/>
         <th:block th:replace="/dashboard/fragment/footer"/>
     </div>
 </div>
@@ -234,9 +235,11 @@
                 .done((data) => {
                     const jobs = data;
                     page.dialogs.elements.jobCre.empty();
+                    page.dialogs.elements.jobUp.empty();
                     $.each(jobs, (index, item) => {
                         const str = `<option value="${item.id}">${item.name}</option>`;
                         page.dialogs.elements.jobCre.append(str);
+                        page.dialogs.elements.jobUp.append(str);
                     });
                 })
         }
@@ -249,9 +252,11 @@
                 .done((data) => {
                     const ethnics = data;
                     page.dialogs.elements.ethnicCre.empty();
+                    page.dialogs.elements.ethnicUp.empty();
                     $.each(ethnics, (index, item) => {
                         const str = `<option value="${item.id}">${item.name}</option>`;
                         page.dialogs.elements.ethnicCre.append(str);
+                        page.dialogs.elements.ethnicUp.append(str);
                     });
                 })
         }
@@ -264,9 +269,11 @@
                 .done((data) => {
                     const specialities = data;
                     page.dialogs.elements.specialityCre.empty();
+                    page.dialogs.elements.specialityUp.empty();
                     $.each(specialities, (index, item) => {
                         const str = `<option value="${item.id}">${item.name}</option>`;
                         page.dialogs.elements.specialityCre.append(str);
+                        page.dialogs.elements.specialityUp.append(str);
                     });
                 })
         }
@@ -279,14 +286,15 @@
                 .done((data) => {
                     const provinces = data.results;
                     page.dialogs.elements.provinceCre.empty();
-                    // page.dialogs.elements.provinceUp.empty();
+                    page.dialogs.elements.provinceUp.empty();
                     $.each(provinces, (index, item) => {
                         const str = `<option value="${item.province_id}">${item.province_name}</option>`;
                         page.dialogs.elements.provinceCre.append(str);
-                        // page.dialogs.elements.provinceUp.append(str);
+                        page.dialogs.elements.provinceUp.append(str);
                     });
                 })
         }
+
         page.commands.getAllDistricts = (provinceId, elem) => {
             return $.ajax({
                 type: 'GET',
@@ -405,13 +413,14 @@
         }
 
         page.dialogs.command.update = () => {
-            const provinceId = page.dialogs.elements.provinceCre.val();
-            const provinceName = page.dialogs.elements.provinceCre.find('option:selected').text();
-            const districtId = page.dialogs.elements.districtCre.val();
-            const districtName = page.dialogs.elements.districtCre.find('option:selected').text();
-            const wardId = page.dialogs.elements.wardCre.val();
-            const wardName = page.dialogs.elements.wardCre.find('option:selected').text();
-            const address = page.dialogs.elements.addressCre.val();
+            console.log("aaaaa")
+            const provinceId = page.dialogs.elements.provinceUp.val();
+            const provinceName = page.dialogs.elements.provinceUp.find('option:selected').text();
+            const districtId = page.dialogs.elements.districtUp.val();
+            const districtName = page.dialogs.elements.districtUp.find('option:selected').text();
+            const wardId = page.dialogs.elements.wardUp.val();
+            const wardName = page.dialogs.elements.wardUp.find('option:selected').text();
+            const address = page.dialogs.elements.addressUp.val();
 
             let locationRegion = {
                 provinceId,
@@ -423,17 +432,17 @@
                 address
             }
 
-            const fullName = page.dialogs.elements.fullNameCre.val();
-            const email = page.dialogs.elements.emailCre.val();
-            const phone = page.dialogs.elements.phoneCre.val();
-            const nameGender = page.dialogs.elements.genderCre.find('option:selected').val();
-            const birthDay = page.dialogs.elements.dobCre.val();
-            const identityNumber = page.dialogs.elements.identityCre.val();
-            const ethnic = page.dialogs.elements.ethnicCre.find('option:selected').text();
-            // const job = page.dialogs.elements.jobCre.find('option:selected').text();
+            const fullName = page.dialogs.elements.fullNameUp.val();
+            const email = page.dialogs.elements.emailUp.val();
+            const phone = page.dialogs.elements.phoneUp.val();
+            const nameGender = page.dialogs.elements.genderUp.find('option:selected').val();
+            const birthDay = page.dialogs.elements.dobUp.val();
+            const identityNumber = page.dialogs.elements.identityUp.val();
+            const ethnic = page.dialogs.elements.ethnicUp.find('option:selected').text();
+            // const job = page.dialogs.elements.jobUp.find('option:selected').text();
             const userId = "1";
-            const specialityId = page.dialogs.elements.specialityCre.find('option:selected').val();
-            const levelName = page.dialogs.elements.levelCre.find('option:selected').val();
+            const specialityId = page.dialogs.elements.specialityUp.find('option:selected').val();
+            const levelName = page.dialogs.elements.levelUp.find('option:selected').val();
 
             let doctor = {
                 fullName,
@@ -463,7 +472,7 @@
                     locationRegion = doctor.locationRegion;
                     const str = page.commands.renderDoctors(doctor, locationRegion);
 
-                    const currentRow = $('#tr_'+customerId);
+                    const currentRow = $('#tr_'+doctorId);
                     currentRow.replaceWith(str);
                     page.dialogs.elements.modalUpdate.modal('hide');
                     App.showSuccessAlert("Update doctor thành công!")
@@ -482,19 +491,68 @@
                 })
         }
 
+        page.commands.formatDate = (date) => {
+            let d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('/');
+        }
+
         page.commands.handleAddEventShowModalUpdate = (doctorId) =>{
 
             page.commands.getDoctorById(doctorId).then((data) => {
                 page.dialogs.elements.fullNameUp.val(data.fullName);
                 page.dialogs.elements.emailUp.val(data.email);
-                page.dialogs.elements.genderUp.val(data.nameGender);
+                page.dialogs.elements.genderUp.val(data.gender);
                 page.dialogs.elements.phoneUp.val(data.phone);
                 page.dialogs.elements.identityUp.val(data.identityNumber);
-                page.dialogs.elements.dobUp.val(data.birthDay);
-                page.dialogs.elements.jobUp.val(data.job);
-                page.dialogs.elements.ethnicUp.val(data.ethnic);
+                page.dialogs.elements.dobUp.val(page.commands.formatDate(data.dob));
+
+                page.commands.getAllJob().then((jobs) => {
+                    jobs.forEach(item => {
+                        if (item.name === data.job) {
+                            page.dialogs.elements.jobUp.val(item.id);
+                            return;
+                        }
+                    })
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
+                page.commands.getAllEthnic().then((ethnics) => {
+                    ethnics.forEach(item => {
+                        if (item.name === data.ethnic){
+                           page.dialogs.elements.ethnicUp.val(item.id);
+                           return;
+                        }
+                    })
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
                 page.dialogs.elements.addressUp.val(data.locationRegion.address);
-                page.dialogs.elements.specialityUp.val(data.specialityId);
+
+                page.commands.getAllSpeciality().then((specialities) => {
+                    specialities.forEach(item => {
+                        if (item.name === data.specName) {
+                            page.dialogs.elements.specialityUp.val(item.id);
+                            return;
+                        }
+                    })
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+
                 page.dialogs.elements.levelUp.val(data.levelName);
 
                 const provinceId = data.locationRegion.provinceId;
@@ -534,23 +592,23 @@
                         });
                     })
 
-                    // page.dialogs.elements.provinceUp.on('change', function () {
-                    //     const provinceId = $(this).val();
-                    //     page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtUp).then(() => {
-                    //         const districtId = page.dialogs.elements.districtUp.val();
-                    //         page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
-                    //     });
-                    // })
-                    //
+                    page.dialogs.elements.provinceUp.on('change', function () {
+                        const provinceId = $(this).val();
+                        page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtUp).then(() => {
+                            const districtId = page.dialogs.elements.districtUp.val();
+                            page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
+                        });
+                    })
+
                     page.dialogs.elements.districtCre.on('change', function () {
                         const districtId = page.dialogs.elements.districtCre.val();
                         page.commands.getAllWards(districtId, page.dialogs.elements.wardCre);
                     })
-                    //
-                    // page.dialogs.elements.districtUp.on('change', function () {
-                    //     const districtId = page.dialogs.elements.districtUp.val();
-                    //     page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
-                    // })
+
+                    page.dialogs.elements.districtUp.on('change', function () {
+                        const districtId = page.dialogs.elements.districtUp.val();
+                        page.commands.getAllWards(districtId, page.dialogs.elements.wardUp);
+                    })
 
                     page.elements.btnShowCreateModal.on('click', () => {
                         page.dialogs.elements.frmCreate[0].reset();
@@ -560,11 +618,26 @@
                         page.dialogs.elements.modalCreate.modal('show');
                     })
 
+                    page.elements.footer.on('click','.edit', function() {
+                        doctorId = $(this).data('id');
+                        page.dialogs.elements.frmUpdate[0].reset();
+                        page.dialogs.elements.frmUpdate.validate().resetForm();
+                        page.dialogs.elements.frmUpdate.find("input.error").removeClass("error");
+                        page.dialogs.elements.errorAreaUpdate.removeClass("show").addClass("hide").empty();
+                        page.commands.handleAddEventShowModalUpdate(doctorId);
+                    })
+
                     // bắt sự kiện nhấn vô nút save create
 
                     page.dialogs.elements.btnCreate.on('click', () => {
 
                         page.dialogs.elements.frmCreate.trigger("submit");
+                    })
+
+                    // bắt sự kiện nhấn vô nút save edit
+
+                    page.dialogs.elements.btnUpdate.on('click', () => {
+                        page.dialogs.elements.frmUpdate.trigger("submit");
                     })
                 }
 
