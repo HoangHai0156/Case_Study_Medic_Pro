@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class SpecialityCreReqDTO {
+public class SpecialityCreReqDTO{
 
     private String codeName;
 
@@ -24,4 +25,6 @@ public class SpecialityCreReqDTO {
                 .setCodeName(codeName)
                 .setName(name);
     }
+
+
 }

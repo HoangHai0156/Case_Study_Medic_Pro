@@ -1,10 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Med Pro Admin Dashboard</title>
 
+    <th:block th:replace="/dashboard/fragment/head-css"/>
+</head>
+
+<body>
+<div id="app">
+    <!--    sidebar -->
+    <th:block th:replace="/dashboard/fragment/sidebar"/>
+    <div id="main">
+        <!--    heading-->
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <h3>Room</h3>
+        </div>
+
+        <!--    content-->
+        <div class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <button class="badge bg-primary" id="btnShowCreateModal">
+                        <i class="fas fa-user-plus"></i>
+                        Add new room
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                        <div class="dataTable-top">
+                            <div class="dataTable-dropdown"><select class="dataTable-selector form-select">
+                                <option value="5">5</option>
+                                <option value="10" selected="">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                            </select><label>entries per page</label></div>
+                            <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..."
+                                                                 type="text"></div>
+                        </div>
+                        <div class="dataTable-container">
+                            <table class="table table-striped dataTable-table" id="tbRoom">
+                                <thead>
+                                <tr>
+                                    <th data-sortable="" style="width: 11.8316%;">
+                                        <a href="#" class="dataTable-sorter">#</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 41.8172%;">
+                                        <a href="#" class="dataTable-sorter">Speciality</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 18.8764%;">
+                                        <a href="#" class="dataTable-sorter">Name</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 11.1091%;">
+                                        <a href="#" class="dataTable-sorter">Available</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 11.1091%;">
+                                        <a href="#" class="dataTable-sorter">Status</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="dataTable-bottom">
+                            <div class="dataTable-info">Showing 1 to 10 of 26 entries</div>
+                            <ul class="pagination pagination-primary float-end dataTable-pagination">
+                                <li class="page-item pager"><a href="#" class="page-link" data-page="1">‹</a></li>
+                                <li class="page-item active"><a href="#" class="page-link" data-page="1">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link" data-page="2">2</a></li>
+                                <li class="page-item"><a href="#" class="page-link" data-page="3">3</a></li>
+                                <li class="page-item pager"><a href="#" class="page-link" data-page="2">›</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        footer-->
+        <th:block th:replace="/dashboard/fragment/footer"/>
+    </div>
+</div>
+<!--footer JS-->
+<th:block th:replace="/dashboard/fragment/footer-js"/>
+<th:block th:replace="/dashboard/room/create"/>
+
+<script>
+    const page = {
+        url: {
+            getAllRooms: App.API_ROOM,
+            getRoomById: App.API_ROOM,
+            createRoom: App.API_ROOM,
+            getAllSpeciality:App.API_SPECIALITY
+        },
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            commands: {}
+        },
+        initializeControlEvent: {}
+    }
+
+    page.elements.tbRoomBody = $('#tbRoom tbody');
+    page.elements.btnShowCreateModal = $('#btnShowCreateModal');
+
+    page.dialogs.elements.modalCreate = $('#modalCreate');
+    page.dialogs.elements.formCreate = $('#formCreate');
+    page.dialogs.elements.errorAreaCreate = $('#modalCreate .error-area')
+    page.dialogs.elements.specialityCre = $('#specialityCre');
+    page.dialogs.elements.nameCre = $('#nameCre');
+    page.dialogs.elements.btnCreate = $('#btnCreate');
+
+    let room = new Room();
+    let speciality = new Speciality();
+
+
+    page.commands.renderRoom = (room) => {
+        return `
+    <tr id="tr_${room.id}">
+        <td>${room.id}</td>
+        <td>${room.specialityName}</td>
+        <td>${room.name}</td>
+        <td>${room.isAvailable}</td>
+        <td>
+            <span class="badge bg-success">Edit</span>
+        </td>
+    </tr>
+    `;
+    }
+    page.commands.getAllRooms = () => {
+        page.elements.tbRoomBody.empty();
+
+        $.ajax({
+            type: 'GET',
+            url: page.url.getAllRooms
+        })
+            .done((data) => {
+                data.forEach(item => {
+                    room = item;
+
+                    const str = page.commands.renderRoom(room);
+                    page.elements.tbRoomBody.prepend(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+
+    page.commands.getAllSpeciality = () => {
+        return $.ajax({
+            type: 'GET',
+            url:page.url.getAllSpeciality
+        })
+            .done((data) => {
+                const specialities = data;
+                page.dialogs.elements.specialityCre.empty();
+                $.each(specialities, (index, item) => {
+                    const str = `<option value="${item.id}">${item.name}</option>`;
+                    page.dialogs.elements.specialityCre.append(str);
+                });
+            })
+    }
+
+    page.commands.getSpecialityById = (id) => {
+        return $.ajax({
+            type: 'GET',
+            url: page.url.getSpecialityById + '/' + id,
+        });
+    }
+
+    page.dialogs.commands.create = () => {
+        const specialityId = page.dialogs.elements.specialityCre.val();
+        const name = page.dialogs.elements.nameCre.val();
+
+        let room = {
+            specialityId,
+            name
+        }
+        $.ajax({
+            headers: {
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: "POST",
+            url: page.url.createRoom,
+            data: JSON.stringify(room)
+        })
+            .done((data) => {
+                const str = page.commands.renderRoom(data);
+                page.elements.tbRoomBody.prepend(str);
+
+                page.dialogs.elements.modalCreate.modal('hide');
+
+                App.showSuccessAlert('Tạo khách hàng thành công');
+
+            })
+            .fail((jqXHR) => {
+                const responseJSON = jqXHR.responseJSON;
+
+                page.dialogs.elements.errorAreaCreate.empty();
+                let str = '';
+
+                $.each(responseJSON, (k, v) => {
+                    str += `<label for="${k}Create">${v}</label>`
+                })
+                page.dialogs.elements.errorAreaCreate.append(str).removeClass('hide').addClass('show');
+                console.log(jqXHR);
+            });
+    }
+    page.initializeControlEvent = () => {
+        page.elements.btnShowCreateModal.on('click', () => {
+            page.dialogs.elements.modalCreate.modal('show');
+        })
+        page.dialogs.elements.btnCreate.on('click', () => {
+            page.dialogs.elements.formCreate.trigger("submit");
+        })
+        page.dialogs.commands.closeModalCreate = () => {
+            page.dialogs.elements.formCreate[0].reset();
+            page.dialogs.elements.formCreate.validate().resetForm();
+            page.dialogs.elements.formCreate.find("input.error").removeClass("error");
+            page.dialogs.elements.errorAreaCreate.empty().removeClass("show").addClass("hide");
+        }
+        page.dialogs.elements.modalCreate.on("hidden.bs.modal", function () {
+            page.dialogs.commands.closeModalCreate();
+        });
+
+    }
+    page.loadData = () => {
+        page.commands.getAllRooms();
+        page.commands.getAllSpeciality();
+    }
+    $(() => {
+        page.loadData();
+        page.initializeControlEvent();
+    })
+
+</script>
+<script src="/dashboard/assets/js/room-validation.js"></script>
 </body>
+
 </html>

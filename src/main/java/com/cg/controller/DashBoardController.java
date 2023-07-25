@@ -28,11 +28,11 @@ public class DashBoardController {
     }
     @GetMapping("/rooms")
     public String roomsPage(){
-        return null;
+        return "dashboard/room/list";
     }
     @GetMapping("/specialities")
     public String specialitiesPage(){
-        return null;
+        return "dashboard/speciality/list";
     }
     @GetMapping("/users")
     public String usersPage(){

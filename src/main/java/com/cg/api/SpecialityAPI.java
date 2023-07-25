@@ -1,8 +1,6 @@
 package com.cg.api;
 
-import com.cg.model.Room;
 import com.cg.model.Speciality;
-import com.cg.model.dtos.room.RoomResDTO;
 import com.cg.model.dtos.speciality.SpecialityCreReqDTO;
 import com.cg.model.dtos.speciality.SpecialityResDTO;
 import com.cg.service.speciality.ISpecialityService;
@@ -13,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,4 +52,5 @@ public class SpecialityAPI {
 
         return new ResponseEntity<>(specialityResDTO,HttpStatus.CREATED);
     }
+
 }
