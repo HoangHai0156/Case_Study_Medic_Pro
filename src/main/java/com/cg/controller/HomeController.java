@@ -11,6 +11,7 @@ public class HomeController {
     @GetMapping("/login")
     public String login(){
         return "dashboard/user/login";
+
     }
     @GetMapping("/register")
     public String register(){
