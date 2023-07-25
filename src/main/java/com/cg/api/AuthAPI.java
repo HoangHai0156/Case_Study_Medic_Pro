@@ -2,10 +2,12 @@ package com.cg.api;
 
 import com.cg.exception.DataInputException;
 import com.cg.exception.EmailExistsException;
-import com.cg.model.JwtResponse;
-import com.cg.model.Role;
-import com.cg.model.User;
+import com.cg.model.*;
+import com.cg.model.dtos.room.RoomResDTO;
+import com.cg.model.dtos.speciality.SpecialityResDTO;
+import com.cg.model.dtos.user.UserCreReqDTO;
 import com.cg.model.dtos.user.UserRegisterReqDTO;
+import com.cg.model.dtos.user.UserResDTO;
 import com.cg.service.jwt.JwtService;
 import com.cg.service.role.IRoleService;
 import com.cg.service.user.IUserService;
@@ -22,13 +24,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -66,6 +65,12 @@ public class AuthAPI {
 
         if (!optRole.isPresent()) {
             throw new DataInputException("Invalid account role");
+        }
+        String password = userRegisterReqDTO.getPassword();
+        String rePassword = userRegisterReqDTO.getRePassword();
+
+        if (!Objects.equals(password, rePassword)) {
+            throw new DataInputException("Mật khẩu không trùng khớp");
         }
 
         try {
@@ -118,5 +123,16 @@ public class AuthAPI {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        List<UserResDTO> userResDTOList = new ArrayList<>();
+        List<User> users = userService.findAll();
+
+        for (User user : users) {
+            UserResDTO userResDTO = user.toUserResDTO();
+            userResDTOList.add(userResDTO);
+        }
+        return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
+    }
 
 }

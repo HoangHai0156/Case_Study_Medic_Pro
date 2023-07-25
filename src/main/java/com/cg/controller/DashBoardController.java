@@ -50,7 +50,7 @@ public class DashBoardController {
     }
     @GetMapping("/users")
     public String usersPage(){
-        return "dashboard/user/register";
+        return "dashboard/user/list";
     }
 
 }

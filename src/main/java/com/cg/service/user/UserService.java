@@ -26,7 +26,7 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override

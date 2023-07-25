@@ -16,6 +16,7 @@ public class UserRegisterReqDTO {
 
     private String username;
     private String password;
+    private String rePassword;
     private Long roleId;
 
     public User toUser(Role role) {
