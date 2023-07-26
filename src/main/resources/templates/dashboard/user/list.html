@@ -1,10 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Med Pro Admin Dashboard</title>
 
+    <th:block th:replace="/dashboard/fragment/head-css"/>
+</head>
+
+<body>
+<div id="app">
+    <!--    sidebar -->
+    <th:block th:replace="/dashboard/fragment/sidebar"/>
+    <div id="main">
+        <!--    heading-->
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <h3>Profile Statistics</h3>
+        </div>
+
+        <!--    content-->
+        <div class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <button class="badge bg-primary" id="btnShowCreateModal">
+                        <i class="fas fa-user-plus"></i>
+                        Add new room
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                        <div class="dataTable-top">
+                            <div class="dataTable-dropdown"><select class="dataTable-selector form-select">
+                                <option value="5">5</option>
+                                <option value="10" selected="">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                            </select><label>entries per page</label></div>
+                            <div class="dataTable-search"><input class="dataTable-input" placeholder="Search..."
+                                                                 type="text"></div>
+                        </div>
+                        <div class="dataTable-container">
+                            <table class="table table-striped dataTable-table" id="tbUser">
+                                <thead>
+                                <tr>
+                                    <th data-sortable="" style="width: 11.8316%;">
+                                        <a href="#" class="dataTable-sorter">#</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 41.8172%;">
+                                        <a href="#" class="dataTable-sorter">User Name</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 11.1091%;">
+                                        <a href="#" class="dataTable-sorter">Role</a>
+                                    </th>
+                                    <th data-sortable="" style="width: 11.1091%;">
+                                        <a href="#" class="dataTable-sorter">Active</a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="dataTable-bottom">
+                            <div class="dataTable-info">Showing 1 to 10 of 26 entries</div>
+                            <ul class="pagination pagination-primary float-end dataTable-pagination">
+                                <li class="page-item pager"><a href="#" class="page-link" data-page="1">‹</a></li>
+                                <li class="page-item active"><a href="#" class="page-link" data-page="1">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link" data-page="2">2</a></li>
+                                <li class="page-item"><a href="#" class="page-link" data-page="3">3</a></li>
+                                <li class="page-item pager"><a href="#" class="page-link" data-page="2">›</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        footer-->
+        <th:block th:replace="/dashboard/fragment/footer"/>
+    </div>
+</div>
+<!--footer JS-->
+<th:block th:replace="/dashboard/fragment/footer-js"/>
 </body>
+<script>
+    const page = {
+        url: {
+            getAllUsers: "http://localhost:28001/api/auth"
+        },
+        elements: {},
+        loadData: {},
+        commands: {},
+        dialogs: {
+            elements: {},
+            commands: {}
+        },
+        initializeControlEvent: {}
+    }
+    page.elements.tbUserBody =$('#tbUser tbody');
+    let user = new User();
+    page.commands.renderUser = (user) => {
+        return `
+    <tr id="tr_${user.id}">
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.roleName}</td>
+        <td>
+            <span class="badge bg-success">Edit</span>
+        </td>
+    </tr>
+    `;
+    }
+    page.commands.getAllUsers = () => {
+        page.elements.tbUserBody.empty();
+
+        $.ajax({
+            type: 'GET',
+            url: page.url.getAllUsers
+        })
+            .done((data) => {
+                data.forEach(item => {
+                    user = item;
+                    const str = page.commands.renderUser(user);
+                    page.elements.tbUserBody.prepend(str);
+                });
+            })
+            .fail((error) => {
+                console.log(error);
+            })
+    }
+
+
+    page.loadData = () => {
+        page.commands.getAllUsers();
+    }
+    $(() => {
+        page.loadData();
+    })
+
+</script>
 </html>
