@@ -124,3 +124,14 @@ class Room {
         this.isAvailable = isAvailable;
     }
 }
+
+class User {
+    constructor(id,username,password,roleName) {
+        this.id=id;
+        this.username=username;
+        this.password=password;
+        this.roleName=roleName;
+
+
+    }
+}

@@ -158,4 +158,28 @@ public class DoctorAPI {
 
         return new ResponseEntity<>(doctorResDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/speciality/{specialityId}")
+    public ResponseEntity<?> getDoctorsBySpec(@PathVariable("specialityId") String specialityIdStr){
+        if (!ValidateUtil.isNumberValid(specialityIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Mã chuyên khoa không đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long specialityId = Long.parseLong(specialityIdStr);
+        Speciality speciality = specialityService.findById(specialityId).orElseThrow(()->{
+            throw new DataInputException("Chuyên khoa không tồn tại");
+        });
+
+        List<Doctor> doctors = doctorService.findAllBySpecialityId(specialityId);
+        List<DoctorResDTO> doctorResDTOS = new ArrayList<>();
+
+        for (Doctor doctor: doctors){
+            DoctorResDTO doctorResDTO = doctor.toDoctorResDTO();
+            doctorResDTOS.add(doctorResDTO);
+        }
+
+        return new ResponseEntity<>(doctorResDTOS,HttpStatus.OK);
+    }
 }
