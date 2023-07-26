@@ -86,7 +86,7 @@
         </div>
 
         <!--        footer-->
-        <footer class="container-fluid" id="footer-control">
+        <footer class="container-fluid bg-transparent" id="footer-control">
 
         </footer>
 
@@ -196,7 +196,7 @@
         page.commands.renderFooter = (doctorId) => {
             return `
                 <div class="container">
-                    <button class="btn btn-secondary edit" data-id="${doctorId}">
+                    <button class="btn btn-primary edit" data-id="${doctorId}">
                         <i class="fas fa-pencil-alt"></i> Update
                     </button>
 
@@ -396,7 +396,7 @@
 
                     page.elements.tbDocdorBody.prepend(str);
                     page.dialogs.elements.modalCreate.modal('hide');
-                    App.showSuccessAlert("Thêm mới doctor thành công!")
+                    App.showSuccessNotification("Thêm mới doctor thành công!")
                 })
                 .fail((error) => {
                     const responseJSON = error.responseJSON;
@@ -413,7 +413,6 @@
         }
 
         page.dialogs.command.update = () => {
-            console.log("aaaaa")
             const provinceId = page.dialogs.elements.provinceUp.val();
             const provinceName = page.dialogs.elements.provinceUp.find('option:selected').text();
             const districtId = page.dialogs.elements.districtUp.val();
@@ -475,7 +474,7 @@
                     const currentRow = $('#tr_'+doctorId);
                     currentRow.replaceWith(str);
                     page.dialogs.elements.modalUpdate.modal('hide');
-                    App.showSuccessAlert("Update doctor thành công!")
+                    App.showSuccessNotification("Update doctor thành công!")
                 })
                 .fail((error) => {
                     const responseJSON = error.responseJSON;
