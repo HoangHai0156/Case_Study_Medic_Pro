@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> getAllByRoomIdAndDayAndTime(Long roomId, Date day, ETime time);
+    List<Appointment> getAllByRoomIdAndDayAndTimeAndIdNot (Long roomId, Date day, ETime time, Long id);
 
-    List<Appointment> getAllByDoctorIdAndDayAndTime(Long doctorId, Date day, ETime time);
+    List<Appointment> getAllByDoctorIdAndDayAndTimeAndIdNot (Long doctorId, Date day, ETime time, Long id);
 
     List<Appointment> getAllByDoctorId(Long doctorId);
 

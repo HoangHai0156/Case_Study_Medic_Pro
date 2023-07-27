@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ | MEDIC-PRO</title>
+
+    <link rel="stylesheet" href="/assets/bootstrap/v5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/fontawesome/v5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/sweetalert2/v11.7.12/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/profile_cre.css">
+    <script src="/assets/bootstrap/v5.3.0/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <!-- -----------------------Header----------------------- -->
+
+        <div class="header container" style="height: 124px;">
+            <div class="logo-header col-3">
+                <img src="/assets/img/header_logo.svg">
+            </div>
+            <div class="center-header col-7">
+                <div class="row h-100">
+                    <a href="/login" class="center-header-button">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-arrow-alt-circle-right"></i>
+                            Đăng nhập
+                        </button>
+                    </a>
+                </div>
+                <div class="row h-100">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="container-fluid" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="#">Trang chủ <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Giới thiệu</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Quy Trình</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Thắc mắc</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Liên hệ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="name-header col-2">
+                <div>
+                    <img src="/assets/img/header_logo1.svg">
+                </div>
+                <div class="align-content-center">
+                    <span class="row">Tổng đài đặt lịch khám</span>
+                    <span class="row">1900 - 2125</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- -----------------------Content----------------------- -->
+
+        <div class="content">
+
+            <div class="style_wrapper_content__2nPtC">
+                <div class="style_bg_breakcum__2BT1J">
+                    <div data-test="container" class="container">
+                        <div data-test="row" class="row">
+                            <div data-test="col" class="col-12">
+                                <div class="style_wrap_mdbreadcrumb__1e17- style_head__1hfhC">
+                                    <nav data-test="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li data-test="breadcrumb-item" class="breadcrumb-item"><a href="/">Trang
+                                                    chủ</a></li>
+                                            <li data-test="breadcrumb-item" class="breadcrumb-item">Tạo hồ sơ bệnh nhân
+                                            </li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div data-test="container" class="container">
+                        <div data-test="row" class="row">
+                            <div data-test="col" class="col-md-12">
+                                <div>
+                                    <h2
+                                        class="style_title_component__3jzrX style_title_line__3AhYV style_title_header_mobile__23s4W">
+                                        <span>Tạo mới hồ sơ</span>
+                                    </h2>
+                                    <ul data-test="nav" class="nav style_nav_tab__eOAe6">
+                                        <li data-test="nav-item" class="nav-item"><a aria-current="page"
+                                                class="nav-link Ripple-parent active undefined style_active__2v5aM active"
+                                                data-test="nav-link" role="tab" href="/tao-moi-ho-so">Chưa từng khám<div
+                                                    data-test="waves" class="Ripple is-reppling"
+                                                    style="top: -51.1094px; left: 25.1562px; width: 144px; height: 144px;">
+                                                </div></a></li>
+                                        <li data-test="nav-item" class="nav-item"><a aria-current="page"
+                                                class="nav-link Ripple-parent undefined active" data-test="nav-link"
+                                                role="tab" href="/tao-moi-ho-so">Đã từng khám<div data-test="waves"
+                                                    class="Ripple is-reppling"
+                                                    style="top: -42.6094px; left: -16.7812px; width: 127px; height: 127px;">
+                                                </div></a></li>
+                                    </ul>
+                                    <div data-test="tabContent" class="tab-content">
+                                        <div data-test="tab-pane" role="tabpanel" class="tab-pane active">
+                                            <div data-test="animation" class="animated fadeIn"
+                                                style="animation-iteration-count: 1; visibility: visible; animation-name: fadeIn;">
+                                                <form class="style_form_medpro__nfoJ1 style_form_update__2XmGr">
+                                                    <div>
+                                                        <h2
+                                                            class="style_title_component__3jzrX style_title_headline__1RPh4">
+                                                            <span>Nhập thông tin bệnh nhân</span>
+                                                        </h2>
+                                                        <div data-test="alert" class="alert alert-primary" role="alert">
+                                                            Vui lòng cung cấp thông tin chính xác để được phục vụ tốt
+                                                            nhất. Trong trường hợp cung cấp sai thông tin bệnh nhân
+                                                            &amp; điện thoại, việc xác nhận cuộc hẹn sẽ không hiệu lực
+                                                            trước khi đặt khám.</div>
+                                                        <div class="style_info_required__2nJlo"><span
+                                                                class="style_alertSpan__2UfTW"
+                                                                style="margin-bottom: 15px;">(*)
+                                                                Thông tin bắt buộc
+                                                                nhập</span></div>
+                                                        <div class="style_wapper_form_group__2xD4H">
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_hoten">Họ và tên (có
+                                                                    dấu)<sup>*</sup></label><input type="text"
+                                                                    class="form-control text-uppercase"
+                                                                    placeholder="Ví dụ: Nguyễn Văn Bảo" maxlength="28"
+                                                                    value=""><span
+                                                                    class="style_alertSpan__2UfTW"></span></div>
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_birth">Ngày tháng năm
+                                                                    sinh<sup>*</sup></label>
+                                                                <div class="style_form_group_select__19IYg"><select
+                                                                        class="browser-default custom-select">
+                                                                        <option value="0">Ngày</option>
+
+                                                                    </select><select
+                                                                        class="browser-default custom-select">
+                                                                        <option value="0">Tháng</option>
+
+                                                                    </select><select
+                                                                        class="browser-default custom-select">
+                                                                        <option value="0">Năm</option>
+
+                                                                    </select></div><span
+                                                                    class="style_alertSpan__2UfTW"></span><span
+                                                                    class="style_alertSpan__2UfTW"></span><span
+                                                                    class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_sdt">Số điện thoại
+                                                                    <sup>*</sup></label><input type="text"
+                                                                    id="label_sdt" class="form-control"
+                                                                    placeholder="Nhập số điện thoại" value=""><span
+                                                                    class="style_alertSpan__2UfTW"></span></div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_gt">Giới
+                                                                    tính<sup>*</sup></label><select
+                                                                    class="browser-default custom-select">
+                                                                    <option value="-1">Chọn giới tính</option>
+                                                                    <option value="1">Nam</option>
+                                                                    <option value="0">Nữ</option>
+                                                                </select><span class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_job">Nghề nghiệp
+                                                                    <sup>*</sup></label><select
+                                                                    class="browser-default custom-select">
+                                                                    <option value="0">Chọn nghề nghiệp</option>
+
+                                                                </select><span class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_cmnd">Số
+                                                                    CMND/Passport<sup></sup></label><input type="text"
+                                                                    class="form-control" placeholder="Nhập số CMND"
+                                                                    value=""><span
+                                                                    class="style_alertSpan__2UfTW"></span></div>
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_email">Địa chỉ
+                                                                    Email<sup></sup></label><input type="text"
+                                                                    class="form-control"
+                                                                    placeholder="Nhập địa chỉ email để nhận phiếu khám"
+                                                                    value=""><span
+                                                                    class="style_alertSpan__2UfTW"></span></div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_dt">Dân tộc</label><select
+                                                                    class="browser-default custom-select">
+
+                                                                </select>
+                                                            </div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_tp">Tỉnh /
+                                                                    Thành<sup>*</sup></label><select
+                                                                    class="browser-default custom-select">
+                                                                    <option value="0">Chọn tỉnh thành</option>
+
+                                                                </select><span class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_district"> Quận /
+                                                                    Huyện<sup>*</sup></label><select
+                                                                    class="browser-default custom-select">
+                                                                    <option value="0">Chọn quận huyện</option>
+                                                                </select><span class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_form_select__2iBjy">
+                                                                <label for="label_ward">Phường /
+                                                                    Xã<sup>*</sup></label><select
+                                                                    class="browser-default custom-select">
+                                                                    <option value="0">Chọn phường xã</option>
+                                                                </select><span class="style_alertSpan__2UfTW"></span>
+                                                            </div>
+                                                            <div class="style_form_group__3EAEk"><label
+                                                                    for="label_address">Địa
+                                                                    chỉ<sup>*</sup></label><input type="text"
+                                                                    class="form-control" placeholder="Nhập địa chỉ"
+                                                                    maxlength="100" value=""><span
+                                                                    class="style_alertSpan__2UfTW"></span></div>
+                                                            <div
+                                                                class="style_form_group__3EAEk style_action_form__1hR3C">
+                                                                <button data-test="button" type="button"
+                                                                    class="btn-flat btn Ripple-parent style_button__bKNrt style_reset__1qJB7">
+                                                                    <div>Nhập lại</div>
+                                                                    <div data-test="waves"
+                                                                        class="Ripple Ripple-outline "
+                                                                        style="top: 0px; left: 0px; width: 0px; height: 0px;">
+                                                                    </div>
+                                                                </button><button data-test="button" type="button"
+                                                                    class="btn-flat btn Ripple-parent style_button__bKNrt style_create_patient_form__1321O">
+                                                                    <div>Tạo mới</div>
+                                                                    <div data-test="waves"
+                                                                        class="Ripple Ripple-outline "
+                                                                        style="top: 0px; left: 0px; width: 0px; height: 0px;">
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div data-test="tab-pane" role="tabpanel" class="tab-pane">
+                                            <h2 class="style_title_component__3jzrX style_title_headline__1RPh4">Nhập mã
+                                                số bệnh nhân / Mã số BHYT</h2>
+                                            <div class="style_have_ever_examined__2lwGx">
+                                                <form class="style_form_have_ever_examined__Qyc3Z">
+                                                    <div class="style_form_group__wnJRV"><input id="label_hoten_2"
+                                                            class="form-control"
+                                                            placeholder="Nhập mã số bệnh nhân / Mã số BHYT" value="">
+                                                    </div><button data-test="button" type="button"
+                                                        class="btn-flat btn Ripple-parent m-0 style_button__bKNrt style_create__1hfMN style_block__3VAJ5">
+                                                        <div>Tìm kiếm</div>
+                                                        <div data-test="waves" class="Ripple Ripple-outline "
+                                                            style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
+                                                    </button>
+                                                </form>
+                                                <ul data-test="list-group" class="list-group style_list_group__2ZJTi">
+                                                    <li data-test="list-group-item"
+                                                        class="list-group-item list-group-item-undefined">
+                                                        <div style="cursor: pointer;"><a href="/tim-lai-ma-benh-nhan"><i
+                                                                    class="fas fa-caret-right"></i>Tôi mất mã số bệnh
+                                                                nhân của mình</a></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -----------------------Footer----------------------- -->
+
+        <div class="footer">
+            <div class="footer">
+
+                <div data-test="animation" class="animated fadeIn style_footer__2ofvm"
+                    style="animation-name: fadeIn; visibility: visible; animation-iteration-count: 1;">
+                    <div class="style_footer_inner__3bmPJ">
+                        <div data-test="container" class="container">
+                            <div data-test="row" class="row">
+                                <div data-test="col" class="col-lg-2">
+                                    <div class="style_footer_item__2rIfV"><a href="/">
+                                            <div class="lazyload-wrapper "><img
+                                                    src="https://resource.medpro.com.vn/static/images/umc/web/footer_logo.svg?t=40975.559721841775"
+                                                    class="img-fluid style_logo_footer__XtemS" alt=""></div>
+                                        </a></div>
+                                </div>
+                                <div data-test="col" class="col-lg-5">
+                                    <div class="style_footer_item__2rIfV">
+                                        <ul data-test="list-group" class="list-group style_item_info__3c0lh">
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><span href="#"
+                                                    class="style_textPKH__2bo7W"><strong>BỆNH VIỆN ĐẠI HỌC Y
+                                                        DƯỢC</strong></span></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><span href="#">Địa chỉ:
+                                                    215 Hồng Bàng, P.11, Q.5, TP.HCM</span></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="www.bvdaihoc.com.vn" target="_blank"
+                                                    rel="noopener noreferrer">Website: www.bvdaihoc.com.vn</a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><span href="#">Email:
+                                                    bvdhyd@umc.edu.vn</span></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><span href="#">Điện thoại:
+                                                    (84.28) 3855 4269</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div data-test="col" class="col-lg-2 d-none d-lg-block">
+                                    <div class="style_footer_item__2rIfV">
+                                        <ul data-test="list-group" class="list-group style_item_info__3c0lh">
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a href="/lien-he">Liên
+                                                    hệ</a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="/dieu-khoan-dich-vu">Điều khoản dịch vụ</a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="/quy-dinh-su-dung">Quy định sử dụng</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div data-test="col" class="col-lg-3">
+                                    <div class="style_footer_item__2rIfV">
+                                        <ul data-test="list-group"
+                                            class="list-group style_item_info__3c0lh style_icons__3sEtr">
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="http://online.gov.vn/Home/WebDetails/44668" target="_blank"
+                                                    title="Bộ công thương" rel="noreferrer">
+                                                    <div class="lazyload-wrapper "><img
+                                                            src="/assets/img/bocongthuong.svg" alt=""></div>
+                                                </a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="http://online.gov.vn/Home/WebDetails/44209" target="_blank"
+                                                    title="Bộ công thương" rel="noreferrer">
+                                                    <div class="lazyload-wrapper "><img
+                                                            src="/assets/img/bocongthuong1.svg" alt=""></div>
+                                                </a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="https://play.google.com/store/apps/details?id=vn.pkh.medpro"
+                                                    alt="apple-app-icon" target="_blank" rel="noopener noreferrer">
+                                                    <div class="lazyload-wrapper "><img
+                                                            src="/assets/img/googleplay.svg" alt=""></div>
+                                                </a></li>
+                                            <li data-test="list-group-item"
+                                                class="list-group-item list-group-item-undefined"><a
+                                                    href="https://apps.apple.com/vn/app/umc-đăng-ký-khám-bệnh-online/id1427830275"
+                                                    alt="apple-app-icon" target="_blank" rel="noopener noreferrer">
+                                                    <div class="lazyload-wrapper "><img
+                                                            src="/assets/img/appstore.svg" alt=""></div>
+                                                </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="style_footer_copy_right__3d8A7">
+                        <div data-test="container" class="container">
+                            <div data-test="row" class="row">
+                                <div data-test="col" class="col-12">
+                                    <div class="style_footer_item__2rIfV">© 2020 - Bản quyền thuộc Công Ty Cổ Phần Ứng Dụng
+                                        PKH</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/jquery.validate.min.js"></script>
+    <script src="/assets/sweetalert2/v11.7.12/sweetalert2.all.min.js"></script>
+</body>
+
+</html>

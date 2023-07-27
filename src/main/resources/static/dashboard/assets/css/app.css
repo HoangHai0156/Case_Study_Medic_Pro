@@ -1576,3 +1576,30 @@ table td span.selected {
 table td span.unselected {
     border-left-color: #dfdfdf;
 }
+
+.error{
+    color: red;
+}
+.show {
+    display: block !important;
+}
+
+.hide {
+    display: none;
+}
+
+.error-area {
+    background-color: #ffd8d8;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.error-area.show label {
+    display: list-item;
+    color: #be0f0f;
+    margin-left: 20px;
+}
+
+input.error {
+    border-color: red;
+}

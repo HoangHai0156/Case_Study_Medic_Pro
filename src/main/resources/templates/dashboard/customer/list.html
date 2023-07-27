@@ -117,7 +117,8 @@
             getAllJob: App.API_JOB,
             getAllEthnic: App.API_ETHNIC,
             createCustomer: App.API_CUSTOMER,
-            updateCustomer: App.API_CUSTOMER
+            updateCustomer: App.API_CUSTOMER,
+            deleteCustomer: App.API_CUSTOMER
         },
         elements: {},
         loadData: {},
@@ -485,6 +486,18 @@
             })
     }
 
+    page.commands.suspend = (customerId) => {
+        return $.ajax({
+            type: 'DELETE',
+            url: page.url.deleteCustomer + '/' + customerId
+        })
+            .done((data) => {
+
+                const currentRow = $('#tr_'+customerId);
+                currentRow.empty();
+                App.showSuccessNotification("Suspended customer thành công!")
+            })
+    }
 
     page.commands.handleAddEventShowModalUpdateCustomer = (customerId) =>{
 
@@ -593,6 +606,15 @@
             page.dialogs.elements.frmEdit.find("input.error").removeClass("error");
             page.dialogs.elements.errorAreaEdit.removeClass("show").addClass("hide").empty();
             page.commands.handleAddEventShowModalUpdateCustomer(customerId);
+        })
+
+        page.elements.footer.on('click','.delete', function() {
+            customerId = $(this).data('id');
+            App.showDeleteConfirmDialog().then((data) => {
+                if (data.isConfirmed) {
+                    page.commands.suspend(customerId);
+                }
+            });
         })
 
         // bắt sự kiện nhấn vô nút save create
