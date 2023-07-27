@@ -6,4 +6,6 @@ import com.cg.service.IGeneralService;
 
 public interface ICustomerService extends IGeneralService<Customer, Long> {
     Customer create(LocationRegion locationRegion, Customer customer);
+
+    Customer findCustomerByUserId(Long userId);
 }

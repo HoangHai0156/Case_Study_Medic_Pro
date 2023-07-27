@@ -79,8 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/shop").hasAnyAuthority("CUSTOMER")
                 .antMatchers("/resources/**", "/assets/**").permitAll()
                 .antMatchers("/resources/dashboard/**", "/dashboard/assets/**").permitAll()
-                .antMatchers("/resources/dashboardNew/**", "/dashboardNew/assets/**").permitAll()
-                .antMatchers("/resources/homePage/**", "/homePage/assets/**").permitAll()
+                .antMatchers("/resources/homepage/**", "/homepage/assets/**").permitAll()
 //                .antMatchers(
 //                        "/v3/api-docs",
 //                        "/swagger-resources/configuration/ui",

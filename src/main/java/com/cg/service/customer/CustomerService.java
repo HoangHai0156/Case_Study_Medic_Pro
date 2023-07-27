@@ -38,6 +38,11 @@ public class CustomerService implements ICustomerService{
     }
 
     @Override
+    public Customer findCustomerByUserId(Long userId) {
+        return customerRepository.findCustomerByUserId(userId);
+    }
+
+    @Override
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }

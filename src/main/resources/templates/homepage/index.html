@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ | MEDIC-PRO</title>
+
+    <th:block th:replace="/homepage/fragment/head_css" />
+</head>
+
+<body>
+    <div class="container-fluid">
+        <th:block th:replace="/homepage/fragment/header" />
+
+
+        <div class="content">
+            <div class="container-fluid content-bg">
+                <div class="card w-25 content-service bg-white bg-opacity-75">
+                    <div class="card-body">
+                        <h4 class="card-title">CHỌN DỊCH VỤ</h4>
+                        <div class="content-service-img">
+                            <a href="#">
+                                <div>
+                                    <img src="https://bo-api.medpro.com.vn:5000/feature/image-source/9af073186ad84b7b934e8dd2862ffb70_djat_kham_theo_chuyen_khoa.png"
+                                        alt="" style="width: 55px; height: 55px;">
+                                </div>
+                                <span>Đặt khám theo chuyên khoa</span>
+                            </a>
+
+                            <a href="#">
+                                <div>
+                                    <img src="https://bo-api.medpro.com.vn:5000/feature/image-source/37964a5efce14211b950fe04b2868582_djat_kham_theo_bac_si.png"
+                                        alt="" style="width: 55px; height: 55px;">
+                                </div>
+                                <span>Đặt khám theo bác sĩ</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- -----------------------Footer----------------------- -->
+
+        <th:block th:replace="/homepage/fragment/footer" />
+    </div>
+
+
+
+    <th:block th:replace="/homepage/fragment/footer_js" />
+</body>
+
+</html>
