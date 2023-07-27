@@ -18,17 +18,17 @@ public class MedicalBillService implements IMedicalBillService{
     private MedicalBillRepository medicalBillRepository;
     @Override
     public List<MedicalBill> findAll() {
-        return null;
+        return medicalBillRepository.findAll();
     }
 
     @Override
     public Optional<MedicalBill> findById(Long id) {
-        return Optional.empty();
+        return medicalBillRepository.findById(id);
     }
 
     @Override
     public MedicalBill save(MedicalBill medicalBill) {
-        return null;
+        return medicalBillRepository.save(medicalBill);
     }
 
     @Override

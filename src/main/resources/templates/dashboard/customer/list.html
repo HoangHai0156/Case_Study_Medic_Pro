@@ -485,21 +485,8 @@
             })
     }
 
-    page.commands.formatDate = (date) => {
-        let d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
 
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-
-        return [day, month, year].join('/');
-    }
-
-    page.commands.handleAddEventShowModalUpdateCustomer = (doctorId) =>{
+    page.commands.handleAddEventShowModalUpdateCustomer = (customerId) =>{
 
         page.commands.getCustomerById(customerId).then((data) => {
             page.dialogs.elements.fullNameUp.val(data.fullName);
@@ -507,7 +494,7 @@
             page.dialogs.elements.genderUp.val(data.gender);
             page.dialogs.elements.phoneUp.val(data.phone);
             page.dialogs.elements.identityUp.val(data.identityNumber);
-            page.dialogs.elements.dobUp.val(page.commands.formatDate(data.dob));
+            page.dialogs.elements.dobUp.val(App.formatDate(data.dob));
 
             page.commands.getAllJob().then((jobs) => {
                 jobs.forEach(item => {

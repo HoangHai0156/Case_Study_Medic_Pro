@@ -17,6 +17,25 @@ class App {
     static API_JOB = "https://api-119.medpro.com.vn:5000/profession-mongo/get-all-by-partner"
     static API_ETHNIC = "https://api-119.medpro.com.vn:5000/nation-mongo/get-all-by-partner"
 
+
+    static formatDate = (date) => {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [day, month, year].join('/');
+    }
+
+    static formatCurrency = (cost) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cost);
+    }
+
     static showDeleteConfirmDialog() {
         return Swal.fire({
             icon: 'warning',
@@ -122,5 +141,16 @@ class Room {
         this.specialityName = specialityName;
         this.name = name;
         this.isAvailable = isAvailable;
+    }
+}
+
+class User {
+    constructor(id,username,password,roleName) {
+        this.id=id;
+        this.username=username;
+        this.password=password;
+        this.roleName=roleName;
+
+
     }
 }
