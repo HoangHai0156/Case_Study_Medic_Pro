@@ -36,6 +36,10 @@ public class DashBoardController {
     public String customersPage(){
         return "dashboard/customer/list";
     }
+    @GetMapping("/medical-bills")
+    public String billsPage(){
+        return "dashboard/bill/list";
+    }
     @GetMapping("/doctors")
     public String doctorsPage(){
         return "dashboard/doctor/list";
