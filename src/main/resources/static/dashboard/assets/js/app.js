@@ -2,6 +2,7 @@ class App {
     static DOMAIN_SERVER = window.origin;
     static API_SERVER = this.DOMAIN_SERVER + '/api';
 
+    static API_USER = this.API_SERVER + '/auth';
     static API_CUSTOMER = this.API_SERVER + '/customers';
     static API_DOCTOR = this.API_SERVER + '/doctors';
     static API_APPOINTMENT = this.API_SERVER + '/appointments';
@@ -105,5 +106,16 @@ class Room {
         this.specialityName = specialityName;
         this.name = name;
         this.isAvailable = isAvailable;
+    }
+}
+
+class User {
+    constructor(id,username,password,roleName) {
+        this.id=id;
+        this.username=username;
+        this.password=password;
+        this.roleName=roleName;
+
+
     }
 }

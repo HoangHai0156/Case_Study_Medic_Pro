@@ -2,10 +2,11 @@ package com.cg.api;
 
 import com.cg.exception.DataInputException;
 import com.cg.exception.EmailExistsException;
-import com.cg.model.JwtResponse;
-import com.cg.model.Role;
-import com.cg.model.User;
+import com.cg.model.*;
+import com.cg.model.dtos.user.UserCreReqDTO;
 import com.cg.model.dtos.user.UserRegisterReqDTO;
+import com.cg.model.dtos.user.UserResDTO;
+import com.cg.repository.UserRepository;
 import com.cg.service.jwt.JwtService;
 import com.cg.service.role.IRoleService;
 import com.cg.service.user.IUserService;
@@ -22,13 +23,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -48,6 +46,8 @@ public class AuthAPI {
 
     @Autowired
     private AppUtils appUtils;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/register")
@@ -61,18 +61,20 @@ public class AuthAPI {
         if (existsByUsername) {
             throw new EmailExistsException("Account already exists");
         }
+        String password = userRegisterReqDTO.getPassword();
+        String rePassword = userRegisterReqDTO.getRePassword();
 
+        if (!Objects.equals(password, rePassword)) {
+            throw new DataInputException("Mật khẩu không trùng khớp");
+        }
         Optional<Role> optRole = roleService.findById(userRegisterReqDTO.getRoleId());
 
         if (!optRole.isPresent()) {
             throw new DataInputException("Invalid account role");
         }
-
         try {
             userService.save(userRegisterReqDTO.toUser(optRole.get()));
-
             return new ResponseEntity<>(HttpStatus.CREATED);
-
         } catch (DataIntegrityViolationException e) {
             throw new DataInputException("Account information is not valid, please check the information again");
         }
@@ -118,5 +120,38 @@ public class AuthAPI {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        List<UserResDTO> userResDTOList = new ArrayList<>();
+        List<User> users = userService.findAll();
+
+        for (User user : users) {
+            UserResDTO userResDTO = user.toUserResDTO();
+            userResDTOList.add(userResDTO);
+        }
+        return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+        Map<String, String> data = new HashMap<>();
+
+        String username = userCreReqDTO.getUsername().trim();
+        if (userService.existsByUsername(username)) {
+            data.put("message", "Username đã tồn tại");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+        Long roleId = Long.valueOf(userCreReqDTO.getRoleId());
+        Role role = roleService.findById(roleId).orElseThrow(() -> {
+            throw new DataInputException("Role không tồn tại");
+        });
+        User user = userCreReqDTO.toUser(role);
+        User newUser = userService.save(user);
+        UserResDTO userResDTO = newUser.toUserResDTO();
+        return new ResponseEntity<>(userResDTO, HttpStatus.CREATED);
+    }
 
 }

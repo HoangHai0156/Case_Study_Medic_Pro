@@ -1,6 +1,4 @@
 package com.cg.model.dtos.user;
-
-
 import com.cg.model.Role;
 import com.cg.model.User;
 import lombok.AllArgsConstructor;
@@ -12,12 +10,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserRegisterReqDTO {
+public class UserCreReqDTO {
 
     private String username;
+
     private String password;
-    private String rePassword;
-    private Long roleId;
+
+    private String roleId;
 
     public User toUser(Role role) {
         return new User()
@@ -26,4 +25,8 @@ public class UserRegisterReqDTO {
                 .setRole(role)
                 ;
     }
+
+
+
+
 }

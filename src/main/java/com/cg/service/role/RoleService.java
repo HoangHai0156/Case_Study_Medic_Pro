@@ -19,7 +19,7 @@ public class RoleService implements IRoleService {
 
     @Override
     public List<Role> findAll() {
-        return null;
+        return roleRepository.findAll();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class RoleService implements IRoleService {
 
     @Override
     public Role save(Role role) {
-        return null;
+        return roleRepository.save(role);
     }
 
     @Override

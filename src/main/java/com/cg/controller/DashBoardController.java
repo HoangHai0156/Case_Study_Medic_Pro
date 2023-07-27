@@ -1,8 +1,14 @@
 package com.cg.controller;
 
+import com.cg.model.enums.ETime;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,8 +20,16 @@ public class DashBoardController {
     }
 
     @GetMapping("/appointments")
-    public String appointmentPage(){
-        return null;
+    public String appointmentPage(Model model){
+        Map<String, String> times = new HashMap<>();
+        for (ETime eTime: ETime.values()
+             ) {
+            times.put(eTime.name(),eTime.getValue());
+        }
+
+        model.addAttribute("times",times);
+
+        return "dashboard/appointment/list";
     }
 
     @GetMapping("/customers")
@@ -36,6 +50,7 @@ public class DashBoardController {
     }
     @GetMapping("/users")
     public String usersPage(){
-        return "dashboard/user/register";
+        return "dashboard/user/list";
     }
+
 }

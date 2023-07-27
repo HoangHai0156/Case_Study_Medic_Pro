@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Mazer Admin Dashboard</title>
+    <title>Register - Mazer Admin Dashboard</title>
     <th:block th:replace="/dashboard/fragment/head-css"/>
     <link rel="stylesheet" href="/dashboard/assets/css/pages/auth.css">
 </head>
@@ -17,20 +16,14 @@
         <div class="col-lg-5 col-12">
             <div id="auth-left">
                 <div class="auth-logo">
-                    <a href="index.html"><img src="assets/images/logo/logo.png" alt="Logo"></a>
+                    <a href="index.html"><img src="/dashboard/assets/images/logo/logo.png" alt="Logo"></a>
                 </div>
                 <h1 class="auth-title">Sign Up</h1>
-                <p class="auth-subtitle mb-5">Input your data to register to our website.</p>
-
+                <div class="error-area hide" id="regError"></div>
                 <form action="index.html">
-                    <div class="form-group position-relative has-icon-left mb-4">
-                        <select class="form-control form-control-xl" id="role" >
-                            <option value="1">ADMIN</option>
-                            <option value="2">USER</option>
-                            <option value="3">DOCTOR</option>
-                        </select>
-
-                    </div>
+                    <select id="role" hidden="">
+                        <option value="2">USER</option>
+                    </select>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" id="usernameReg" class="form-control form-control-xl" placeholder="Username">
                         <div class="form-control-icon">
@@ -60,10 +53,11 @@
         </div>
         <div class="col-lg-7 d-none d-lg-block">
             <div id="auth-right">
-
+                <img src="/dashboard/assets/images/logo/img1.jpg" alt="">
             </div>
         </div>
     </div>
+    <th:block th:replace="/dashboard/fragment/footer-js"/>
 
 </div>
 </body>
@@ -78,6 +72,7 @@
         const obj = {
             username: usernameReg.val(),
             password: passwordReg.val(),
+            rePassword: rePasswordReg.val(),
             roleId: role.val()
         }
 
@@ -91,12 +86,23 @@
             data: JSON.stringify(obj)
         })
             .done(() => {
-                alert('Đăng ký tài khoản thành công');
+                alert("Đăng ký thành công")
                 signIn.click();
                 usernameLog.val(usernameReg.val());
                 passwordLog.val(passwordReg.val());
             })
             .fail((jqXHR) => {
+                const responseJSON = jqXHR.responseJSON;
+
+                $('#regError').empty();
+                let str = '';
+
+                $.each(responseJSON, (k, v) => {
+                    str += `<label for="${k}">${v}</label>`
+                })
+
+                $('#regError').append(str).removeClass('hide').addClass('show');
+
                 console.log(jqXHR);
             })
     })
