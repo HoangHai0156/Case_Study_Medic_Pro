@@ -36,7 +36,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-body">
-                                    <button class="badge bg-primary" id="btnShowCreateModal">
+                                    <button class="btn btn-primary" id="btnShowCreateModal">
                                         <i class="fas fa-user-plus"></i>
                                         Add new room
                                     </button>
@@ -50,7 +50,6 @@
                                             <th>Speciality</th>
                                             <th>Name</th>
                                             <th>Available</th>
-                                            <th>Status</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -71,7 +70,7 @@
 </div>
 <!--footer JS-->
 <th:block th:replace="/dashboard/fragment/footer-js"/>
-<th:block th:replace="/dashboard/room/create"/>
+<th:block th:replace="/dashboard/room/modalCreate"/>
 
 <script>
     const page = {
@@ -111,9 +110,8 @@
         <td>${room.id}</td>
         <td>${room.specialityName}</td>
         <td>${room.name}</td>
-        <td>${room.isAvailable}</td>
         <td>
-            <span class="badge bg-success">Edit</span>
+            <span class="badge bg-success">${room.isAvailable}</span>
         </td>
     </tr>
     `;
@@ -183,7 +181,7 @@
 
                 page.dialogs.elements.modalCreate.modal('hide');
 
-                App.showSuccessAlert('Tạo khách hàng thành công');
+                App.showSuccessAlert('Tạo phòng thành công');
 
             })
             .fail((jqXHR) => {
