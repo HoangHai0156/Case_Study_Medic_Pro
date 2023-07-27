@@ -19,10 +19,7 @@ public class AppointmentService implements IAppointmentService{
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    @Override
-    public List<Appointment> getAllByRoomIdAndDayAndTime(Long roomId, Date day, ETime time) {
-        return appointmentRepository.getAllByRoomIdAndDayAndTime(roomId, day, time);
-    }
+
 
     @Override
     public List<AppointmentResDTO> findAllAppointmentResDTO() {
@@ -30,8 +27,13 @@ public class AppointmentService implements IAppointmentService{
     }
 
     @Override
-    public List<Appointment> getAllByDoctorIdAndDayAndTime(Long doctorId, Date day, ETime time) {
-        return appointmentRepository.getAllByDoctorIdAndDayAndTime(doctorId, day, time);
+    public List<Appointment> getAllByRoomIdAndDayAndTimeAndIdNot(Long roomId, Date day, ETime time, Long id) {
+        return appointmentRepository.getAllByRoomIdAndDayAndTimeAndIdNot(roomId, day, time, id);
+    }
+
+    @Override
+    public List<Appointment> getAllByDoctorIdAndDayAndTimeAndIdNot(Long doctorId, Date day, ETime time, Long id) {
+        return appointmentRepository.getAllByDoctorIdAndDayAndTimeAndIdNot(doctorId, day, time, id);
     }
 
     @Override

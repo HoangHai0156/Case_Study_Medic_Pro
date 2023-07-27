@@ -96,6 +96,7 @@
 </div>
 <!--footer JS-->
 <th:block th:replace="/dashboard/appointment/modalCreate" />
+<th:block th:replace="/dashboard/appointment/modalUpdate" />
 <th:block th:replace="/dashboard/fragment/footer-js" />
 
 <script th:inline="javascript">
@@ -106,6 +107,9 @@
             getAllAppointment: App.API_APPOINTMENT,
             getAllSpeciality: App.API_SPECIALITY,
             createAppointment: App.API_APPOINTMENT,
+            getAppointment: App.API_APPOINTMENT+"/",
+            updateAppointment: App.API_APPOINTMENT+"/",
+            removeAppointment: App.API_APPOINTMENT+"/",
         },
         elements: {},
         loadData: {},
@@ -129,6 +133,16 @@
     page.dialogs.elements.dayCre = $('#dayCre');
     page.dialogs.elements.timeCre = $('#timeCre');
     page.dialogs.elements.btnCreate = $('#btnCreate');
+
+    page.dialogs.elements.modalUpdate = $('#modalUpdate');
+    page.dialogs.elements.errorAreaUpdate = $('#modalUpdate .error-area')
+    page.dialogs.elements.frmUpdate = $('#frmUpdate');
+    page.dialogs.elements.doctorUp = $('#doctorUp');
+    page.dialogs.elements.roomUp = $('#roomUp');
+    page.dialogs.elements.dayUp = $('#dayUp');
+    page.dialogs.elements.timeUp = $('#timeUp');
+    page.dialogs.elements.availableUp = $('#availableUp');
+    page.dialogs.elements.btnUpdate = $('#btnUpdate');
 
     page.elements.footer = $('#footer-control');
 
@@ -156,9 +170,9 @@
                         <td>${doctor.fullName}</td>
                         <td>${appointment.specialityName}</td>
                         <td>${room.name}</td>
-                        <td>${new Date(appointment.day).toDateString()}</td>
+                        <td>${App.formatDate(appointment.day)}</td>
                         <td>${timePeriod}</td>
-                        <td>${appointment.price}</td>
+                        <td>${App.formatCurrency(appointment.price)}</td>
                         <td th:case="${appointment.available}">
                             ${available}
                         </td>
@@ -240,6 +254,7 @@
 
     page.commands.getAllDoctorsBySpec = (specialityId) =>{
         page.dialogs.elements.doctorCre.empty();
+        page.dialogs.elements.doctorUp.empty();
 
         $.ajax({
             type: 'GET',
@@ -249,6 +264,7 @@
                 data.forEach(doctor => {
                     const str = page.commands.renderDoctorsOpt(doctor);
                     page.dialogs.elements.doctorCre.append(str);
+                    page.dialogs.elements.doctorUp.append(str);
                 });
             })
             .fail((error) => {
@@ -258,6 +274,7 @@
 
     page.commands.getAllRoomsBySpec = (specialityId) =>{
         page.dialogs.elements.roomCre.empty();
+        page.dialogs.elements.roomUp.empty();
 
         $.ajax({
             type: 'GET',
@@ -267,6 +284,7 @@
                 rooms.forEach(room =>{
                     const str = `<option value="${room.id}">${room.name}</option>`;
                     page.dialogs.elements.roomCre.append(str);
+                    page.dialogs.elements.roomUp.append(str);
                 })
             })
             .fail((errors) =>{
@@ -276,10 +294,12 @@
 
     page.commands.renderTimes = () =>{
         page.dialogs.elements.timeCre.empty();
+        page.dialogs.elements.timeUp.empty();
 
         $.each(eTimes, (index,item) =>{
             const str = `<option value="${index}">${item}</option>`;
             page.dialogs.elements.timeCre.append(str);
+            page.dialogs.elements.timeUp.append(str);
         })
     }
 
@@ -299,7 +319,7 @@
         }
 
         $.ajax({
-            header:{
+            headers:{
                 'accept': 'application/json',
                 'content-type': 'application/json'
             },
@@ -329,39 +349,102 @@
 
     }
 
-    $.validator.addMethod("dateCus", function (date, element) {
-        return this.optional(element) || date.match(/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/);
-    }, "Ngày phải đúng định dạng dd/MM/yyyy");
+    page.commands.handleAddEventShowModalUpdate = (appointmentId) =>{
+        $.ajax({
+            url: page.url.getAppointment+appointmentId,
+            type:"GET",
+        })
+            .done((appointment) =>{
+                let specName = appointment.specialityName;
+                let doctor = appointment.doctor;
+                let room = appointment.room;
+                let timeName = appointment.timeName;
+                let availableCode = appointment.available ? 1 : 0;
+                page.commands.getAllSpeciality().then((specialities) => {
+                    let specialityId;
+                    specialities.forEach(item => {
+                        if (item.name === specName) {
+                            specialityId = item.id;
+                            return;
+                        }
+                    })
+                    page.commands.getAllDoctorsBySpec(specialityId);
+                    page.dialogs.elements.doctorUp.val(doctor.id);
+                    page.commands.getAllRoomsBySpec(specialityId);
+                    page.dialogs.elements.roomUp.val(room.id);
+                    page.commands.renderTimes();
+                    page.dialogs.elements.timeUp.val(timeName);
+                    page.dialogs.elements.availableUp.val(availableCode);
+                    page.dialogs.elements.dayUp.val(App.formatDate(appointment.day));
+                    page.dialogs.elements.modalUpdate.modal("show");
+                })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+            })
+    }
 
-    page.dialogs.elements.frmCreate.validate({
-        rules:{
-            'dayCre': {
-                required: true,
-                dateCus : true,
-            }
-        },
-        messages:{
-            'dayCre': {
-                required: "Ngày là bắt buộc",
-            }
-        },
-        errorLabelContainer: "#frmCreate .error-area",
-        errorPlacement: function (error, element) {
-            error.appendTo("#frmCreate .error-area");
-        },
-        showErrors: function (errorMap, errorList) {
-            if (this.numberOfInvalids() > 0) {
-                page.dialogs.elements.errorAreaCreate.removeClass("hide").addClass("show");
-            } else {
-                page.dialogs.elements.errorAreaCreate.removeClass("show").addClass("hide").empty();
-                $("#frmCreate input.error").removeClass("error");
-            }
-            this.defaultShowErrors();
-        },
-        submitHandler: function () {
-            page.dialogs.commands.createAppointment();
+    page.commands.editAppointment = ()=>{
+        const doctorId = page.dialogs.elements.doctorUp.val();
+        const roomId = page.dialogs.elements.roomUp.val();
+        const day = page.dialogs.elements.dayUp.val();
+        const timeName = page.dialogs.elements.timeUp.val();
+        const isAvailable = page.dialogs.elements.availableUp.val();
+
+        let appointment = {
+            doctorId,
+            roomId,
+            day,
+            timeName,
+            isAvailable
         }
-    })
+
+        $.ajax({
+            headers:{
+                'accept': 'application/json',
+                'content-type': 'application/json'
+            },
+            type: 'PATCH',
+            url: page.url.updateAppointment+appointmentId,
+            data: JSON.stringify(appointment)
+        })
+            .done((appointment) =>{
+                const currentRow = $("#tr_"+appointmentId);
+                const str = page.commands.renderAppointment(appointment);
+                currentRow.replaceWith(str);
+                page.dialogs.elements.modalUpdate.modal("hide");
+                App.showSuccessNotification("Chỉnh sửa lịch khám thành công");
+            })
+            .fail((errors)=>{
+                const responseJSON = errors.responseJSON;
+
+                page.dialogs.elements.errorAreaUpdate.empty();
+                let str = '';
+
+                $.each(responseJSON, (k, v) => {
+                    str += `<label>${v}</label>`
+                })
+
+                page.dialogs.elements.errorAreaUpdate.append(str).removeClass('hide').addClass('show');
+
+                console.log(errors);
+            })
+    }
+
+    page.commands.removeAppointment = (appointmentId)=>{
+        $.ajax({
+            type: 'DELETE',
+            url: page.url.removeAppointment+appointmentId,
+        })
+            .done((appointment) =>{
+                const currentRow = $("#tr_"+appointmentId);
+                currentRow.remove();
+                App.showSuccessNotification("Xóa lịch khám thành công");
+            })
+            .fail((errors) =>{
+                console.log(errors);
+            })
+    }
 
     page.initializeControlEvent = () => {
         page.elements.tbAppointmentBody.on('click', 'tr', function () {
@@ -388,7 +471,22 @@
             page.commands.getAllRoomsBySpec(specialityId);
         })
 
+        page.elements.footer.on('click','.edit', function() {
+            appointmentId = $(this).data('id');
+            page.dialogs.elements.frmUpdate.validate().resetForm();
+            page.dialogs.elements.frmUpdate.find("input.error").removeClass("error");
+            page.dialogs.elements.errorAreaUpdate.removeClass("show").addClass("hide").empty();
+            page.commands.handleAddEventShowModalUpdate(appointmentId);
+        })
 
+        page.elements.footer.on('click','.delete', function() {
+            appointmentId = $(this).data('id');
+            App.showDeleteConfirmDialog().then((result) =>{
+                if (result.isConfirmed){
+                    page.commands.removeAppointment(appointmentId);
+                }
+            })
+        })
     }
 
     page.loadData = () =>{
@@ -406,6 +504,8 @@
         page.initializeControlEvent();
     })
 </script>
+
+<script src="/dashboard/assets/js/appointment-validation.js"></script>
 </body>
 
 </html>

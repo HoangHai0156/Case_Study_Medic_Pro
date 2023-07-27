@@ -48,8 +48,10 @@ public class DoctorAPI {
         List<Doctor> doctors = doctorService.findAll();
 
         for (Doctor doctor: doctors){
-            DoctorResDTO doctorResDTO = doctor.toDoctorResDTO();
-            doctorResDTOS.add(doctorResDTO);
+            if (!doctor.isDeleted()) {
+                DoctorResDTO doctorResDTO = doctor.toDoctorResDTO();
+                doctorResDTOS.add(doctorResDTO);
+            }
         }
 
         return new ResponseEntity<>(doctorResDTOS,HttpStatus.OK);
@@ -181,5 +183,26 @@ public class DoctorAPI {
         }
 
         return new ResponseEntity<>(doctorResDTOS,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{doctorId}")
+    public ResponseEntity<?> suspend(@PathVariable("doctorId") String doctorIdStr) {
+
+        if (!ValidateUtil.isNumberValid(doctorIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Mã bác sĩ không đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long doctorId = Long.parseLong(doctorIdStr);
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(() -> {
+            throw  new DataInputException("Bác sĩ không tồn tại");
+        });
+
+        doctor.setDeleted(true);
+
+        Doctor newDoctor = doctorService.save(doctor);
+        DoctorResDTO doctorResDTO = newDoctor.toDoctorResDTO();
+        return new ResponseEntity<>(doctorResDTO, HttpStatus.OK);
     }
 }

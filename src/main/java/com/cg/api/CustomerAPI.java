@@ -48,10 +48,11 @@ public class CustomerAPI {
         List<Customer> customers = customerService.findAll();
 
         for (Customer customer: customers){
-            CustomerResDTO customerResDTO = customer.toCustomerResDTO();
-            customerResDTOS.add(customerResDTO);
+            if (!customer.isDeleted()) {
+                CustomerResDTO customerResDTO = customer.toCustomerResDTO();
+                customerResDTOS.add(customerResDTO);
+            }
         }
-
         return new ResponseEntity<>(customerResDTOS,HttpStatus.OK);
     }
 
@@ -129,6 +130,27 @@ public class CustomerAPI {
         Customer newCustomer = customerService.create(locationRegion, updatedCustomer);
         CustomerResDTO customerResDTO = newCustomer.toCustomerResDTO();
 
+        return new ResponseEntity<>(customerResDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<?> suspend(@PathVariable("customerId") String customerIdStr) {
+
+        if (!ValidateUtil.isNumberValid(customerIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Mã khách hàng không đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long customerId = Long.parseLong(customerIdStr);
+        Customer customer = customerService.findById(customerId).orElseThrow(() -> {
+            throw  new DataInputException("Khách hàng không tồn tại");
+        });
+
+        customer.setDeleted(true);
+
+        Customer newCustomer = customerService.save(customer);
+        CustomerResDTO customerResDTO = newCustomer.toCustomerResDTO();
         return new ResponseEntity<>(customerResDTO, HttpStatus.OK);
     }
 }

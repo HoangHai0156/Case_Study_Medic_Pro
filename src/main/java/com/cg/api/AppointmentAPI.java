@@ -8,6 +8,7 @@ import com.cg.model.Room;
 import com.cg.model.Speciality;
 import com.cg.model.dtos.appointment.AppointmentCreReqDTO;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
+import com.cg.model.dtos.appointment.AppointmentUpReqDTO;
 import com.cg.model.enums.ETime;
 import com.cg.service.appointment.IAppointmentService;
 import com.cg.service.doctor.IDoctorService;
@@ -15,6 +16,7 @@ import com.cg.service.room.IRoomService;
 import com.cg.service.speciality.ISpecialityService;
 import com.cg.utils.AppUtils;
 import com.cg.utils.DateFormat;
+import com.cg.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +72,7 @@ public class AppointmentAPI {
         ETime eTime = ETime.valueOf(appointmentCreReqDTO.getTimeName());
         Date day = DateFormat.parse(appointmentCreReqDTO.getDay());
 
-        List<Appointment> appointments1 = appointmentService.getAllByDoctorIdAndDayAndTime(doctorId,day,eTime);
+        List<Appointment> appointments1 = appointmentService.getAllByDoctorIdAndDayAndTimeAndIdNot(doctorId,day,eTime, -1L);
         if (!appointments1.isEmpty()){
             Map<String, String> data = new HashMap<>();
             data.put("message", "Bác sĩ đã có lịch khám cùng giờ");
@@ -86,7 +89,7 @@ public class AppointmentAPI {
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
 
-        List<Appointment> appointments = appointmentService.getAllByRoomIdAndDayAndTime(roomId,day,eTime);
+        List<Appointment> appointments = appointmentService.getAllByRoomIdAndDayAndTimeAndIdNot(roomId,day,eTime, -1L);
         if (!appointments.isEmpty()){
             Map<String, String> data = new HashMap<>();
             data.put("message", "Phòng khám không sẵn sàng");
@@ -107,10 +110,107 @@ public class AppointmentAPI {
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
 
-    @PatchMapping
-    public ResponseEntity<?> update(){
+    @PatchMapping("/{appointmentId}")
+    public ResponseEntity<?> update(@PathVariable("appointmentId") String appointmentIdStr,
+                                    @Valid @RequestBody AppointmentUpReqDTO appointmentUpReqDTO,
+                                    BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
 
+        if (!ValidateUtil.isNumberValid(appointmentIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID lịch khám không đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Long appointmentId = Long.parseLong(appointmentIdStr);
+        Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(()-> new DataInputException("Lịch khám không tồn tại"));
+
+        Speciality speciality = appointment.getSpeciality();
+        Long specialityId = speciality.getId();
+
+        Long doctorId = Long.parseLong(appointmentUpReqDTO.getDoctorId());
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(() -> new DataInputException("Bác sĩ không tồn tại"));
+
+        Long doctorSpecialityId = doctor.getSpeciality().getId();
+        if (!specialityId.equals(doctorSpecialityId)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Bác sĩ không thuộc "+speciality.getName());
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        ETime eTime = ETime.valueOf(appointmentUpReqDTO.getTimeName());
+        Date day = DateFormat.parse(appointmentUpReqDTO.getDay());
+
+        List<Appointment> appointments1 = appointmentService.getAllByDoctorIdAndDayAndTimeAndIdNot(doctorId,day,eTime, appointmentId);
+        if (!appointments1.isEmpty()){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Bác sĩ đã có lịch khám cùng giờ");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long roomId = Long.parseLong(appointmentUpReqDTO.getRoomId());
+        Room room = roomService.findById(roomId).orElseThrow(()-> new DataInputException("Phòng khám không tồn tại"));
+
+        Long roomSpecialityId= room.getSpeciality().getId();
+        if (!specialityId.equals(roomSpecialityId)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Phòng khám không thuộc "+speciality.getName());
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        List<Appointment> appointments = appointmentService.getAllByRoomIdAndDayAndTimeAndIdNot(roomId,day,eTime, appointmentId);
+        if (!appointments.isEmpty()){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Phòng khám không sẵn sàng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        int isAvailableCode = Integer.parseInt(appointmentUpReqDTO.getIsAvailable());
+        boolean isAvailable = isAvailableCode == 1;
+
+        Appointment editedAppointment = appointmentUpReqDTO.toAppointment(appointmentId,doctor,room,eTime,isAvailable);
+        Appointment newAppointment = appointmentService.save(editedAppointment);
+        newAppointment.setSpeciality(speciality);
+        newAppointment.setPrice(BigDecimal.valueOf(150000));
+        AppointmentResDTO appointmentResDTO = newAppointment.toAppointmentResDTO();
+
+        return new ResponseEntity<>(appointmentResDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/{appointmentId}")
+    public ResponseEntity<?> getById(@PathVariable("appointmentId") String appointmentIdStr){
+        if (!ValidateUtil.isNumberValid(appointmentIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID lịch khám không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long appointmentId = Long.parseLong(appointmentIdStr);
+        Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(()-> new DataInputException("Lịch khám không tồn tại"));
+        AppointmentResDTO appointmentResDTO = appointment.toAppointmentResDTO();
+
+        return new ResponseEntity<>(appointmentResDTO,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{appointmentId}")
+    public ResponseEntity<?> remove(@PathVariable("appointmentId") String appointmentIdStr){
+        if (!ValidateUtil.isNumberValid(appointmentIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID lịch khám không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long appointmentId = Long.parseLong(appointmentIdStr);
+        Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(()-> new DataInputException("Lịch khám không tồn tại"));
+
+        appointment.setDeleted(true);
+        appointment.setId(appointmentId);
+        Appointment removedAppointment = appointmentService.save(appointment);
+
+        AppointmentResDTO appointmentResDTO = removedAppointment.toAppointmentResDTO();
+
+        return new ResponseEntity<>(appointmentResDTO,HttpStatus.OK);
     }
 }
