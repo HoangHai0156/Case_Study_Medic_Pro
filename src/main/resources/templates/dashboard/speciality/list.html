@@ -36,7 +36,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-body">
-                                    <button class="badge bg-primary" id="btnShowCreateModal">
+                                    <button class="btn btn-primary" id="btnShowCreateModal">
                                         <i class="fas fa-user-plus"></i>
                                         Add new Speciality
                                     </button>
@@ -49,7 +49,6 @@
                                             <th>#</th>
                                             <th>Code name</th>
                                             <th>Name</th>
-                                            <th>Status</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -70,7 +69,7 @@
 </div>
 <!--footer JS-->
 <th:block th:replace="/dashboard/fragment/footer-js"/>
-<th:block th:replace="/dashboard/speciality/create"/>
+<th:block th:replace="/dashboard/speciality/modalCreate"/>
 
 <script>
     const page = {
@@ -106,9 +105,6 @@
         <td>${speciality.id}</td>
         <td>${speciality.codeName}</td>
         <td>${speciality.name}</td>
-        <td>
-            <span class="badge bg-success">Edit</span>
-        </td>
     </tr>
     `;
     }
