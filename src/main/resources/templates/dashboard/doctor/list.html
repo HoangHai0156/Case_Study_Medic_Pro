@@ -110,7 +110,8 @@
                 getAllEthnic: App.API_ETHNIC,
                 getAllSpeciality: App.API_SPECIALITY,
                 createDoctor: App.API_DOCTOR,
-                updateDoctor: App.API_DOCTOR
+                updateDoctor: App.API_DOCTOR,
+                deleteDoctor: App.API_DOCTOR
             },
             elements: {
 
@@ -490,6 +491,18 @@
                 })
         }
 
+        page.commands.suspend = (doctorId) => {
+            return $.ajax({
+                type: 'DELETE',
+                url: page.url.deleteDoctor + '/' + doctorId
+            })
+                .done((data) => {
+
+                    const currentRow = $('#tr_'+doctorId);
+                    currentRow.empty();
+                    App.showSuccessNotification("Suspended doctor thành công!")
+                })
+        }
 
         page.commands.handleAddEventShowModalUpdate = (doctorId) =>{
 
@@ -611,6 +624,15 @@
                         page.dialogs.elements.frmUpdate.find("input.error").removeClass("error");
                         page.dialogs.elements.errorAreaUpdate.removeClass("show").addClass("hide").empty();
                         page.commands.handleAddEventShowModalUpdate(doctorId);
+                    })
+
+                    page.elements.footer.on('click','.delete', function() {
+                        doctorId = $(this).data('id');
+                        App.showDeleteConfirmDialog().then((data) => {
+                            if (data.isConfirmed) {
+                                page.commands.suspend(doctorId);
+                            }
+                        });
                     })
 
                     // bắt sự kiện nhấn vô nút save create
