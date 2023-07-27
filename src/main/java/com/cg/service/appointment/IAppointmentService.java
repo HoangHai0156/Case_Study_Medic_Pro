@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface IAppointmentService extends IGeneralService<Appointment, Long> {
-    List<Appointment> getAllByRoomIdAndDayAndTime(Long roomId, Date day, ETime time);
+    List<Appointment> getAllByRoomIdAndDayAndTimeAndIdNot (Long roomId, Date day, ETime time, Long id);
 
-    List<Appointment> getAllByDoctorIdAndDayAndTime(Long doctorId, Date day, ETime time);
+    List<Appointment> getAllByDoctorIdAndDayAndTimeAndIdNot (Long doctorId, Date day, ETime time, Long id);
 
     List<AppointmentResDTO> findAllAppointmentResDTO();
 
