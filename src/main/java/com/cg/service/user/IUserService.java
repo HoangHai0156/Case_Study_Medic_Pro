@@ -1,5 +1,6 @@
 package com.cg.service.user;
 
+import com.cg.model.Customer;
 import com.cg.model.User;
 import com.cg.service.IGeneralService;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,4 +12,6 @@ public interface IUserService extends IGeneralService<User, Long>, UserDetailsSe
     Boolean existsByUsername(String username);
 
     User getByUsername(String username);
+    void softDelete(User user);
+
 }

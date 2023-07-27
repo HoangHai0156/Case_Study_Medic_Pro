@@ -78,7 +78,7 @@
             getAllRooms: App.API_ROOM,
             getRoomById: App.API_ROOM,
             createRoom: App.API_ROOM,
-            getAllSpeciality:App.API_SPECIALITY
+            getAllSpeciality: App.API_SPECIALITY
         },
         elements: {},
         loadData: {},
@@ -139,7 +139,7 @@
     page.commands.getAllSpeciality = () => {
         return $.ajax({
             type: 'GET',
-            url:page.url.getAllSpeciality
+            url: page.url.getAllSpeciality
         })
             .done((data) => {
                 const specialities = data;
@@ -181,7 +181,7 @@
 
                 page.dialogs.elements.modalCreate.modal('hide');
 
-                App.showSuccessAlert('Tạo phòng thành công');
+                App.showSuccessNotification('Tạo phòng thành công');
 
             })
             .fail((jqXHR) => {

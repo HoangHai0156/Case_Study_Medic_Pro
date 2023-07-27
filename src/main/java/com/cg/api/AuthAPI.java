@@ -3,14 +3,17 @@ package com.cg.api;
 import com.cg.exception.DataInputException;
 import com.cg.exception.EmailExistsException;
 import com.cg.model.*;
+import com.cg.model.dtos.customer.CustomerResDTO;
 import com.cg.model.dtos.user.UserCreReqDTO;
 import com.cg.model.dtos.user.UserRegisterReqDTO;
 import com.cg.model.dtos.user.UserResDTO;
+import com.cg.model.dtos.user.UserUpReqDTO;
 import com.cg.repository.UserRepository;
 import com.cg.service.jwt.JwtService;
 import com.cg.service.role.IRoleService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
+import com.cg.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +51,6 @@ public class AuthAPI {
     private AppUtils appUtils;
     @Autowired
     private UserRepository userRepository;
-
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegisterReqDTO userRegisterReqDTO, BindingResult bindingResult) {
@@ -132,8 +134,17 @@ public class AuthAPI {
         return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getById(@PathVariable Long userId) {
+       User user=userService.findById(userId).orElseThrow(() -> {
+           throw new DataInputException("Mã user không tồn tại");
+       });
+       UserResDTO userResDTO=user.toUserResDTO();
+        return new ResponseEntity<>(userResDTO, HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             return appUtils.mapErrorToResponse(bindingResult);
         }
@@ -153,5 +164,31 @@ public class AuthAPI {
         UserResDTO userResDTO = newUser.toUserResDTO();
         return new ResponseEntity<>(userResDTO, HttpStatus.CREATED);
     }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<?> update (@PathVariable("userId") Long userId, @RequestBody UserUpReqDTO userUpReqDTO,BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            appUtils.mapErrorToResponse(bindingResult);
+        }
+        User user = userService.findById(userId).orElseThrow(() -> {
+            throw new DataInputException("User ID không tồn tại");
+        });
+        User user1 = userUpReqDTO.toUser(userId,user.getRole());
+        user1.setUsername(userUpReqDTO.getUsername());
+        user1.setPassword(userUpReqDTO.getPassword());
+        User newUser = userRepository.save(user1);
+        UserResDTO userResDTO = newUser.toUserResDTO();
+        return new ResponseEntity<>(userResDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> delete(@PathVariable Long userId) {
+        User user = userService.findById(userId).orElseThrow(() -> {
+            throw new DataInputException("User ID không tồn tại");
+        });
+        userService.softDelete(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

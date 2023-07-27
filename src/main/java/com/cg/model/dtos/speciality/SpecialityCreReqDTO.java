@@ -12,14 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SpecialityCreReqDTO{
+public class SpecialityCreReqDTO {
 
     private String codeName;
 
     private String name;
 
     public Speciality toSpeciality(){
-
         return new Speciality()
                 .setId(null)
                 .setCodeName(codeName)

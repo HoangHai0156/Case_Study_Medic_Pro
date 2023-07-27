@@ -25,6 +25,12 @@ public class UserService implements IUserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    public void softDelete(User user) {
+        user.setDeleted(true);
+        userRepository.save(user);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -61,11 +67,12 @@ public class UserService implements IUserService {
 
     @Override
     public void delete(User user) {
-
+        userRepository.delete(user);
     }
 
     @Override
     public void deleteById(Long id) {
+        userRepository.deleteById(id);
 
     }
 
