@@ -2,11 +2,41 @@ class App {
   static DOMAIN_SERVER = window.origin;
   static API_SERVER = this.DOMAIN_SERVER + '/api';
 
+  static API_LOGIN = this.API_USER + "/login";
+  static API_USER = this.API_SERVER + '/auth';
   static API_CUSTOMER = this.API_SERVER + '/customers';
-  static API_DEPOSIT = this.API_SERVER + '/deposits';
-  static API_WITHDRAW = this.API_SERVER + '/withdraws';
-  static API_TRANSFER = this.API_SERVER + '/transfers';
+  static API_DOCTOR = this.API_SERVER + '/doctors';
+  static API_APPOINTMENT = this.API_SERVER + '/appointments';
+  static API_MEDICAL_BILL = this.API_SERVER + '/medical-bills';
+  static API_ROOM = this.API_SERVER + '/rooms';
+  static API_SPECIALITY = this.API_SERVER + '/specialities';
+
   static API_LOCATION_REGION = 'https://vapi.vnappmob.com/api/province'
+  static API_ROM = this.API_SERVER + '/rooms';
+  static API_SPECIALITY = this.API_SERVER + '/specialities';
+
+  static API_LOCATION_REGION = 'https://vapi.vnappmob.com/api/province'
+  static API_JOB = "https://api-119.medpro.com.vn:5000/profession-mongo/get-all-by-partner"
+  static API_ETHNIC = "https://api-119.medpro.com.vn:5000/nation-mongo/get-all-by-partner"
+
+
+  static formatDate = (date) => {
+    let d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [day, month, year].join('/');
+  }
+
+  static formatCurrency = (cost) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cost);
+  }
 
   static showDeleteConfirmDialog() {
     return Swal.fire({
@@ -19,7 +49,24 @@ class App {
       cancelButtonText: 'Cancel',
     });
   }
+  static showSuccessNotification(t){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
 
+    Toast.fire({
+      icon: 'success',
+      title: t
+    })
+  }
   static showSuccessAlert(t) {
     Swal.fire({
       position: 'top-end',
@@ -29,7 +76,15 @@ class App {
       timer: 1500
     })
   }
+  static Notify = class {
+    static showSuccessAlert(m) {
+      $.notify(m, "success");
+    }
 
+    static showErrorAlert(m) {
+      $.notify(m, "error");
+    }
+  }
   static showErrorAlert(t) {
     Swal.fire({
       icon: 'error',
@@ -38,6 +93,7 @@ class App {
     });
   }
 }
+
 class LocationRegion {
   constructor(id, provinceId, provinceName, districtId, districtName, wardId, wardName, address) {
     this.id = id;
@@ -50,29 +106,61 @@ class LocationRegion {
     this.address = address;
   }
 }
-class Customer {
-  constructor(id, fullName, email, phone, balance, locationRegion) {
+
+
+class Doctor {
+  constructor(id, fullName, email, nameGender, phone, birthDay, identityNumber, ethnic, locationRegion, userId, specialityId, levelName) {
     this.id = id;
+
     this.fullName = fullName;
+
     this.email = email;
+
+    this.nameGender = nameGender;
+
     this.phone = phone;
-    this.balance = balance;
+
+    this.birthDay = birthDay;
+
+    this.identityNumber = identityNumber;
+
+    this.ethnic = ethnic;
+
     this.locationRegion = locationRegion;
+
+    this.userId = userId;
+
+    this.specialityId = specialityId;
+
+    this.levelName = levelName;
   }
+
 }
 
-class Deposit {
-  constructor(id, customerId, transactionAmount) {
+class Speciality {
+  constructor(id, codeName, name) {
     this.id = id;
-    this.customerId = customerId;
-    this.transactionAmount = transactionAmount;
+    this.codeName = codeName;
+    this.name = name;
   }
 }
 
-// $(function() {
-//     $(".num-space").number(true, 0, ',', ' ');
-//     $(".num-point").number(true, 0, ',', '.');
-//     $(".num-comma").number(true, 0, ',', ',');
+class Room {
+  constructor(id, specialityName, name, isAvailable) {
+    this.id = id;
+    this.specialityName = specialityName;
+    this.name = name;
+    this.isAvailable = isAvailable;
+  }
+}
 
-//     $('[data-toggle="tooltip"]').tooltip();
-// });
+class User {
+  constructor(id,username,password,roleName) {
+    this.id=id;
+    this.username=username;
+    this.password=password;
+    this.roleName=roleName;
+
+
+  }
+}

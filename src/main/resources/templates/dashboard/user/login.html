@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Mazer Admin Dashboard</title>
     <th:block th:replace="/dashboard/fragment/head-css"/>
     <link rel="stylesheet" href="/dashboard/assets/css/pages/auth.css">
-
 <body>
 <div id="auth">
-
     <div class="row h-100">
         <div class="col-lg-5 col-12">
             <div id="auth-left">
@@ -18,6 +15,7 @@
                     <a href="index.html"><img src="/dashboard/assets/images/logo/logo.png" alt="Logo"></a>
                 </div>
                 <h1 class="auth-title">Log in.</h1>
+                <div class="error-area hide" id="logError"></div>
                 <form action="index.html">
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" class="form-control form-control-xl" id="usernameLog" placeholder="Username">
@@ -54,7 +52,6 @@
         </div>
     </div>
     <th:block th:replace="/dashboard/fragment/footer-js"/>
-
 </div>
 </body>
 <script>
@@ -62,13 +59,11 @@
     const usernameLog = $('#usernameLog');
     const passwordLog = $('#passwordLog');
     const btnLogin = $('#btnLogin');
-
     btnLogin.on('click', () => {
         const obj = {
             username: usernameLog.val(),
             password: passwordLog.val()
         }
-
         $.ajax({
             headers: {
                 'accept': 'application/json',
@@ -79,14 +74,22 @@
             data: JSON.stringify(obj)
         })
             .done(() => {
-               App.showSuccessNotification("Đăng nhập thành công")
-
-                location.href = "/admin";
+                location.href = "/";
             })
             .fail((jqXHR) => {
+                const responseJSON = jqXHR.responseJSON;
+
+                $('#logError').empty();
+                let str = '';
+
+                $.each(responseJSON, (k, v) => {
+                    str += `<label for="${k}">${v}</label>`
+                })
+
+                $('#logError').append(str).removeClass('hide').addClass('show');
+
                 console.log(jqXHR);
             })
     })
-
 </script>
 </html>

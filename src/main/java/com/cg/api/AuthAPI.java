@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.*;
 
+import static org.springframework.http.ResponseEntity.status;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthAPI {
@@ -83,7 +85,11 @@ public class AuthAPI {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@Valid @RequestBody User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return appUtils.mapErrorToResponse(bindingResult);
+        }
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -93,6 +99,7 @@ public class AuthAPI {
             String jwt = jwtService.generateTokenLogin(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             User currentUser = userService.getByUsername(user.getUsername());
+
 
             JwtResponse jwtResponse = new JwtResponse(
                     jwt,

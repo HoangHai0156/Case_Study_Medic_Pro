@@ -20,24 +20,32 @@ public class HomeController {
     private IUserService userService;
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "dashboard/user/login";
 
     }
+
     @GetMapping("/register")
-    public String register(){
+    public String register() {
         return "dashboard/user/register";
     }
 
     @GetMapping
-    public String homePage(Model model){
+    public String homePage(Model model) {
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         String roleName = user.getRole().getName().name();
 
 
-
         return "homePage/index";
     }
 
+    @GetMapping("/customer")
+    public String customerPage() {
+        return "homepage/customer";
+    }
+    @GetMapping("/doctor")
+    public String doctor() {
+        return "homepage/doctor";
+    }
 }
