@@ -79,9 +79,7 @@
             data: JSON.stringify(obj)
         })
             .done(() => {
-               App.showSuccessNotification("Đăng nhập thành công")
-
-                location.href = "/admin";
+                location.href = "/";
             })
             .fail((jqXHR) => {
                 console.log(jqXHR);

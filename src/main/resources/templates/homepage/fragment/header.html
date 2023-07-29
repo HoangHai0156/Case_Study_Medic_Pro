@@ -5,10 +5,16 @@
     </div>
     <div class="center-header col-7">
       <div class="row h-100">
-        <a href="/login" class="center-header-button">
+        <a href="/login" class="center-header-button" th:unless="${user}">
           <button class="btn btn-primary">
             <i class="fas fa-arrow-alt-circle-right"></i>
             Đăng nhập
+          </button>
+        </a>
+
+        <a href="/" class="center-header-button" th:if="${user}">
+          <button class="btn btn-primary">
+            <p th:text="${user.name}"></p>
           </button>
         </a>
       </div>
