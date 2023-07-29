@@ -33,12 +33,12 @@ public class HandleErrorController implements ErrorController {
 //                errorMsg = "Http Status Code: 401. Unauthorized";
 //                break;
 //            }
-            case 404: {
-                title = "Resource not found";
-                errorMsg = "Http Status Code: 404. Resource not found";
-                errorPage.setViewName("error/404");
-                break;
-            }
+//            case 404: {
+//                title = "Resource not found";
+//                errorMsg = "Http Status Code: 404. Resource not found";
+//                errorPage.setViewName("error/404");
+//                break;
+//            }
             case 405: {
                 title = "Method Not Allowed";
                 errorMsg = "Http Status Code: 405. Method Not Allowed";

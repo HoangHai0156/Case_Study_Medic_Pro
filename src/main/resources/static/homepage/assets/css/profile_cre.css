@@ -249,7 +249,6 @@ input, select {
     line-height: 1.5;
     vertical-align: middle;
     background-color: #fff;
-    appearance: none;
 }
 
 select {
@@ -286,8 +285,6 @@ option {
 }
 
 .style_button__bKNrt.style_reset__1qJB7:before {
-    content: "\f234";
-    font-family: Font Awesome\ 5 Pro;
     font-size: 16px;
     font-style: normal;
     font-weight: 900;
@@ -320,6 +317,22 @@ option {
 .style_button__bKNrt.style_create_patient_form__1321O {
     background: #1da1f2;
     color: #fff;
+}
+
+.style_button__bKNrt.style_create_patient_form__1321O:hover, .style_button__bKNrt.style_payment__2yZWu:hover {
+    background-color: #007bff;
+    color: #fff !important;
+}
+
+.style_button__bKNrt.style_reset__1qJB7 {
+    background: transparent!important;
+    box-shadow: unset;
+    padding: 10px 20px 10px 48px;
+}
+
+.style_button__bKNrt.style_reset__1qJB7:hover {
+    background: #f6fafe !important;
+    color: #1da1f2;
 }
 
 
