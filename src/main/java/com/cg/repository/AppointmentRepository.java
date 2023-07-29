@@ -17,6 +17,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> getAllByDoctorIdAndDayAndTimeAndIdNot (Long doctorId, Date day, ETime time, Long id);
 
+    List<Appointment> getAllBySpecialityId(Long specialityId);
+
+    List<Appointment> getAllBySpecialityIdAndDoctorIdAndRoomId(Long specialityId, Long doctorId, Long roomId);
+
     List<Appointment> getAllByDoctorId(Long doctorId);
 
     @Query("SELECT new com.cg.model.dtos.appointment.AppointmentResDTO(" +

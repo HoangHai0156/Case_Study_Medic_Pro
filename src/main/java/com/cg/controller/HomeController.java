@@ -2,6 +2,7 @@ package com.cg.controller;
 
 import com.cg.model.Customer;
 import com.cg.model.User;
+import com.cg.model.enums.ETime;
 import com.cg.service.customer.ICustomerService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping
@@ -101,5 +104,33 @@ public class HomeController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userId", userId);
         return modelAndView;
+    }
+
+    @GetMapping("/choose-appointment")
+    public String chooseAppointment(Model model){
+
+        String username = appUtils.getPrincipalUsername();
+        User user = userService.getByUsername(username);
+        Long userId = user.getId();
+        Customer customer = customerService.findCustomerByUserId(userId);
+        Long customerId = customer.getId();
+
+        model.addAttribute("customerId",customerId);
+
+        Map<String, String> times = new HashMap<>();
+        for (ETime eTime: ETime.values()
+        ) {
+            times.put(eTime.name(),eTime.getValue());
+        }
+
+        model.addAttribute("times",times);
+
+        return "homepage/choose-appointment";
+    }
+
+    @GetMapping("/appointment-confirm")
+    public String cart(Model model){
+
+        return "homepage/appointment-confirm";
     }
 }
