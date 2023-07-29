@@ -100,9 +100,11 @@ public class HomeController {
         String username = user.getName();
         User user1 = userService.getByUsername(username);
         Long userId = user1.getId();
+        Customer customer = customerService.findCustomerByUserId(userId);
         ModelAndView modelAndView = new ModelAndView("homepage/profile-update");
         modelAndView.addObject("user", user);
         modelAndView.addObject("userId", userId);
+        modelAndView.addObject("customer", customer);
         return modelAndView;
     }
 
