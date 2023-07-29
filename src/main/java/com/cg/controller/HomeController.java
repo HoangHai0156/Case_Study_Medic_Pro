@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping
@@ -29,15 +30,16 @@ public class HomeController {
         return "dashboard/user/register";
     }
 
-    @GetMapping
-    public String homePage(Model model){
-        String username = appUtils.getPrincipalUsername();
-        User user = userService.getByUsername(username);
-        String roleName = user.getRole().getName().name();
+//    @GetMapping
+//    public String homePage(Model model){
+//        String username = appUtils.getPrincipalUsername();
+//        User user = userService.getByUsername(username);
+//        String roleName = user.getRole().getName().name();
+//
+//
+//
+//        return "homepage/index";
+//    }
 
-
-
-        return "homePage/index";
-    }
 
 }
