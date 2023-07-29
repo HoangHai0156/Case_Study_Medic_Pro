@@ -45,7 +45,7 @@ public class HomeController {
 //
 //
 //
-//        return "homePage/index";
+//        return "homepage/index";
 //    }
 
     @GetMapping

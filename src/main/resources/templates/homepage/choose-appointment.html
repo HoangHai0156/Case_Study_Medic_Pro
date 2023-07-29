@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch khám | MEDIC-PRO</title>
 
+    <th:block th:replace="/homepage/fragment/head_css" />
+</head>
+
+<body>
+<div class="container-fluid">
+    <th:block th:replace="/homepage/fragment/header" />
+
+
+    <div class="content row justify-content-center">
+        <div class="col-9 m-5">
+            <div class="mb-5 text-center text-primary">
+                <h1 class="modal-title fs-5">Appointment Booking</h1>
+            </div>
+            <form method="post" id="frmBook">
+
+                <div class="modal-body">
+                    <div class="error-area hide"></div>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <label class="fw-bold" for="specialityBook">Speciality</label>
+                            <select class="form-select" id="specialityBook"></select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="fw-bold" for="doctorBook">Doctor</label>
+                            <select class="form-select" id="doctorBook"></select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="fw-bold" for="roomBook">Room</label>
+                            <select class="form-select" id="roomBook"></select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-6">
+                            <label class="fw-bold" for="dayBook">Day</label>
+                            <input type="text" class="form-control" id="dayBook" name="dayBook" placeholder="01/01/2000">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="fw-bold" for="timeBook">Time</label>
+                            <select class="form-select" id="timeBook"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="btnBook">
+                        <i class="fas fa-plus"></i>
+                        Book Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- -----------------------Footer----------------------- -->
+
+    <th:block th:replace="/homepage/fragment/footer" />
+</div>
+
+
+
+<th:block th:replace="/homepage/fragment/footer_js" />
+
+<script>
+
+</script>
 </body>
+
 </html>
