@@ -14,7 +14,81 @@
     <th:block th:replace="/homepage/fragment/header" />
 
 
-    <div class="content">
+    <div class="content row justify-content-center">
+        <div class="col-lg-10 container-fluid row">
+            <div class="col-lg-3">
+                <div class="bg-primary p-2 text-lg-center rounded-top">
+                    <p class="card-title fw-bold">Thông tin bệnh nhân</p>
+                </div>
+                <div class="border border-primary p-2">
+                    <p>
+                        <i class="fas fa-user-circle me-2"></i>Ten
+                    </p>
+                    <p>
+                        <i class="fas fa-mobile me-2"></i>SDT
+                    </p>
+                    <p>
+                        <i class="fas fa-map-marker me-2"></i>Odio suscipit excepteur amet laborum Dignissimos nostrum irure tempore ut amet commodo magna nis, Xã Thanh Phú Long, Huyện Châu Thành, Tỉnh Long An
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-8 ms-5">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h4 class="card-title">Xác nhận thông tin khám</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body mb-2">
+                            <!-- Table with outer spacing -->
+                            <div class="table-responsive">
+                                <table class="table table-lg">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Chuyên khoa</th>
+                                        <th>Bác sĩ</th>
+                                        <th>Giờ khám</th>
+                                        <th>Tiền khám</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Michael Right</td>
+                                        <td>$15/hr</td>
+                                        <td>UI/UX</td>
+                                        <td>Michael Right</td>
+                                        <td>$15/hr</td>
+                                        <td>
+                                            <i class="far fa-trash-alt"></i>
+                                            Xóa
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row d-flex justify-content-between mb-1">
+                            <a class="text-decoration-none col-lg-3 ms-2" href="/choose-appointment">
+                                <button class="btn btn-outline-primary">
+                                    Thêm chuyên khoa
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </a>
+                            <a class="text-decoration-none col-lg-2" href="#">
+                                <button class="btn btn-outline-primary">
+                                    Xác nhận
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 
