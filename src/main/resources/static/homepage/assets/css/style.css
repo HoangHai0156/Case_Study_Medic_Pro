@@ -183,4 +183,57 @@ img {
     padding: 1rem 0;
 }
 
+.list-group .list-group-item:last-child {
+    border-bottom-left-radius: 0.125rem;
+    border-bottom-right-radius: 0.125rem;
+}
 
+.dropdown {
+    position: relative;
+}
+
+
+.list-group button, .list-group button:hover {
+    transition: .5s;
+}
+
+.style_after_login__2jmrq:hover {
+    color: #fff!important;
+    background-color: #0352cc !important;
+    z-index: 2;
+}
+
+.style_after_login__2jmrq:hover {
+    box-shadow: unset;
+}
+
+.style_after_login__2jmrq {
+    margin-left: 15px;
+    border: 1px solid #0352cc!important;
+    background: transparent!important;
+    color: #0352cc;
+    box-shadow: unset;
+    padding: 7px 14px 7px 40px;
+}
+
+.style_button__2EcKK {
+    padding: 12px 20px;
+    border-radius: 3px;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.style_button__2EcKK  {
+    position: relative;
+    float: right;
+    width: 170px;
+    height: 35px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}

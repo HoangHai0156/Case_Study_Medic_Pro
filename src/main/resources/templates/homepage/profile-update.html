@@ -69,7 +69,7 @@
                             <div class="style_form_group__3EAEk">
                               <label for="fullNameUp">Họ và tên (có dấu)<sup>*</sup>
                               </label>
-                              <input id="fullNameUp" name="fullNameUp" type="text" class="form-control text-uppercase" placeholder="Ví dụ: Nguyễn Văn Bảo" maxlength="28" value="">
+                              <input id="fullNameUp" name="fullNameUp" type="text" class="form-control text-uppercase" placeholder="Ví dụ: Nguyễn Văn Bảo" maxlength="28">
                               <span class="style_alertSpan__2UfTW"></span>
                             </div>
                             <div class="style_form_group__3EAEk">
@@ -234,12 +234,19 @@
   page.elements.btnUpdate = $('#btnUpdate');
   page.elements.btnClear = $('#btnClear');
 
-  let customerId = 0;
+  let customerId = [[${customer.id}]];
+  console.log(customerId);
   let customer;
   let locationRegion = new LocationRegion();
 
   const userId = [[${userId}]];
-  console.log(userId);
+
+  page.commands.getCustomerById = (id) => {
+    return $.ajax({
+      type: 'GET',
+      url: page.url.getCustomerById + '/' + id,
+    });
+  }
 
   page.commands.getAllYear = () => {
     for( let i = 2023; i >= 1900; i-- ){
@@ -393,7 +400,7 @@
       userId
     }
 
-    $.ajax({
+    return $.ajax({
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json'
@@ -419,6 +426,70 @@
             })
   }
 
+
+  page.commands.handleAddEventShowProfileUpdateCustomer = (customerId) =>{
+
+    page.commands.getCustomerById(customerId).then((data) => {
+      page.elements.fullNameUp.val(data.fullName);
+      page.elements.emailUp.val(data.email);
+      page.elements.genderUp.val(data.gender);
+      page.elements.phoneUp.val(data.phone);
+      page.elements.identityUp.val(data.identityNumber);
+      const dateStr = App.formatDate(data.dob);
+
+      const parts = dateStr.split("/");
+
+      const day = parseInt(parts[0]);
+      const month = parseInt(parts[1]);
+      const year = parts[2];
+
+      page.elements.dayUp.val(day);
+      page.elements.monthUp.val(month);
+      page.elements.yearUp.val(year);
+
+      page.commands.getAllJob().then((jobs) => {
+        jobs.forEach(item => {
+          if (item.name === data.job) {
+            page.elements.jobUp.val(item.id);
+            return;
+          }
+        })
+      })
+              .catch((error) => {
+                console.log(error);
+              })
+
+      page.commands.getAllEthnic().then((ethnics) => {
+        ethnics.forEach(item => {
+          if (item.name === data.ethnic){
+            page.elements.ethnicUp.val(item.id);
+            return;
+          }
+        })
+      })
+              .catch((error) => {
+                console.log(error);
+              })
+
+      page.elements.addressUp.val(data.locationRegion.address);
+
+      const provinceId = data.locationRegion.provinceId;
+      const districtId = data.locationRegion.districtId;
+
+      page.elements.provinceUp.val(provinceId);
+
+      page.commands.getAllDistricts(provinceId, page.elements.districtUp).then(() => {
+        page.elements.districtUp.val(districtId);
+        page.commands.getAllWards(districtId, page.elements.wardUp).then(() => {
+          page.elements.wardUp.val(data.locationRegion.wardId);
+        });
+      });
+    })
+            .catch((error) => {
+              console.log(error);
+            })
+  }
+
   page.initializeControlEvent = () => {
     page.elements.provinceUp.on('change', function () {
       const provinceId = $(this).val();
@@ -434,14 +505,16 @@
     })
 
     page.elements.btnUpdate.on('click', () => {
-      page.commands.update();
+      page.commands.update().then(() => {
+        window.location.href = '/profile';
+      })
       // bắt sự kiện nhấn vô nút save create
       //     page.elements.frmCreate.trigger("submit");
     })
 
     page.elements.btnClear.on('click', () => {
       page.elements.frmUpdate[0].reset();
-      // page.dialogs.elements.frmCreate.validate().resetForm();
+      // page.elements.frmCreate.validate().resetForm();
       // page.dialogs.elements.frmCreate.find("input.error").removeClass("error");
       // page.dialogs.elements.errorAreaCreate.removeClass("show").addClass("hide").empty();
     })
@@ -453,6 +526,7 @@
     page.commands.getAllJob();
     page.commands.getAllEthnic();
     page.commands.getAllProvince().then(() => {
+      page.commands.handleAddEventShowProfileUpdateCustomer(customerId);
       const provinceId = page.elements.provinceUp.val();
       page.commands.getAllDistricts(provinceId, page.elements.districtUp).then(() => {
         const districtId = page.elements.districtUp.val();
@@ -460,6 +534,7 @@
       });
     });
   }
+
   $(() => {
     page.loadData();
     page.initializeControlEvent();

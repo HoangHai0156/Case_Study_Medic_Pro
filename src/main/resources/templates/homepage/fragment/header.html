@@ -1,55 +1,104 @@
 <th:block th:fragment="header">
-  <div class="header container" style="height: 124px;">
-    <div class="logo-header col-3">
-      <img src="/homepage/assets/img/header_logo.svg">
-    </div>
-    <div class="center-header col-7">
-      <div class="row h-100">
-        <a href="/login" class="center-header-button" th:unless="${user}">
-          <button class="btn btn-primary">
-            <i class="fas fa-arrow-alt-circle-right"></i>
-            Đăng nhập
-          </button>
-        </a>
+    <div class="header container" style="height: 124px;">
+        <div class="logo-header col-3">
+            <img src="/homepage/assets/img/header_logo.svg">
+        </div>
+        <div class="center-header col-7">
+            <div class="row h-100">
+                <a href="/login" class="center-header-button" th:unless="${user}">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-arrow-alt-circle-right"></i>
+                        Đăng nhập
+                    </button>
+                </a>
 
-        <a href="/" class="center-header-button" th:if="${user}">
-          <button class="btn btn-primary">
-            <p th:text="${user.name}"></p>
-          </button>
-        </a>
-      </div>
-      <div class="row h-100">
-        <nav class="navbar navbar-expand-lg">
-          <div class="container-fluid" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item active">
-                <a class="nav-link" href="/">Trang chủ <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Giới thiệu</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Quy Trình</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Thắc mắc</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Liên hệ</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
+
+                <div data-test="dropdown" class="dropdown">
+                    <button th:if="${user}" data-test="button" type="button"
+                            class="btn-secondary btn Ripple-parent style_button__2EcKK style_after_login__2jmrq"
+                            aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-circle ms-3"><span th:text="${user.name}" class="ms-2"></span></i>
+                        <div data-test="waves" class="Ripple is-reppling"
+                             style="top: -70px; left: -38.1px; width: 186px; height: 186px;">
+
+                        </div>
+                    </button>
+                    <div class="dropdown-menu-right show basic dropdown-menu style_mdbdropdownMenu__3L31U style_mdbdropdownProfile__2RXQn"
+                         data-placement="top-end"
+                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-150px, -110px, 0px);">
+                        <div tabindex="-1" role="menu" placement="bottom-end" component="div"
+                             modifiers="[object Object]" aria-hidden="false" class="popover-enter-done">
+                            <ul data-test="list-group" class="list-group">
+                                <li data-test="list-group-item"
+                                    class="list-group-item style_item_user___eJGV list-group-item-undefined">
+                                    <div><i class="fas fa-user-circle"></i></div>
+                                    <div class="style_info__1Bwlh"><span>Xin chào!</span>
+                                        <div class="style_info_name__3gr9P"><b>Phước Dương Công</b></div>
+                                    </div>
+                                </li>
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                        href="/user"><i class="fal fa-address-book"></i> Hồ sơ bệnh nhân </a></li>
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                        href="/user"><i class="fal fa-file-medical"></i> Phiếu khám bệnh</a></li>
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                        href="/user"><i class="fal fa-bell"></i>Thông báo</a></li>
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                        href="/user"><i class="fal fa-power-off"></i> Thoát</a></li>
+                                <li data-test="list-group-item" class="list-group-item list-group-item-undefined">
+                                    <div class="style_version__3c8JL"><i>Phiên bản 1.1.2</i><i>Mới nhất: 14/11 10:17</i>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--        <div class="btn-group ">-->
+                <!--          <button th:if="${user}" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                <!--            <p th:text="${user.name}"></p>-->
+                <!--          </button>-->
+                <!--          <div class="dropdown-menu">-->
+                <!--            <a class="dropdown-item" href="#">Action</a>-->
+                <!--            <div class="dropdown-divider"></div>-->
+                <!--            <a class="dropdown-item" href="#">Another action</a>-->
+                <!--            <a class="dropdown-item" href="#">Something else here</a>-->
+                <!--            <a class="dropdown-item" href="#">Separated link</a>-->
+                <!--          </div>-->
+                <!--        </div>-->
+            </div>
+            <div class="row h-100">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container-fluid" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/">Trang chủ <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Giới thiệu</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Quy Trình</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Thắc mắc</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Liên hệ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="name-header col-2">
+            <div>
+                <img src="/homepage/assets/img/header_logo1.svg">
+            </div>
+            <div class="align-content-center">
+                <span class="row">Tổng đài đặt lịch khám</span>
+                <span class="row">1900 - 2125</span>
+            </div>
+        </div>
     </div>
-    <div class="name-header col-2">
-      <div>
-        <img src="/homepage/assets/img/header_logo1.svg">
-      </div>
-      <div class="align-content-center">
-        <span class="row">Tổng đài đặt lịch khám</span>
-        <span class="row">1900 - 2125</span>
-      </div>
-    </div>
-  </div>
 </th:block>
