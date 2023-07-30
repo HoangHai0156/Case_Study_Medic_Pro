@@ -1,6 +1,7 @@
 package com.cg.api;
 
 import com.cg.exception.DataInputException;
+import com.cg.exception.EmailExistsException;
 import com.cg.model.Customer;
 import com.cg.model.Doctor;
 import com.cg.model.LocationRegion;
@@ -71,6 +72,11 @@ public class CustomerAPI {
         if (bindingResult.hasErrors()){
             appUtils.mapErrorToResponse(bindingResult);
         }
+        String email  = customerCreReqDTO.getEmail();
+        Boolean emailExists = customerService.existsByEmail(email);
+        if (emailExists) {
+            throw new EmailExistsException("Email đã tồn tại");
+        }
 
         String eGenderName = customerCreReqDTO.getNameGender();
         EGender eGender;
@@ -111,6 +117,12 @@ public class CustomerAPI {
         Customer customer = customerService.findById(customerId).orElseThrow(()->{
             throw new DataInputException("Khách hàng không tồn tại");
         });
+
+        String email  = customerUpReqDTO.getEmail();
+        Boolean emailExists = customerService.existsByEmail(email);
+        if (emailExists) {
+            throw new EmailExistsException("Email đã tồn tại");
+        }
 
         Long locationRegionId = customer.getLocationRegion().getId();
         User user = customer.getUser();

@@ -43,6 +43,11 @@ public class CustomerService implements ICustomerService{
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
+    @Override
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }

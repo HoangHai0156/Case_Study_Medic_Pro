@@ -8,4 +8,6 @@ public interface ICustomerService extends IGeneralService<Customer, Long> {
     Customer create(LocationRegion locationRegion, Customer customer);
 
     Customer findCustomerByUserId(Long userId);
+
+    Boolean existsByEmail(String email);
 }

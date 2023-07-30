@@ -403,7 +403,7 @@
             data: JSON.stringify(customer)
         })
             .done((data) => {
-                App.showSuccessAlert("Thêm mới khách hàng thành công!")
+                App.showSuccessAlert("Tạo hồ sơ thành công!")
             })
             .fail((error) => {
                 const responseJSON = error.responseJSON;
@@ -434,9 +434,8 @@
         })
 
         page.elements.btnCreate.on('click', () => {
-            page.commands.create();
         // bắt sự kiện nhấn vô nút save create
-        //     page.elements.frmCreate.trigger("submit");
+            page.elements.frmCreate.trigger("submit");
         })
 
         page.elements.btnClear.on('click', () => {
@@ -463,6 +462,116 @@
     $(() => {
         page.loadData();
         page.initializeControlEvent();
+    })
+
+    fullName,
+        email,
+        nameGender,
+        phone,
+        birthDay,
+        job,
+        identityNumber,
+        ethnic,
+    page.dialogs.elements.frmCreate.validate({
+        rules: {
+            fullNameCre: {
+                required: true,
+                minlength: 5,
+                maxlength: 25
+            },
+            emailCre: {
+                required: true,
+                regex: '^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$',
+            },
+            genderCre: {
+                required: true,
+            },
+            dayCre: {
+                required: true,
+                regex: '^(1|2?[0-9]|3[0-1])$'
+            },
+            monthCre: {
+                required: true,
+                regex: '^(0?[1-9]|1[0-2])$'
+            },
+            yearCre: {
+                required: true,
+                regex: '^(19|20)\\d{2}$'
+            },
+            phoneCre: {
+                required: true,
+                regex: '^\\+\\d{1,3}\\s\\(\\d{3}\\)\\s\\d{3}-\\d{4}$'
+            },
+            jobCre: {
+                required: true
+            },
+            identityCre: {
+                required: true,
+                regex: '^\\d{9}$'
+            },
+            addressCre: {
+                required: true,
+                maxlength: 50
+            },
+        },
+        messages: {
+            fullNameCre:{
+                required: "Bắt buộc nhập Full Name",
+                minlength: 'Full Name tối thiểu ${0} ký tự',
+                maxlength: 'Full Name tối đa ${0} ký tự'
+            },
+            emailCre: {
+                required: "Email là bắt buộc",
+                regex: 'Email không hợp lệ'
+            }
+
+            genderCre: {
+                required: 'Vui lòng chọn giới tính',
+            },
+            dayCre: {
+                required: 'Vui lòng chọn ngày',
+                regex: 'Ngày không hợp lệ'
+            },
+            monthCre: {
+                required: 'Vui lòng chọn ngày tháng',
+                regex: 'Tháng không hợp lệ'
+            },
+            yearCre: {
+                required: 'Vui lòng chọn ngày tháng',
+                regex: 'Năm không hợp lệ'
+            },
+            phoneCre: {
+                required: true,
+                regex: '^\\+\\d{1,3}\\s\\(\\d{3}\\)\\s\\d{3}-\\d{4}$'
+            },
+            jobCre: {
+                required: true
+            },
+            identityCre: {
+                required: true,
+                regex: '^\\d{9}$'
+            },
+            addressCre: {
+                required: true,
+                maxlength: 50
+            },
+        },
+        errorLabelContainer: "#modalCreate .error-area",
+        errorPlacement: function (error) {
+            error.appendTo("#modalCreate .error-area");
+        },
+        showErrors: function(errorMap, errorList) {
+            if (this.numberOfInvalids() > 0) {
+                page.dialogs.elements.errorAreaCreate.removeClass("hide").addClass("show");
+            } else {
+                page.dialogs.elements.errorAreaCreate.removeClass("show").addClass("hide").empty();
+                $("#frmCreate input.error").removeClass("error");
+            }
+            this.defaultShowErrors();
+        },
+        submitHandler: function () {
+            page.commands.create();
+        }
     })
 </script>
 

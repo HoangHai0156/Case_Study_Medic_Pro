@@ -188,47 +188,10 @@ img {
     border-bottom-right-radius: 0.125rem;
 }
 
-.dropdown {
-    position: relative;
-}
-
-
-.list-group button, .list-group button:hover {
+#dropdown button {
     transition: .5s;
-}
-
-.style_after_login__2jmrq:hover {
-    color: #fff!important;
-    background-color: #0352cc !important;
-    z-index: 2;
-}
-
-.style_after_login__2jmrq:hover {
-    box-shadow: unset;
-}
-
-.style_after_login__2jmrq {
-    margin-left: 15px;
     border: 1px solid #0352cc!important;
-    background: transparent!important;
     color: #0352cc;
-    box-shadow: unset;
-    padding: 7px 14px 7px 40px;
-}
-
-.style_button__2EcKK {
-    padding: 12px 20px;
-    border-radius: 3px;
-    text-transform: none;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 400;
-    margin: 0;
-    white-space: nowrap;
-}
-
-.style_button__2EcKK  {
     position: relative;
     float: right;
     width: 170px;
@@ -236,4 +199,70 @@ img {
     margin-top: 15px;
     margin-bottom: 15px;
     text-align: center;
+    right: 55px;
+    top: 6px
 }
+
+#dropdown button:hover {
+    color: #ffffff;
+}
+
+p {
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.list-group .list-group-item:first-child {
+    border-top-left-radius: 0.125rem;
+    border-top-right-radius: 0.125rem;
+}
+
+.style_item_user___eJGV {
+    display: flex;
+    padding: 10px 0!important;
+    border: unset;
+}
+
+.style_item_user___eJGV i {
+    display: block;
+    font-size: 40px;
+    margin-right: 20px;
+    color: #b0bcda;
+}
+
+.fas {
+    font-weight: 900;
+}
+
+#dropdown ul li a {
+    display: flex;
+    color: #12263f;
+    background: transparent !important;
+    align-items: center;
+    cursor: pointer;
+    transition: all .3s ease-in-out !important;
+    font-size: 1rem;
+    margin: 0;
+    border: 0;
+}
+
+#dropdown ul li a:hover {
+    color: #0352cc;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+#dropdown ul li a i {
+    margin-right: 7px;
+    font-size: 1rem;
+    width: 16px;
+}
+
+.list-group-item-undefined:hover {
+    background-color: #f3eded;
+}
+
+
+
+
