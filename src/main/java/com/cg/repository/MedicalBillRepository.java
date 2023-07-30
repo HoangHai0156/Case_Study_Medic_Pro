@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MedicalBillRepository extends JpaRepository<MedicalBill, Long> {
-
+    List<MedicalBill> getAllByCustomer_Id(Long customerId);
 }

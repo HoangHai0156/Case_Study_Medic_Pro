@@ -315,8 +315,10 @@ public class AppointmentAPI {
         List<Appointment> appointments = appointmentService.getAllBySpecialityIdAndDoctorIdAndRoomId(specialityId,doctorId,roomId);
         List<AppointmentResDTO> appointmentResDTOS = new ArrayList<>();
         for (Appointment appointment: appointments){
-            AppointmentResDTO appointmentResDTO = appointment.toAppointmentResDTO();
-            appointmentResDTOS.add(appointmentResDTO);
+            if (appointment.isAvailable() && !appointment.isDeleted()){
+                AppointmentResDTO appointmentResDTO = appointment.toAppointmentResDTO();
+                appointmentResDTOS.add(appointmentResDTO);
+            }
         }
 
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);

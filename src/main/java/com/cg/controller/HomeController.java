@@ -1,9 +1,13 @@
 package com.cg.controller;
 
+import com.cg.model.Appointment;
 import com.cg.model.Customer;
+import com.cg.model.MedicalBill;
 import com.cg.model.User;
+import com.cg.model.dtos.medicalBill.MedicalBillResDTO;
 import com.cg.model.enums.ETime;
 import com.cg.service.customer.ICustomerService;
+import com.cg.service.medicalBill.IMedicalBillService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,6 +35,9 @@ public class HomeController {
 
     @Autowired
     private ICustomerService customerService;
+
+    @Autowired
+    private IMedicalBillService medicalBillService;
 
     @GetMapping("/login")
     public String login(){
@@ -132,6 +141,14 @@ public class HomeController {
 
     @GetMapping("/appointment-confirm")
     public String cart(Model model){
+        String username = appUtils.getPrincipalUsername();
+        User user = userService.getByUsername(username);
+        Long userId = user.getId();
+        Customer customer = customerService.findCustomerByUserId(userId);
+        Long customerId = customer.getId();
+
+        model.addAttribute("customer",customer);
+        model.addAttribute("customerId",customerId);
 
         return "homepage/appointment-confirm";
     }
