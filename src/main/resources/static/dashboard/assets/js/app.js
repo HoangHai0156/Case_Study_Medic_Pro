@@ -83,6 +83,18 @@ class App {
             text: t,
         });
     }
+
+    static showConfirmCheckout() {
+        return Swal.fire({
+            icon: 'warning',
+            text: 'Bạn muốn thanh toán tất cả phiếu khám ?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, thanh toán !',
+            cancelButtonText: 'Thôi',
+        });
+    }
 }
 
 class LocationRegion {
