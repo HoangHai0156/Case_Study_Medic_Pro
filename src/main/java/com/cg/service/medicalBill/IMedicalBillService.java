@@ -12,4 +12,8 @@ public interface IMedicalBillService extends IGeneralService<MedicalBill, Long> 
     List<MedicalBill> getAllByCustomer_Id(Long customerId);
 
     void deleteUnpaidMedBill(MedicalBill medicalBill, Appointment appointment);
+
+    List<MedicalBill> getAllUnpaidBillsByCus(Long customerId);
+
+    void payAllUnpaidBillsByCus(List<MedicalBill> medicalBills);
 }

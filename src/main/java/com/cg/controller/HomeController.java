@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,5 +152,38 @@ public class HomeController {
         model.addAttribute("customerId",customerId);
 
         return "homepage/appointment-confirm";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(Model model){
+        String username = appUtils.getPrincipalUsername();
+        User user = userService.getByUsername(username);
+        Long userId = user.getId();
+        Customer customer = customerService.findCustomerByUserId(userId);
+        Long customerId = customer.getId();
+
+        model.addAttribute("customer",customer);
+        model.addAttribute("customerId",customerId);
+
+        List<MedicalBill> medicalBills = medicalBillService.getAllByCustomer_Id(customerId);
+        List<MedicalBillResDTO> medicalBillResDTOS = new ArrayList<>();
+        BigDecimal prices = BigDecimal.ZERO;
+        BigDecimal fee = BigDecimal.ZERO;
+        for (MedicalBill medicalBill: medicalBills){
+            if (!medicalBill.isPaid() && !medicalBill.isDeleted()){
+                MedicalBillResDTO medicalBillResDTO = medicalBill.toMedicalBillResDTO();
+                medicalBillResDTOS.add(medicalBillResDTO);
+                prices = prices.add(medicalBill.getAppointment().getPrice());
+                fee = fee.add(BigDecimal.valueOf(5000L));
+            }
+        }
+        BigDecimal total = prices.add(fee);
+
+        model.addAttribute("medicalBillResDTOS",medicalBillResDTOS);
+        model.addAttribute("total",total);
+        model.addAttribute("fee",fee);
+        model.addAttribute("prices",prices);
+
+        return "homepage/checkout";
     }
 }

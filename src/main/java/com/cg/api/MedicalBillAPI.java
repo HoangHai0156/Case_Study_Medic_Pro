@@ -128,4 +128,27 @@ public class MedicalBillAPI {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/{customerId}")
+    public ResponseEntity<?> payBillsByCustomer(@PathVariable("customerId") String customerIdStr){
+
+        if (!ValidateUtil.isNumberValid(customerIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID khách hàng không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long customerId = Long.parseLong(customerIdStr);
+        Customer customer = customerService.findById(customerId).orElseThrow(()-> new DataInputException("Khách hàng không tồn tại"));
+
+        List<MedicalBill> unpaidMedicalBills = medicalBillService.getAllUnpaidBillsByCus(customerId);
+        if (unpaidMedicalBills.isEmpty()){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Khách hàng không có phiếu khám chưa thanh toán");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+        medicalBillService.payAllUnpaidBillsByCus(unpaidMedicalBills);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
