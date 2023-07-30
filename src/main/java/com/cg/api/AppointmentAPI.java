@@ -9,6 +9,8 @@ import com.cg.model.Speciality;
 import com.cg.model.dtos.appointment.AppointmentCreReqDTO;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.dtos.appointment.AppointmentUpReqDTO;
+import com.cg.model.dtos.doctor.DoctorResDTO;
+import com.cg.model.dtos.room.RoomResDTO;
 import com.cg.model.enums.ETime;
 import com.cg.service.appointment.IAppointmentService;
 import com.cg.service.doctor.IDoctorService;
@@ -25,10 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -212,5 +212,115 @@ public class AppointmentAPI {
         AppointmentResDTO appointmentResDTO = removedAppointment.toAppointmentResDTO();
 
         return new ResponseEntity<>(appointmentResDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/doctor/{specialityId}")
+    public ResponseEntity<?> getAssignedDoctorBySpec(@PathVariable("specialityId") String specialityIdStr){
+        if (!ValidateUtil.isNumberValid(specialityIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID chuyên khoa không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long specialityId = Long.parseLong(specialityIdStr);
+        Speciality speciality = specialityService.findById(specialityId).orElseThrow(()-> new DataInputException("Chuyên khoa không ồn tại"));
+
+        List<Appointment> appointments = appointmentService.getAllBySpecialityId(specialityId);
+        List<DoctorResDTO> doctorResDTOS = new ArrayList<>();
+        for (Appointment appointment: appointments){
+            Doctor doctor = appointment.getDoctor();
+            DoctorResDTO doctorResDTO = doctor.toDoctorResDTO();
+            doctorResDTOS.add(doctorResDTO);
+        }
+
+        List<DoctorResDTO> uniqueDoctor = new ArrayList<>();
+        Set<Long> seenIds = new HashSet<>();
+
+        for (DoctorResDTO doctorResDTO : doctorResDTOS) {
+            if (!seenIds.contains(doctorResDTO.getId())) {
+                uniqueDoctor.add(doctorResDTO);
+                seenIds.add(doctorResDTO.getId());
+            }
+        }
+
+        return new ResponseEntity<>(uniqueDoctor,HttpStatus.OK);
+    }
+
+    @GetMapping("/room/{doctorId}")
+    public ResponseEntity<?> getAssignedRoomByDoctorId(@PathVariable("doctorId") String doctorIdStr){
+        if (!ValidateUtil.isNumberValid(doctorIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID bác sĩ không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long doctorId = Long.parseLong(doctorIdStr);
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(()-> new DataInputException("Bác sĩ không tồn tại"));
+
+        List<Appointment> appointments = appointmentService.getAllByDoctorId(doctorId);
+        List<RoomResDTO> roomResDTOS = new ArrayList<>();
+
+        for (Appointment appointment : appointments){
+            Room room = appointment.getRoom();
+            RoomResDTO roomResDTO = room.toRoomResDTO();
+            roomResDTOS.add(roomResDTO);
+        }
+
+        List<RoomResDTO> uniqueRooms = new ArrayList<>();
+        Set<Long> seenIds = new HashSet<>();
+
+        for (RoomResDTO roomResDTO : roomResDTOS) {
+            if (!seenIds.contains(roomResDTO.getId())) {
+                uniqueRooms.add(roomResDTO);
+                seenIds.add(roomResDTO.getId());
+            }
+        }
+
+        return new ResponseEntity<>(uniqueRooms,HttpStatus.OK);
+    }
+
+    @GetMapping("/{specialityId}/{doctorId}/{roomId}")
+    public ResponseEntity<?> getAllBySpecAndDocAndRoom(@PathVariable("specialityId") String specialityIdStr,
+                                                       @PathVariable("doctorId") String doctorIdStr,
+                                                       @PathVariable("roomId") String roomIdStr){
+        if (!ValidateUtil.isNumberValid(specialityIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID chuyên khoa không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long specialityId = Long.parseLong(specialityIdStr);
+        Speciality speciality = specialityService.findById(specialityId).orElseThrow(()-> new DataInputException("Chuyên khoa không ồn tại"));
+
+        if (!ValidateUtil.isNumberValid(doctorIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID bác sĩ không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long doctorId = Long.parseLong(doctorIdStr);
+        Doctor doctor = doctorService.findById(doctorId).orElseThrow(()-> new DataInputException("Bác sĩ không tồn tại"));
+
+        if (!ValidateUtil.isNumberValid(roomIdStr)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "ID phòng khám không hợp đúng định dạng");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        Long roomId = Long.parseLong(roomIdStr);
+        Room room = roomService.findById(roomId).orElseThrow(()-> new DataInputException("Phòng khám không tồn tại"));
+
+        // TODO: 29/7/2023 Bắt lỗi không đồng nhất spec doc room
+
+        List<Appointment> appointments = appointmentService.getAllBySpecialityIdAndDoctorIdAndRoomId(specialityId,doctorId,roomId);
+        List<AppointmentResDTO> appointmentResDTOS = new ArrayList<>();
+        for (Appointment appointment: appointments){
+            if (appointment.isAvailable() && !appointment.isDeleted()){
+                AppointmentResDTO appointmentResDTO = appointment.toAppointmentResDTO();
+                appointmentResDTOS.add(appointmentResDTO);
+            }
+        }
+
+        return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
 }

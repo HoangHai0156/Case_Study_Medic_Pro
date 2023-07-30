@@ -42,6 +42,16 @@ public class AppointmentService implements IAppointmentService{
     }
 
     @Override
+    public List<Appointment> getAllBySpecialityId(Long specialityId) {
+        return appointmentRepository.getAllBySpecialityId(specialityId);
+    }
+
+    @Override
+    public List<Appointment> getAllBySpecialityIdAndDoctorIdAndRoomId(Long specialityId, Long doctorId, Long roomId) {
+        return appointmentRepository.getAllBySpecialityIdAndDoctorIdAndRoomId(specialityId, doctorId, roomId);
+    }
+
+    @Override
     public List<Appointment> findAll() {
         return null;
     }

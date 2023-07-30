@@ -15,6 +15,10 @@ public interface IAppointmentService extends IGeneralService<Appointment, Long> 
 
     List<AppointmentResDTO> findAllAppointmentResDTO();
 
+    List<Appointment> getAllBySpecialityIdAndDoctorIdAndRoomId(Long specialityId, Long doctorId, Long roomId);
+
     List<Appointment> getAllByDoctorId(Long doctorId);
+
+    List<Appointment> getAllBySpecialityId(Long specialityId);
 
 }

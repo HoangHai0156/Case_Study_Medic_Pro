@@ -73,7 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/test",
                         // TODO: 21/7/2023 nhớ xóa nhé
                         "/api/**",
-                        "/admin/**"
+                        "/admin/**",
+                        "/**",
+                        "/api/**"
+//                        "/admin/**"
                 ).permitAll()
                 .antMatchers("/transfers").hasAnyAuthority("ADMIN")
                 .antMatchers("/shop").hasAnyAuthority("CUSTOMER")
@@ -96,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
 //                .usernameParameter("username")
 //                .passwordParameter("password")
-//                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")

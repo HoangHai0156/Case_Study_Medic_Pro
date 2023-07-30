@@ -1,6 +1,8 @@
 package com.cg.service.medicalBill;
 
+import com.cg.model.Appointment;
 import com.cg.model.MedicalBill;
+import com.cg.repository.AppointmentRepository;
 import com.cg.repository.MedicalBillRepository;
 import com.cg.utils.DateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,16 @@ import java.util.Optional;
 public class MedicalBillService implements IMedicalBillService{
     @Autowired
     private MedicalBillRepository medicalBillRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
     @Override
     public List<MedicalBill> findAll() {
         return medicalBillRepository.findAll();
+    }
+
+    @Override
+    public List<MedicalBill> getAllByCustomer_Id(Long customerId) {
+        return medicalBillRepository.getAllByCustomer_Id(customerId);
     }
 
     @Override
@@ -37,12 +46,20 @@ public class MedicalBillService implements IMedicalBillService{
     }
 
     @Override
+    public void deleteUnpaidMedBill(MedicalBill medicalBill, Appointment appointment) {
+        medicalBillRepository.save(medicalBill);
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
     public void deleteById(Long id) {
 
     }
 
     @Override
-    public MedicalBill create(MedicalBill medicalBill) {
+    public MedicalBill create(MedicalBill medicalBill, Appointment appointment) {
+        appointmentRepository.save(appointment);
+
         MedicalBill newMedicalBill = medicalBillRepository.save(medicalBill);
 
         Long medicalBillId = newMedicalBill.getId();
