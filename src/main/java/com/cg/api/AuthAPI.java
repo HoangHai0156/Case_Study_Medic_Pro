@@ -108,7 +108,6 @@ public class AuthAPI {
                     currentUser.getUsername(),
                     userDetails.getAuthorities()
             );
-
             ResponseCookie springCookie = ResponseCookie.from("JWT", jwt)
                     .httpOnly(false)
                     .secure(false)
