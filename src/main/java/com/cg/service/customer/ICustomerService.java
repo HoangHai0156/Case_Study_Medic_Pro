@@ -14,4 +14,7 @@ public interface ICustomerService extends IGeneralService<Customer, Long> {
     List<Customer> findAllByUser_Id(Long userId);
 
     Boolean existsByEmail(String email);
+
+    Customer findCustomerByUserIdAndDeletedFalse(Long userId);
+
 }

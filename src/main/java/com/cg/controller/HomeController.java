@@ -141,12 +141,18 @@ public class HomeController {
     }
 
     @GetMapping("/choose-appointment")
-    public String chooseAppointment(Model model) {
+    public String chooseAppointment(Model model, Principal user1){
 
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         Long userId = user.getId();
-        Customer customer = customerService.findCustomerByUserId(userId);
+        Customer customer = customerService.findCustomerByUserIdAndDeletedFalse(userId);
+
+        if (customer == null){
+
+            return "redirect:/profile";
+        }
+
         Long customerId = customer.getId();
 
         model.addAttribute("customerId", customerId);
@@ -157,21 +163,28 @@ public class HomeController {
             times.put(eTime.name(), eTime.getValue());
         }
 
-        model.addAttribute("times", times);
+        model.addAttribute("times",times);
+        model.addAttribute("user",user1);
 
         return "homepage/choose-appointment";
     }
 
     @GetMapping("/appointment-confirm")
-    public String cart(Model model) {
+    public String cart(Model model, Principal user1){
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         Long userId = user.getId();
-        Customer customer = customerService.findCustomerByUserId(userId);
+        Customer customer = customerService.findCustomerByUserIdAndDeletedFalse(userId);
+
+        if (customer == null){
+
+            return "redirect:/profile";
+        }
         Long customerId = customer.getId();
 
-        model.addAttribute("customer", customer);
-        model.addAttribute("customerId", customerId);
+        model.addAttribute("customer",customer);
+        model.addAttribute("customerId",customerId);
+        model.addAttribute("user",user1);
 
         return "homepage/appointment-confirm";
     }
@@ -205,11 +218,16 @@ public class HomeController {
 
 
     @GetMapping("/checkout")
-    public String checkout(Model model){
+    public String checkout(Model model, Principal user1){
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         Long userId = user.getId();
-        Customer customer = customerService.findCustomerByUserId(userId);
+        Customer customer = customerService.findCustomerByUserIdAndDeletedFalse(userId);
+
+        if (customer == null){
+
+            return "redirect:/profile";
+        }
         Long customerId = customer.getId();
 
         model.addAttribute("customer",customer);
@@ -233,6 +251,7 @@ public class HomeController {
         model.addAttribute("total",total);
         model.addAttribute("fee",fee);
         model.addAttribute("prices",prices);
+        model.addAttribute("user",user1);
 
         return "homepage/checkout";
     }

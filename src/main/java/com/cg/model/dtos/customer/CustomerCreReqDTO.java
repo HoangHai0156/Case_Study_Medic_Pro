@@ -58,7 +58,7 @@ public class CustomerCreReqDTO {
     @NotNull(message = "CMND không thể null")
     @NotBlank(message = "Hãy nập giá trị cho CMND")
     @NotEmpty(message = "CMND không thể để trống")
-    @Pattern(regexp = "^\\d{10}$", message = "CMND phải là một số gồm 10 chữ số")
+    @Pattern(regexp = "^\\d{9}$", message = "CMND phải là một số gồm 9 chữ số")
     private String identityNumber;
 
     @NotNull(message = "Dân tộc không thể null")
