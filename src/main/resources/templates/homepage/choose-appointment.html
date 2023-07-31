@@ -71,7 +71,8 @@
             getDoctorsBySpec: App.API_APPOINTMENT+"/doctor/",
             getRoomsByDoctor: App.API_APPOINTMENT+"/room/",
             getAppointmentsBySpecAndDocAndRoom: App.API_APPOINTMENT+"/",
-            createMedicalBill: App.API_MEDICAL_BILL
+            createMedicalBill: App.API_MEDICAL_BILL,
+            getAllAppointment: App.API_APPOINTMENT
 
         },
         elements: {},
@@ -95,6 +96,19 @@
     const eTimes = [[${times}]];
     const customerId = '[[${customerId}]]';
     console.log(eTimes);
+
+    page.commands.getAllAppointments = () =>{
+        $.ajax({
+            type: 'GET',
+            url: page.url.getAllAppointment,
+        })
+            .done((data) =>{
+
+            })
+            .fail((errors) =>{
+                console.log(errors)
+            })
+    }
 
     page.commands.getAllSpeciality = () =>{
         page.dialogs.elements.specialityBook.empty();
@@ -195,6 +209,8 @@
         }).catch((errors)=>{
             console.log(errors)
         })
+
+        page.commands.getAllAppointments();
     }
 
     page.initializeControlEvent = () =>{
@@ -315,14 +331,9 @@
                 .fail((errors)=>{
                     const responseJSON = errors.responseJSON;
 
-                    page.dialogs.elements.errorAreaBook.empty();
-                    let str = '';
-
                     $.each(responseJSON, (k, v) => {
-                        str += `<label for="${k}Book">${v}</label>`
+                        App.showErrorNotification(v);
                     })
-
-                    page.dialogs.elements.errorAreaBook.append(str).removeClass('hide').addClass('show');
 
                     console.log(errors);
                 })

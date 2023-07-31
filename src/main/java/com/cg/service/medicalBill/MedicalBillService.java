@@ -31,6 +31,16 @@ public class MedicalBillService implements IMedicalBillService{
     }
 
     @Override
+    public List<MedicalBill> getAllUnpaidBillsByCus(Long customerId) {
+        return medicalBillRepository.getAllUnpaidBillsByCus(customerId);
+    }
+
+    @Override
+    public List<MedicalBill> getPaidBillsByApp(Long appointmentId) {
+        return medicalBillRepository.getPaidBillsByApp(appointmentId);
+    }
+
+    @Override
     public Optional<MedicalBill> findById(Long id) {
         return medicalBillRepository.findById(id);
     }
@@ -70,5 +80,14 @@ public class MedicalBillService implements IMedicalBillService{
         newMedicalBill.setCode(code);
 
         return medicalBillRepository.save(newMedicalBill);
+    }
+
+    @Override
+    public void payAllUnpaidBillsByCus(List<MedicalBill> medicalBills) {
+        for (MedicalBill medicalBill: medicalBills){
+            medicalBill.setId(medicalBill.getId());
+            medicalBill.setPaid(true);
+            medicalBillRepository.save(medicalBill);
+        }
     }
 }

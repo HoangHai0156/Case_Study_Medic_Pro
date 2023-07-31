@@ -23,4 +23,6 @@ public interface IAppointmentService extends IGeneralService<Appointment, Long> 
     List<Appointment> getAllBySpecialityId(Long specialityId);
     List<Appointment> getAppointmentByDoctorId(Long doctorId);
 
+    void deleteInvalidDateAppointments(List<Appointment> appointments);
+
 }

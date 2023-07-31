@@ -1,6 +1,7 @@
 package com.cg.api;
 
 import com.cg.exception.DataInputException;
+import com.cg.exception.EmailExistsException;
 import com.cg.model.Customer;
 import com.cg.model.Doctor;
 import com.cg.model.LocationRegion;
@@ -71,6 +72,11 @@ public class CustomerAPI {
         if (bindingResult.hasErrors()){
             appUtils.mapErrorToResponse(bindingResult);
         }
+        String email  = customerCreReqDTO.getEmail();
+        Boolean emailExists = customerService.existsByEmail(email);
+        if (emailExists) {
+            throw new EmailExistsException("Email đã tồn tại");
+        }
 
         String eGenderName = customerCreReqDTO.getNameGender();
         EGender eGender;
@@ -85,6 +91,13 @@ public class CustomerAPI {
 
         Long userid = Long.parseLong(customerCreReqDTO.getUserId());
         User user = userService.findById(userid).orElseThrow(() -> new DataInputException("Ngưới dùng không tồn tại"));
+
+        List<Customer> customers = customerService.findAllByUser_Id(userid);
+        if (!customers.isEmpty()) {
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Tài khoản đã có hồ sơ bệnh nhân!");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
 
         Customer customer = customerCreReqDTO.toCustomer(eGender, user);
         Customer newCustomer = customerService.create(locationRegion, customer);
@@ -107,10 +120,17 @@ public class CustomerAPI {
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
 
+
         Long customerId = Long.parseLong(customerIdStr);
         Customer customer = customerService.findById(customerId).orElseThrow(()->{
             throw new DataInputException("Khách hàng không tồn tại");
         });
+
+        String email  = customerUpReqDTO.getEmail();
+        Boolean emailExists = customerService.existsByEmail(email);
+        if (emailExists) {
+            throw new EmailExistsException("Email đã tồn tại");
+        }
 
         Long locationRegionId = customer.getLocationRegion().getId();
         User user = customer.getUser();

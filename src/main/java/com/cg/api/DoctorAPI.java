@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +87,13 @@ public class DoctorAPI {
 
         Long userid = Long.parseLong(doctorCreReqDTO.getUserId());
         User user = userService.findById(userid).orElseThrow(() -> new DataInputException("Ngưới dùng không tồn tại"));
+
+        List<Doctor> doctors = doctorService.findAllByUser_Id(userid);
+        if (!doctors.isEmpty()) {
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Tài khoản đã có hồ sơ bác sĩ!");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
 
         Long specialityId = Long.valueOf(doctorCreReqDTO.getSpecialityId());
         Speciality speciality = specialityService.findById(specialityId).orElseThrow(()->{

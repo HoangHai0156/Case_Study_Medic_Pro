@@ -2,6 +2,8 @@ package com.cg.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateFormat {
@@ -15,6 +17,12 @@ public class DateFormat {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static LocalDate convertToLocalDate(String date){
+        DateTimeFormatter formatterLocalDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        //convert String to LocalDate
+        return LocalDate.parse(date, formatterLocalDate);
     }
 }
 

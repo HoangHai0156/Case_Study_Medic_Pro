@@ -33,6 +33,11 @@ public class CustomerService implements ICustomerService{
     }
 
     @Override
+    public List<Customer> findAllByUser_Id(Long userId) {
+        return customerRepository.findAllByUser_Id(userId);
+    }
+
+    @Override
     public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id);
     }
@@ -40,6 +45,11 @@ public class CustomerService implements ICustomerService{
     @Override
     public Customer findCustomerByUserId(Long userId) {
         return customerRepository.findCustomerByUserId(userId);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return customerRepository.existsByEmail(email);
     }
 
     @Override
