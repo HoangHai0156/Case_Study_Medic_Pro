@@ -89,7 +89,7 @@
 
 <th:block th:replace="/homepage/fragment/footer_js"/>
 </body>
-<script>
+<script th:inline="javascript">
     const page = {
         url: {
             getAllAppointment:App.API_APPOINTMENT
@@ -106,20 +106,23 @@
 
 
     page.elements.tbAppointmentBody = $('#tbAppointment tbody');
-    let appointment = 0;
-    // const eTimes = [[${times}]];
-    // console.log(eTimes)
+
+    const eTimes = [[${times}]];
+    console.log(eTimes)
+
     page.commands.renderAppointment = (appointment) => {
         let room = appointment.room;
-        //let timePeriod = page.commands.findTimePeriod(appointment.timeName);
+        let timePeriod = page.commands.findTimePeriod(appointment.timeName);
         return `<tr id="tr_${appointment.id}">
                         <td>${room.name}</td>
                         <td>${appointment.specialityName}</td>
                         <td>${App.formatDate(appointment.day)}</td>
+                        <td>${timePeriod}</td>
+
 
                 </tr>`;
     }
-    // <td>${timePeriod}</td>
+
     page.commands.findTimePeriod = (timeCode) =>{
         switch (timeCode){
             case 'C1':

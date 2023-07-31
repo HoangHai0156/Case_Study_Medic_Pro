@@ -49,7 +49,7 @@
                                             <th>#</th>
                                             <th>User Name</th>
                                             <th>Role</th>
-                                            <th>Active</th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -120,16 +120,6 @@
         <td>${user.id}</td>
         <td>${user.username}</td>
         <td>${user.roleName}</td>
-        <td>
-             <button  class="btn btn-primary edit" data-id="${user.id}" >
-                            <i class="far fa-edit"></i>
-                            Update
-             </button>
-              <button  class="btn btn-danger delete" data-id="${user.id}">
-                            <i class="fas fa-ban" ></i>
-                            Delete
-              </button>
-         </td>
     </tr>
     `;
     }
@@ -272,13 +262,6 @@
                     })
                     .fail((jqXHR) => {
                         console.log(jqXHR);
-                        // const httpStatus = jqXHR.status;
-                        // if (httpStatus === 403) {
-                        //     App.showErrorAlert('Bạn không đủ quyền để thực hiện chức năng này');
-                        // }
-                        // if (httpStatus === 401) {
-                        //     App.showErrorAlert('Vui lòng đăng nhập, tài khoản của bạn đã hết phiên làm việc');
-                        // }
                     })
             }
         })
@@ -319,7 +302,6 @@
         })
 
     }
-
 
     page.loadData = () => {
         page.commands.getAllUsers();

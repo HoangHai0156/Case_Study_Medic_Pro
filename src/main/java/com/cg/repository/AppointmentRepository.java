@@ -1,6 +1,7 @@
 package com.cg.repository;
 
 import com.cg.model.Appointment;
+import com.cg.model.Doctor;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.enums.ETime;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +35,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "apm.isAvailable" +
             ") from Appointment as apm where apm.deleted = false")
     List<AppointmentResDTO> findAllAppointmentResDTO();
+    List<Appointment> getAppointmentByDoctorId(Long doctorId);
 }

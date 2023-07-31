@@ -1,12 +1,11 @@
 package com.cg.controller;
 
-import com.cg.model.Appointment;
-import com.cg.model.Customer;
-import com.cg.model.MedicalBill;
-import com.cg.model.User;
+import com.cg.model.*;
 import com.cg.model.dtos.medicalBill.MedicalBillResDTO;
 import com.cg.model.enums.ETime;
+import com.cg.service.appointment.AppointmentService;
 import com.cg.service.customer.ICustomerService;
+import com.cg.service.doctor.DoctorService;
 import com.cg.service.medicalBill.IMedicalBillService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +38,10 @@ public class HomeController {
 
     @Autowired
     private IMedicalBillService medicalBillService;
+    @Autowired
+    private DoctorService doctorService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @GetMapping("/login")
     public String login() {
@@ -136,7 +140,7 @@ public class HomeController {
     }
 
     @GetMapping("/choose-appointment")
-    public String chooseAppointment(Model model){
+    public String chooseAppointment(Model model) {
 
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
@@ -144,30 +148,63 @@ public class HomeController {
         Customer customer = customerService.findCustomerByUserId(userId);
         Long customerId = customer.getId();
 
-        model.addAttribute("customerId",customerId);
+        model.addAttribute("customerId", customerId);
 
         Map<String, String> times = new HashMap<>();
-        for (ETime eTime: ETime.values()
+        for (ETime eTime : ETime.values()
         ) {
-            times.put(eTime.name(),eTime.getValue());
+            times.put(eTime.name(), eTime.getValue());
         }
 
-        model.addAttribute("times",times);
+        model.addAttribute("times", times);
 
         return "homepage/choose-appointment";
     }
 
     @GetMapping("/appointment-confirm")
-    public String cart(Model model){
+    public String cart(Model model) {
         String username = appUtils.getPrincipalUsername();
         User user = userService.getByUsername(username);
         Long userId = user.getId();
         Customer customer = customerService.findCustomerByUserId(userId);
         Long customerId = customer.getId();
 
-        model.addAttribute("customer",customer);
-        model.addAttribute("customerId",customerId);
+        model.addAttribute("customer", customer);
+        model.addAttribute("customerId", customerId);
 
         return "homepage/appointment-confirm";
     }
+
+    @GetMapping("/customer")
+    public ModelAndView customerPage(Principal user) {
+        String username = user.getName();
+        User user1 = userService.getByUsername(username);
+        Long userId = user1.getId();
+        Customer customer = customerService.findCustomerByUserId(userId);
+        ModelAndView modelAndView = new ModelAndView("homepage/customer");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("userId", userId);
+        modelAndView.addObject("customer", customer);
+        return modelAndView;
+    }
+
+    @GetMapping("/doctor")
+    public String doctor(Model model, Principal user) {
+        String username = user.getName();
+        User user1 = userService.getByUsername(username);
+        Long userId = user1.getId();
+
+        Doctor doctor = doctorService.findDoctorByUserId(userId);
+
+        List<Appointment> appointments = appointmentService.getAppointmentByDoctorId(doctor.getId());
+
+        Map<String, String> times = new HashMap<>();
+        for (ETime eTime : ETime.values()
+        ) {
+            times.put(eTime.name(), eTime.getValue());
+        }
+        model.addAttribute("times", times);
+        return "homepage/doctor";
+    }
+
 }

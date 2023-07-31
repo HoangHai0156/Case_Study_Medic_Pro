@@ -1,6 +1,7 @@
 package com.cg.service.appointment;
 
 import com.cg.model.Appointment;
+import com.cg.model.Doctor;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.enums.ETime;
 import com.cg.service.IGeneralService;
@@ -20,5 +21,6 @@ public interface IAppointmentService extends IGeneralService<Appointment, Long> 
     List<Appointment> getAllByDoctorId(Long doctorId);
 
     List<Appointment> getAllBySpecialityId(Long specialityId);
+    List<Appointment> getAppointmentByDoctorId(Long doctorId);
 
 }

@@ -40,14 +40,14 @@
                     <div data-test="container" class="container">
                         <div data-test="row" class="row">
                             <div data-test="col" class="col-md-5 col-lg-4"><a class="style_add_patients__3Xfx1"
-                                                                              href="#"><i class="fas fa-user-plus"></i>Thêm
+                                                                              href="/profile-create"><i class="fas fa-user-plus" style="margin: 5px;"></i>Thêm
                                 hồ sơ bệnh nhân</a>
                                 <ul data-test="nav" class="nav style_nav_tab_info__EceGo">
                                     <li data-test="nav-item" class="nav-item"><a aria-current="page"
                                                                                  class="nav-link Ripple-parent active undefined style_active__3LHs4 active"
                                                                                  data-test="nav-link" role="tab"
                                                                                  href="/user"><i
-                                            class="far fa-address-book"></i> Hồ sơ bệnh nhân
+                                            class="far fa-address-book" style="margin: 5px;"></i> Hồ sơ bệnh nhân
                                         <div
                                                 data-test="waves" class="Ripple is-reppling"
                                                 style="top: -143px; left: -28.6px; width: 350px; height: 350px;">
@@ -57,7 +57,7 @@
                                                                                  class="nav-link Ripple-parent undefined active"
                                                                                  data-test="nav-link"
                                                                                  role="tab" href="/user"><i
-                                            class="fas fa-file-medical"></i>Phiếu khám
+                                            class="fas fa-file-medical" style="margin: 5px;"></i>Phiếu khám
                                         bệnh
                                         <div data-test="waves" class="Ripple is-reppling"
                                              style="top: -147px; left: 44.4px; width: 350px; height: 350px;">
@@ -67,7 +67,7 @@
                                                                                  class="nav-link Ripple-parent undefined active"
                                                                                  data-test="nav-link"
                                                                                  role="tab" href="/user"><i
-                                            class="far fa-bell"></i>Thông báo
+                                            class="far fa-bell" style="margin: 5px;"></i>Thông báo
                                         <div data-test="waves" class="Ripple is-reppling"
                                              style="top: -153px; left: 20.4px; width: 350px; height: 350px;">
                                         </div>
@@ -76,7 +76,7 @@
                                                                                  class="nav-link Ripple-parent undefined active"
                                                                                  data-test="nav-link"
                                                                                  role="tab" href="/user"><i
-                                            class="fas fa-history"></i>Lịch sử thanh toán
+                                            class="fas fa-history" style="margin: 5px;"></i>Lịch sử thanh toán
                                         viện phí
                                         <div data-test="waves" class="Ripple "
                                              style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
@@ -142,7 +142,7 @@
                                                                         class="list-group-item list-group-item-undefined">
                                                                         <div
                                                                                 class="style_action_edit_remove__1WPod">
-                                                                            <button data-test="button" type="button"
+                                                                            <button data-test="button" type="button" id="btnRemove"
                                                                                     class="btn-default btn Ripple-parent style_button__1_7zd style_remove__2ZZiy style_small__27yEW">
                                                                                 <i class="far fa-trash-alt"></i>
                                                                                 Xoá hồ sơ
@@ -151,8 +151,7 @@
                                                                                      style="top: 0px; left: 0px; width: 0px; height: 0px;">
                                                                                 </div>
                                                                             </button>
-                                                                            <button
-                                                                                    data-test="button" type="button"
+                                                                            <a href="/profile-update"
                                                                                     class="btn-default btn Ripple-parent style_button__1_7zd style_edit__NUcmw style_small__27yEW">
                                                                                 <i class="far fa-edit"></i>Sửa hồ
                                                                                 sơ
@@ -160,7 +159,7 @@
                                                                                      class="Ripple "
                                                                                      style="top: 0px; left: 0px; width: 0px; height: 0px;">
                                                                                 </div>
-                                                                            </button>
+                                                                            </a>
                                                                         </div>
                                                                     </li>
                                                                 </ul>
@@ -195,7 +194,7 @@
 <script>
     const page = {
         url: {
-            getAllCustomerById: App.API_CUSTOMER
+            getAllCustomerById: App.API_CUSTOMER,
         },
         elements: {},
         loadData: {},
@@ -229,7 +228,6 @@
                 console.log(error);
             })
     }
-
 
     page.loadData = () => {
         page.commands.getAllCustomerById();

@@ -1,5 +1,6 @@
 package com.cg.service.doctor;
 
+import com.cg.model.Appointment;
 import com.cg.model.Doctor;
 import com.cg.model.LocationRegion;
 import com.cg.repository.DoctorRepository;
@@ -24,6 +25,12 @@ public class DoctorService implements IDoctorService{
     public List<Doctor> findAllBySpecialityId(Long specialityId) {
         return doctorRepository.findAllBySpecialityId(specialityId);
     }
+
+    @Override
+    public Doctor findDoctorByUserId(Long doctorId) {
+        return doctorRepository.findDoctorByUserId(doctorId);
+    }
+
 
     @Override
     public List<Doctor> findAll() {
