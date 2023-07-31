@@ -190,13 +190,7 @@ public class HomeController {
 
     @GetMapping("/doctor")
     public String doctor(Model model, Principal user) {
-        String username = user.getName();
-        User user1 = userService.getByUsername(username);
-        Long userId = user1.getId();
 
-        Doctor doctor = doctorService.findDoctorByUserId(userId);
-
-        List<Appointment> appointments = appointmentService.getAppointmentByDoctorId(doctor.getId());
 
         Map<String, String> times = new HashMap<>();
         for (ETime eTime : ETime.values()
