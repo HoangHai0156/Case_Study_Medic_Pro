@@ -2,10 +2,7 @@ package com.cg.api;
 
 
 import com.cg.exception.DataInputException;
-import com.cg.model.Appointment;
-import com.cg.model.Doctor;
-import com.cg.model.Room;
-import com.cg.model.Speciality;
+import com.cg.model.*;
 import com.cg.model.dtos.appointment.AppointmentCreReqDTO;
 import com.cg.model.dtos.appointment.AppointmentResDTO;
 import com.cg.model.dtos.appointment.AppointmentUpReqDTO;
@@ -14,6 +11,7 @@ import com.cg.model.dtos.room.RoomResDTO;
 import com.cg.model.enums.ETime;
 import com.cg.service.appointment.IAppointmentService;
 import com.cg.service.doctor.IDoctorService;
+import com.cg.service.medicalBill.IMedicalBillService;
 import com.cg.service.room.IRoomService;
 import com.cg.service.speciality.ISpecialityService;
 import com.cg.utils.AppUtils;
@@ -27,8 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -48,6 +46,9 @@ public class AppointmentAPI {
 
     @Autowired
     private ISpecialityService specialityService;
+
+    @Autowired
+    private IMedicalBillService medicalBillService;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody AppointmentCreReqDTO appointmentCreReqDTO,
@@ -71,6 +72,15 @@ public class AppointmentAPI {
 
         ETime eTime = ETime.valueOf(appointmentCreReqDTO.getTimeName());
         Date day = DateFormat.parse(appointmentCreReqDTO.getDay());
+
+        LocalDate now = LocalDate.now();
+        LocalDate dayComp = DateFormat.convertToLocalDate(appointmentCreReqDTO.getDay());
+
+        if (dayComp.isBefore(now) || dayComp.isEqual(now)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Không thể tạo mới lịch khám trong hoặc trước ngày hôm nay");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
 
         List<Appointment> appointments1 = appointmentService.getAllByDoctorIdAndDayAndTimeAndIdNot(doctorId,day,eTime, -1L);
         if (!appointments1.isEmpty()){
@@ -105,7 +115,28 @@ public class AppointmentAPI {
 
     @GetMapping
     public ResponseEntity<?> getAll(){
-        List<AppointmentResDTO> appointmentResDTOS = appointmentService.findAllAppointmentResDTO();
+        List<AppointmentResDTO> appointmentResDTOS = new ArrayList<>();
+
+        List<Appointment> appointments = appointmentService.findAll();
+        List<Appointment> invalidDayAppointments = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        for (Appointment appointment: appointments){
+            if (!appointment.isDeleted()){
+                String appDayStr = DateFormat.format(appointment.getDay());
+                LocalDate appDay = DateFormat.convertToLocalDate(appDayStr);
+
+                if (appDay.isEqual(now) || appDay.isBefore(now)){
+                    invalidDayAppointments.add(appointment);
+                }else {
+                    AppointmentResDTO appointmentResDTO = appointment.toAppointmentResDTO();
+                    appointmentResDTOS.add(appointmentResDTO);
+                }
+            }
+
+        }
+
+        appointmentService.deleteInvalidDateAppointments(invalidDayAppointments);
 
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
@@ -126,6 +157,22 @@ public class AppointmentAPI {
 
         Long appointmentId = Long.parseLong(appointmentIdStr);
         Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(()-> new DataInputException("Lịch khám không tồn tại"));
+
+        String appDayStr = DateFormat.format(appointment.getDay());
+        LocalDate appDay = DateFormat.convertToLocalDate(appDayStr);
+        LocalDate now = LocalDate.now();
+        if (appDay.isBefore(now) || appDay.isEqual(now)){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Không thể cập nhật lịch khám có ngày là trước hoặc bằng hôm nay");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
+        List<MedicalBill> paidMedicalBillsByApp = medicalBillService.getPaidBillsByApp(appointmentId);
+        if (!paidMedicalBillsByApp.isEmpty()){
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Không thể cập nhật lịch khám đã được thanh toán");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
 
         Speciality speciality = appointment.getSpeciality();
         Long specialityId = speciality.getId();
@@ -323,4 +370,5 @@ public class AppointmentAPI {
 
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
+
 }

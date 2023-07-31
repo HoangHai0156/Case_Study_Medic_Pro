@@ -36,6 +36,11 @@ public class MedicalBillService implements IMedicalBillService{
     }
 
     @Override
+    public List<MedicalBill> getPaidBillsByApp(Long appointmentId) {
+        return medicalBillRepository.getPaidBillsByApp(appointmentId);
+    }
+
+    @Override
     public Optional<MedicalBill> findById(Long id) {
         return medicalBillRepository.findById(id);
     }
