@@ -14,4 +14,7 @@ public interface MedicalBillRepository extends JpaRepository<MedicalBill, Long> 
 
     @Query("select m from MedicalBill as m where (m.customer.id = :id and m.deleted = false and m.isPaid = false) ")
     List<MedicalBill> getAllUnpaidBillsByCus(@Param("id") Long customerId);
+
+    @Query("select m from MedicalBill as m where (m.appointment.id = :id and m.isPaid = true )")
+    List<MedicalBill> getPaidBillsByApp(@Param("id") Long appointmentId);
 }

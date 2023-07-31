@@ -53,7 +53,7 @@ public class AppointmentService implements IAppointmentService{
 
     @Override
     public List<Appointment> findAll() {
-        return null;
+        return appointmentRepository.findAll();
     }
 
     @Override
@@ -74,5 +74,15 @@ public class AppointmentService implements IAppointmentService{
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public void deleteInvalidDateAppointments(List<Appointment> appointments) {
+        for (Appointment appointment: appointments){
+            Long appointmentId = appointment.getId();
+            appointment.setId(appointmentId);
+            appointment.setDeleted(true);
+            appointmentRepository.save(appointment);
+        }
     }
 }

@@ -179,10 +179,10 @@
                 App.showSuccessNotification("Thanh toán thành công")
             })
             .fail((error) =>{
-                const responseJSON = errors.responseJSON;
+                const responseJSON = error.responseJSON;
 
                 $.each(responseJSON, (k, v) => {
-                    App.showErrorAlert(v);
+                    App.showErrorNotification(v);
                 })
 
                 console.log(error);

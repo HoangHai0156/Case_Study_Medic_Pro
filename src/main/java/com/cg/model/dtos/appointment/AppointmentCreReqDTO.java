@@ -49,6 +49,10 @@ public class AppointmentCreReqDTO {
     @Pattern(regexp = "^(C[1-3]|S[1-3])$", message = "Giờ khám không hợp lệ")
     private String timeName;
 
+    @NotNull(message = "ID chuyên khoa không thể null")
+    @NotBlank(message = "Hãy nập giá trị cho ID chuyên khoa")
+    @NotEmpty(message = "ID chuyên khoa không thể để trống")
+    @Pattern(regexp = "\\d+", message = "ID chuyên khoa phải là một số")
     private String specialityId;
 
     public Appointment toAppointment(Doctor doctor, Room room, ETime eTime, Speciality speciality){
