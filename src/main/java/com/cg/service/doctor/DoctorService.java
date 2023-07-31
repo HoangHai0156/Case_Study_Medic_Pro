@@ -36,6 +36,11 @@ public class DoctorService implements IDoctorService{
     }
 
     @Override
+    public List<Doctor> findAllByUser_Id(Long userId) {
+        return doctorRepository.findAllByUser_Id(userId);
+    }
+
+    @Override
     public Doctor save(Doctor doctor) {
         return doctorRepository.save(doctor);
     }

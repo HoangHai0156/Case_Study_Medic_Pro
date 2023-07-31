@@ -1,6 +1,7 @@
 package com.cg.service.user;
 
 
+import com.cg.model.Role;
 import com.cg.model.User;
 import com.cg.model.UserPrinciple;
 import com.cg.repository.UserRepository;
@@ -48,6 +49,11 @@ public class UserService implements IUserService {
     @Override
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
+    }
+
+    @Override
+    public User getByRole(Role role) {
+        return userRepository.getByRole(role);
     }
 
     @Override

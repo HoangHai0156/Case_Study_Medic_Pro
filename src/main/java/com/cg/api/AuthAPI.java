@@ -133,6 +133,35 @@ public class AuthAPI {
         }
         return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
     }
+    @GetMapping("/doctors")
+    public ResponseEntity<?> getAllByDoctor() {
+        List<UserResDTO> userResDTOList = new ArrayList<>();
+
+        List<User> users = userService.findAll();
+
+        for (User user : users) {
+            if (user.getRole().getCode().equals("DOCTOR")) {
+                UserResDTO userResDTO = user.toUserResDTO();
+                userResDTOList.add(userResDTO);
+            }
+        }
+        return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/customers")
+    public ResponseEntity<?> getAllByCustomer() {
+        List<UserResDTO> userResDTOList = new ArrayList<>();
+
+        List<User> users = userService.findAll();
+
+        for (User user : users) {
+            if (user.getRole().getCode().equals("USER")) {
+                UserResDTO userResDTO = user.toUserResDTO();
+                userResDTOList.add(userResDTO);
+            }
+        }
+        return new ResponseEntity<>(userResDTOList, HttpStatus.OK);
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getById(@PathVariable Long userId) {

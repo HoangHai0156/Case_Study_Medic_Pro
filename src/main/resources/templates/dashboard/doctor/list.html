@@ -103,6 +103,7 @@
     const page = {
         url: {
             getAllDoctors: App.API_DOCTOR,
+            getUserByDoctors: App.API_USER,
             getDoctorById: App.API_DOCTOR,
             getAllProvince: App.API_LOCATION_REGION + '/',
             getAllDistricts: App.API_LOCATION_REGION + '/district',
@@ -159,6 +160,7 @@
     page.dialogs.elements.dobUp = $('#dobUp');
     page.dialogs.elements.jobUp = $('#jobUp');
     page.dialogs.elements.ethnicUp = $('#ethnicUp');
+    page.dialogs.elements.userCre = $('#userCre')
 
     page.dialogs.elements.provinceUp = $('#provinceUp');
     page.dialogs.elements.districtUp = $('#districtUp');
@@ -333,6 +335,21 @@
 
     }
 
+    page.commands.getUserByDoctor = () => {
+        return $.ajax({
+            type: 'GET',
+            url: page.url.getUserByDoctors + '/doctors'
+        })
+            .done((data) => {
+                const users = data;
+                page.dialogs.elements.userCre.empty();
+                $.each(users, (index, item) => {
+                    const str = `<option value="${item.id}">${item.username}</option>`;
+                    page.dialogs.elements.userCre.append(str);
+                });
+            })
+    }
+
     page.dialogs.command.create = () => {
         const provinceId = page.dialogs.elements.provinceCre.val();
         const provinceName = page.dialogs.elements.provinceCre.find('option:selected').text();
@@ -360,7 +377,7 @@
         const identityNumber = page.dialogs.elements.identityCre.val();
         const ethnic = page.dialogs.elements.ethnicCre.find('option:selected').text();
         // const job = page.dialogs.elements.jobCre.find('option:selected').text();
-        const userId = "1";
+        const userId = page.dialogs.elements.userCre.find('option:selected').val();
         const specialityId = page.dialogs.elements.specialityCre.find('option:selected').val();
         const levelName = page.dialogs.elements.levelCre.find('option:selected').val();
 
@@ -636,7 +653,6 @@
         // bắt sự kiện nhấn vô nút save create
 
         page.dialogs.elements.btnCreate.on('click', () => {
-
             page.dialogs.elements.frmCreate.trigger("submit");
         })
 
@@ -653,6 +669,7 @@
         page.commands.getAllJob();
         page.commands.getAllEthnic();
         page.commands.getAllSpeciality();
+        page.commands.getUserByDoctor();
         page.commands.getAllProvince().then(() => {
             const provinceId = page.dialogs.elements.provinceCre.val();
             page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtCre).then(() => {

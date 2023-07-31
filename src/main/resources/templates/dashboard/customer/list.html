@@ -110,6 +110,7 @@
     const page = {
         url: {
             getAllCustomers: App.API_CUSTOMER,
+            getUserByCustomers: App.API_USER,
             getCustomerById: App.API_CUSTOMER,
             getAllProvince: App.API_LOCATION_REGION + '/',
             getAllDistricts: App.API_LOCATION_REGION + '/district',
@@ -137,6 +138,7 @@
     page.dialogs.elements.modalCreate = $('#modalCreate');
     page.dialogs.elements.errorAreaCreate = $('#modalCreate .error-area')
     page.dialogs.elements.frmCreate = $('#frmCreate');
+    page.dialogs.elements.userCre = $('#userCre');
     page.dialogs.elements.fullNameCre = $('#fullNameCre');
     page.dialogs.elements.emailCre = $('#emailCre');
     page.dialogs.elements.genderCre = $('#genderCre');
@@ -336,6 +338,21 @@
 
     }
 
+    page.commands.getUserByCustomer = () => {
+        return $.ajax({
+            type: 'GET',
+            url: page.url.getUserByCustomers + '/customers'
+        })
+            .done((data) => {
+                const users = data;
+                page.dialogs.elements.userCre.empty();
+                $.each(users, (index, item) => {
+                    const str = `<option value="${item.id}">${item.username}</option>`;
+                    page.dialogs.elements.userCre.append(str);
+                });
+            })
+    }
+
     page.dialogs.command.create = () => {
         const provinceId = page.dialogs.elements.provinceCre.val();
         const provinceName = page.dialogs.elements.provinceCre.find('option:selected').text();
@@ -363,7 +380,7 @@
         const identityNumber = page.dialogs.elements.identityCre.val();
         const ethnic = page.dialogs.elements.ethnicCre.find('option:selected').text();
         const job = page.dialogs.elements.jobCre.find('option:selected').text();
-        const userId = "2";
+        const userId = page.dialogs.elements.userCre.find('option:selected').val();
 
         let customer = {
             fullName,
@@ -636,7 +653,7 @@
         page.commands.getAllCustomers();
         page.commands.getAllJob();
         page.commands.getAllEthnic();
-        // page.commands.getAllSpeciality();
+        page.commands.getUserByCustomer();
         page.commands.getAllProvince().then(() => {
             const provinceId = page.dialogs.elements.provinceCre.val();
             page.commands.getAllDistricts(provinceId, page.dialogs.elements.districtCre).then(() => {

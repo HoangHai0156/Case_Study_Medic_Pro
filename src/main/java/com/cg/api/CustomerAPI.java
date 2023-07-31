@@ -92,6 +92,13 @@ public class CustomerAPI {
         Long userid = Long.parseLong(customerCreReqDTO.getUserId());
         User user = userService.findById(userid).orElseThrow(() -> new DataInputException("Ngưới dùng không tồn tại"));
 
+        List<Customer> customers = customerService.findAllByUser_Id(userid);
+        if (!customers.isEmpty()) {
+            Map<String, String> data = new HashMap<>();
+            data.put("message", "Tài khoản đã có hồ sơ bệnh nhân!");
+            return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        }
+
         Customer customer = customerCreReqDTO.toCustomer(eGender, user);
         Customer newCustomer = customerService.create(locationRegion, customer);
 
@@ -112,6 +119,7 @@ public class CustomerAPI {
             data.put("message", "Mã khách hàng không đúng định dạng");
             return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
         }
+
 
         Long customerId = Long.parseLong(customerIdStr);
         Customer customer = customerService.findById(customerId).orElseThrow(()->{
