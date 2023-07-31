@@ -43,6 +43,11 @@ public class CustomerService implements ICustomerService{
     }
 
     @Override
+    public Customer findCustomerByUserIdAndDeletedFalse(Long userId) {
+        return customerRepository.findCustomerByUserIdAndDeletedFalse(userId);
+    }
+
+    @Override
     public Customer findCustomerByUserId(Long userId) {
         return customerRepository.findCustomerByUserId(userId);
     }
