@@ -67,10 +67,25 @@ public class HandleErrorController implements ErrorController {
 
     @RequestMapping("/403")
     public ModelAndView accessDenied(Principal user) {
-        ModelAndView model = new ModelAndView("error/403");
+        ModelAndView model = new ModelAndView("dashboard/error/403");
         String userName = user.getName();
         model.addObject("username", userName);
         return model;
     }
 
+    @RequestMapping("/404")
+    public ModelAndView notFound(Principal user) {
+        ModelAndView model = new ModelAndView("dashboard/error/404");
+        String userName = user.getName();
+        model.addObject("username", userName);
+        return model;
+    }
+
+    @RequestMapping("/500")
+    public ModelAndView serverError(Principal user) {
+        ModelAndView model = new ModelAndView("dashboard/error/500");
+        String userName = user.getName();
+        model.addObject("username", userName);
+        return model;
+    }
 }

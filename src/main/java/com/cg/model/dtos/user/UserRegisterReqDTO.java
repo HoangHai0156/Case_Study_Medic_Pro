@@ -34,12 +34,6 @@ public class UserRegisterReqDTO {
     @Size(min = 3, max = 20, message = "Password phải từ 3 - 20 ký tự")
     private String rePassword;
 
-    @NotNull(message = "ID role không thể null")
-    @NotBlank(message = "Hãy nập giá trị cho ID role")
-    @NotEmpty(message = "ID role không thể để trống")
-    @Pattern(regexp = "^[1-3]$", message = "ID role phải là một số từ 1 đến 3")
-    private Long roleId;
-
     public User toUser(Role role) {
         return new User()
                 .setUsername(username)

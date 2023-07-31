@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -71,7 +72,7 @@ public class AuthAPI {
         if (!Objects.equals(password, rePassword)) {
             throw new DataInputException("Mật khẩu không trùng khớp");
         }
-        Optional<Role> optRole = roleService.findById(userRegisterReqDTO.getRoleId());
+        Optional<Role> optRole = roleService.findById(2L);
 
         if (!optRole.isPresent()) {
             throw new DataInputException("Invalid account role");
@@ -178,6 +179,7 @@ public class AuthAPI {
         return new ResponseEntity<>(userResDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserCreReqDTO userCreReqDTO, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {

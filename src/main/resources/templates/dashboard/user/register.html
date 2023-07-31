@@ -21,9 +21,6 @@
                 <h1 class="auth-title">Sign Up</h1>
                 <div class="error-area hide" id="regError"></div>
                 <form action="index.html">
-                    <select id="role" hidden="">
-                        <option value="2">USER</option>
-                    </select>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" id="usernameReg" class="form-control form-control-xl" placeholder="Username">
                         <div class="form-control-icon">
@@ -66,7 +63,6 @@
 </div>
 </body>
 <script>
-    const role = $('#role');
     const usernameReg = $('#usernameReg');
     const passwordReg = $('#passwordReg');
     const rePasswordReg = $('#rePasswordReg');
@@ -76,8 +72,7 @@
         const obj = {
             username: usernameReg.val(),
             password: passwordReg.val(),
-            rePassword: rePasswordReg.val(),
-            roleId: role.val()
+            rePassword: rePasswordReg.val()
         }
 
         $.ajax({
@@ -90,22 +85,19 @@
             data: JSON.stringify(obj)
         })
             .done(() => {
+                location.href = "/login";
                 App.showSuccessNotification("Đăng ký thành công ")
                 signIn.click();
                 usernameLog.val(usernameReg.val());
                 passwordLog.val(passwordReg.val());
+                // location.href = "/";
             })
             .fail((jqXHR) => {
                 const responseJSON = jqXHR.responseJSON;
 
-                $('#regError').empty();
-                let str = '';
-
                 $.each(responseJSON, (k, v) => {
-                    str += `<label for="${k}">${v}</label>`
+                    App.showErrorNotification(v);
                 })
-
-                $('#regError').append(str).removeClass('hide').addClass('show');
 
                 console.log(jqXHR);
             })

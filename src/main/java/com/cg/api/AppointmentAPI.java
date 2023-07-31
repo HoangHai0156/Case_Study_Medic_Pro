@@ -20,6 +20,7 @@ import com.cg.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,7 @@ public class AppointmentAPI {
     @Autowired
     private IMedicalBillService medicalBillService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody AppointmentCreReqDTO appointmentCreReqDTO,
                                     BindingResult bindingResult){
@@ -141,6 +143,7 @@ public class AppointmentAPI {
         return new ResponseEntity<>(appointmentResDTOS,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PatchMapping("/{appointmentId}")
     public ResponseEntity<?> update(@PathVariable("appointmentId") String appointmentIdStr,
                                     @Valid @RequestBody AppointmentUpReqDTO appointmentUpReqDTO,
@@ -241,6 +244,7 @@ public class AppointmentAPI {
         return new ResponseEntity<>(appointmentResDTO,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{appointmentId}")
     public ResponseEntity<?> remove(@PathVariable("appointmentId") String appointmentIdStr){
         if (!ValidateUtil.isNumberValid(appointmentIdStr)){

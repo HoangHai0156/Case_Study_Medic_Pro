@@ -31,7 +31,7 @@ public class UserCreReqDTO implements Validator {
     @NotNull(message = "ID role không thể null")
     @NotBlank(message = "Hãy nập giá trị cho ID role")
     @NotEmpty(message = "ID role không thể để trống")
-    @Pattern(regexp = "^[1-3]$", message = "ID role phải là một số từ 1 đến 3")
+    @Pattern(regexp = "^[1-3]{1}", message = "ID role phải là một số từ 1 đến 3")
     private String roleId;
 
     public User toUser(Role role) {

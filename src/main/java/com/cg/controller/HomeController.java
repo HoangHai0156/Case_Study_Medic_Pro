@@ -10,6 +10,7 @@ import com.cg.service.medicalBill.IMedicalBillService;
 import com.cg.service.user.IUserService;
 import com.cg.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,35 +56,7 @@ public class HomeController {
         return "dashboard/user/register";
     }
 
-//    @GetMapping
-//    public String homePage(Model model){
-//        String username = appUtils.getPrincipalUsername();
-//        User user = userService.getByUsername(username);
-//        String roleName = user.getRole().getName().name();
-//
-//
-//
-//        return "homepage/index";
-//    }
-
     @GetMapping
-//    public String homePage(Model model) {
-//        String username = appUtils.getPrincipalUsername();
-//        User user = userService.getByUsername(username);
-//        String roleName = user.getRole().getName().name();
-//
-//
-//        return "homePage/index";
-//    }
-//
-//    @GetMapping("/customer")
-//    public String customerPage() {
-//        return "homepage/customer";
-//    }
-//    @GetMapping("/doctor")
-//    public String doctor() {
-//        return "homepage/doctor";
-
     public ModelAndView accessHomepage(Principal user) {
         ModelAndView model = new ModelAndView("homepage/index");
         if (user == null) {
@@ -105,14 +78,27 @@ public class HomeController {
         String username = user.getName();
         User user1 = userService.getByUsername(username);
         Long userId = user1.getId();
+        String roleName = user1.getRole().getName().name();
+        model.addObject("roleName", roleName);
 
-        Customer customer = customerService.findCustomerByUserId(userId);
-        if (customer == null || customer.isDeleted()) {
-            model.addObject("user", user);
-            return model;
+        if (roleName.equals("ROLE_DOCTOR")){
+            Doctor doctor = doctorService.findDoctorByUserId(userId);
+            if (doctor == null || doctor.isDeleted()){
+                model.addObject("user", user);
+                return model;
+            }
+            modelChoose.addObject("customer", doctor);
+        }else {
+            Customer customer = customerService.findCustomerByUserId(userId);
+            if (customer == null || customer.isDeleted()) {
+                model.addObject("user", user);
+                return model;
+            }
+            modelChoose.addObject("customer", customer);
         }
+
+
         modelChoose.addObject("user", user);
-        modelChoose.addObject("customer", customer);
         return modelChoose;
     }
 
@@ -121,7 +107,15 @@ public class HomeController {
         String username = user.getName();
         User user1 = userService.getByUsername(username);
         Long userId = user1.getId();
+
+        Customer customer = customerService.findCustomerByUserIdAndDeletedFalse(userId);
+        if (customer != null){
+            return new ModelAndView("redirect:/profile");
+        }
+
         ModelAndView modelAndView = new ModelAndView("homepage/profile-create");
+        String roleName = user1.getRole().getName().name();
+        modelAndView.addObject("roleName", roleName);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userId", userId);
         return modelAndView;
@@ -133,7 +127,10 @@ public class HomeController {
         User user1 = userService.getByUsername(username);
         Long userId = user1.getId();
         Customer customer = customerService.findCustomerByUserId(userId);
+
         ModelAndView modelAndView = new ModelAndView("homepage/profile-update");
+        String roleName = user1.getRole().getName().name();
+        modelAndView.addObject("roleName", roleName);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userId", userId);
         modelAndView.addObject("customer", customer);
@@ -163,6 +160,8 @@ public class HomeController {
             times.put(eTime.name(), eTime.getValue());
         }
 
+        String roleName = user.getRole().getName().name();
+        model.addAttribute("roleName", roleName);
         model.addAttribute("times",times);
         model.addAttribute("user",user1);
 
@@ -182,6 +181,8 @@ public class HomeController {
         }
         Long customerId = customer.getId();
 
+        String roleName = user.getRole().getName().name();
+        model.addAttribute("roleName", roleName);
         model.addAttribute("customer",customer);
         model.addAttribute("customerId",customerId);
         model.addAttribute("user",user1);
@@ -197,22 +198,30 @@ public class HomeController {
         Long userId = user1.getId();
         Customer customer = customerService.findCustomerByUserId(userId);
         ModelAndView modelAndView = new ModelAndView("homepage/customer");
+        String roleName = user1.getRole().getName().name();
+        modelAndView.addObject("roleName", roleName);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userId", userId);
         modelAndView.addObject("customer", customer);
         return modelAndView;
     }
 
+    @PreAuthorize("hasAnyAuthority('DOCTOR')")
     @GetMapping("/doctor")
     public String doctor(Model model, Principal user) {
-
+        String username = user.getName();
+        User user1 = userService.getByUsername(username);
 
         Map<String, String> times = new HashMap<>();
         for (ETime eTime : ETime.values()
         ) {
             times.put(eTime.name(), eTime.getValue());
         }
+        String roleName = user1.getRole().getName().name();
+        model.addAttribute("roleName", roleName);
         model.addAttribute("times", times);
+        model.addAttribute("user", user);
+
         return "homepage/doctor";
     }
 
@@ -247,6 +256,8 @@ public class HomeController {
         }
         BigDecimal total = prices.add(fee);
 
+        String roleName = user.getRole().getName().name();
+        model.addAttribute("roleName", roleName);
         model.addAttribute("medicalBillResDTOS",medicalBillResDTOS);
         model.addAttribute("total",total);
         model.addAttribute("fee",fee);

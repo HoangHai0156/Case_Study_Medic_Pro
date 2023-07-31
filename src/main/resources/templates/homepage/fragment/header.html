@@ -27,12 +27,20 @@
                                     <div class="style_info_name__3gr9P"><b th:text="${user.name}">Phước Dương Công</b></div>
                                 </div>
                             </li>
-                            <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
-                                    href="/user"><i class="fas fa-address-book"></i> Hồ sơ bệnh nhân </a></li>
-                            <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
-                                    href="/user"><i class="fas fa-file-medical"></i> Phiếu khám bệnh</a></li>
+                            <li th:if="${roleName != 'ROLE_DOCTOR'}" data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                    href="/customer"><i class="fas fa-address-book"></i> Hồ sơ bệnh nhân </a></li>
+                            <li th:if="${roleName != 'ROLE_DOCTOR'}" data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                    href="/customer"><i class="fas fa-file-medical"></i> Phiếu khám bệnh</a></li>
+
+                            <li th:if="${roleName == 'ROLE_DOCTOR'}" data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                    href="/doctor"><i class="fas fa-file-medical"></i> Lịch khám bệnh</a></li>
+
                             <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
                                     href="/user"><i class="fas fa-bell"></i>Thông báo</a></li>
+
+                            <li th:if="${roleName == 'ROLE_ADMIN'}" data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
+                                    href="/admin"><i class="fas fa-user-shield"></i>Dash board</a></li>
+
                             <li data-test="list-group-item" class="list-group-item list-group-item-undefined"><a
                                     href="/logout"><i class="fas fa-power-off"></i> Thoát</a></li>
                             <li data-test="list-group-item" class="list-group-item list-group-item-undefined">

@@ -77,16 +77,7 @@
                 location.href = "/";
             })
             .fail((jqXHR) => {
-                const responseJSON = jqXHR.responseJSON;
-
-                $('#logError').empty();
-                let str = '';
-
-                $.each(responseJSON, (k, v) => {
-                    str += `<label for="${k}">${v}</label>`
-                })
-
-                $('#logError').append(str).removeClass('hide').addClass('show');
+                App.showErrorNotification("Tài khoản không tồn tại hoặc mật khẩu không chính xác")
 
                 console.log(jqXHR);
             })
