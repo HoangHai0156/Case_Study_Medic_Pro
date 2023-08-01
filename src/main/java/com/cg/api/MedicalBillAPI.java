@@ -98,6 +98,10 @@ public class MedicalBillAPI {
         Long appointmentId = Long.parseLong(medicalBillCreReqDTO.getAppointmentId());
         Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(()-> new DataInputException("Lịch khám không tồn tai"));
 
+        if (appointment.isDeleted() || !appointment.isAvailable()){
+            throw new DataInputException("Lịch khám không còn hữu dụng để tạo phiếu khám");
+        }
+
         String appDayStr = DateFormat.format(appointment.getDay());
         LocalDate appDay = DateFormat.convertToLocalDate(appDayStr);
         LocalDate now = LocalDate.now();
