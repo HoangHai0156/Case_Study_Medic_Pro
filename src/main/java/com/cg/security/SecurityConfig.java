@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/logout",
                         "/api/test"
                         // TODO: 21/7/2023 nhớ xóa nhé
+                        ,"/api/medical-bills/**"
 //                        "/admin/**"
                 ).permitAll()
                 .antMatchers("/transfers").hasAnyAuthority("ADMIN")

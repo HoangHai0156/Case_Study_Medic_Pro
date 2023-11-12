@@ -2,7 +2,10 @@ package com.cg.service.medicalBill;
 
 import com.cg.model.Appointment;
 import com.cg.model.MedicalBill;
+import com.cg.model.dtos.medicalBill.MedicalBillResDTO;
 import com.cg.service.IGeneralService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -20,4 +23,5 @@ public interface IMedicalBillService extends IGeneralService<MedicalBill, Long> 
 
     List<MedicalBill> getPaidBillsByApp(@Param("id") Long appointmentId);
 
+    Page<MedicalBillResDTO> getAllByCode(String code, Pageable pageable);
 }

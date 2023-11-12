@@ -32,4 +32,13 @@ public class MedicalBillResDTO {
     private boolean isPaid;
 
     private Date paidDate;
+
+    public MedicalBillResDTO(Long id, String code, Appointment appointment, Customer customer, boolean isPaid, Date paidDate) {
+        this.id = id;
+        this.code = code;
+        this.appointment = appointment.toAppointmentResDTO();
+        this.customer = customer.toCustomerResDTO();
+        this.isPaid = isPaid;
+        this.paidDate = paidDate;
+    }
 }

@@ -2,10 +2,13 @@ package com.cg.service.medicalBill;
 
 import com.cg.model.Appointment;
 import com.cg.model.MedicalBill;
+import com.cg.model.dtos.medicalBill.MedicalBillResDTO;
 import com.cg.repository.AppointmentRepository;
 import com.cg.repository.MedicalBillRepository;
 import com.cg.utils.DateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +23,12 @@ public class MedicalBillService implements IMedicalBillService{
     private MedicalBillRepository medicalBillRepository;
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Override
+    public Page<MedicalBillResDTO> getAllByCode(String code, Pageable pageable) {
+        return medicalBillRepository.getAllByCode(code,pageable);
+    }
+
     @Override
     public List<MedicalBill> findAll() {
         return medicalBillRepository.findAll();

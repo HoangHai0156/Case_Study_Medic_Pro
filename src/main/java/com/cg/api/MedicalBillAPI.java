@@ -12,6 +12,10 @@ import com.cg.utils.AppUtils;
 import com.cg.utils.DateFormat;
 import com.cg.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -51,6 +55,24 @@ public class MedicalBillAPI {
         }
 
         return new ResponseEntity<>(medicalBillResDTOS,HttpStatus.OK);
+    }
+
+    @GetMapping("/code")
+    public ResponseEntity<?> getAllByCode(@RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "2") int limit,
+                                          @RequestParam(defaultValue = "id") String sortBy,
+                                          @RequestParam(defaultValue = "asc") String order,
+                                          @RequestParam(defaultValue = "") String key){
+        Pageable pageable;
+        if (order.equals("asc")){
+            pageable = PageRequest.of(page -1, limit, Sort.by(sortBy).ascending());
+        }else {
+            pageable = PageRequest.of(page -1, limit, Sort.by(sortBy).descending());
+        }
+
+        Page<MedicalBillResDTO> medicalBills = medicalBillService.getAllByCode(key,pageable);
+
+        return new ResponseEntity<>(medicalBills,HttpStatus.OK);
     }
 
     @GetMapping("/unpaid/{customerId}")

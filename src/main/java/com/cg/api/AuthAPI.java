@@ -114,7 +114,7 @@ public class AuthAPI {
                     .secure(false)
                     .path("/")
                     .maxAge(1000L * 60 * 60 * 24 * 30)
-                    .domain("localhost")
+//                    .domain("localhost")
                     .build();
 
             System.out.println(jwtResponse);
